@@ -10,8 +10,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
+import configuration.Settings;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
+import helpers.FlatColors;
 
 /**
  * Created by ManuGil on 20/03/15.
@@ -22,6 +24,7 @@ public class Meteor {
     private float radius;
     private Sprite sprite;
     private Body body;
+    private float velRandom;
 
     public Meteor(GameWorld world, int x, int y, float radius) {
         this.world = world;
@@ -32,6 +35,7 @@ public class Meteor {
 
         sprite.setPosition(x, y);
         sprite.setSize(radius * 2, radius * 2);
+        sprite.setColor(FlatColors.DARK_ORANGE);
         BodyDef bodyDef1 = new BodyDef();
         bodyDef1.type = BodyDef.BodyType.DynamicBody;
         bodyDef1.position.set(sprite.getX() / world.PIXELS_TO_METERS,
@@ -65,26 +69,26 @@ public class Meteor {
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
         sprite.setOriginCenter();
 
-        body.setLinearVelocity(body.getLinearVelocity().nor().x * 2,
-                body.getLinearVelocity().nor().y * 2);
+        body.setLinearVelocity(body.getLinearVelocity().nor().x * velRandom,
+                body.getLinearVelocity().nor().y * velRandom);
         limitVel();
         outOfBounds();
     }
 
     private void limitVel() {
 
-        if (body.getLinearVelocity().y > 2) {
-            body.setLinearVelocity(body.getLinearVelocity().x, 2);
+        if (body.getLinearVelocity().y > Settings.METEOR_MAX_VEL) {
+            body.setLinearVelocity(body.getLinearVelocity().x, Settings.METEOR_MAX_VEL);
         }
-        if (body.getLinearVelocity().y < -2) {
-            body.setLinearVelocity(body.getLinearVelocity().x, -2);
+        if (body.getLinearVelocity().y < -Settings.METEOR_MAX_VEL) {
+            body.setLinearVelocity(body.getLinearVelocity().x, -Settings.METEOR_MAX_VEL);
         }
 
-        if (body.getLinearVelocity().x > 2) {
-            body.setLinearVelocity(2, body.getLinearVelocity().y);
+        if (body.getLinearVelocity().x > Settings.METEOR_MAX_VEL) {
+            body.setLinearVelocity(Settings.METEOR_MAX_VEL, body.getLinearVelocity().y);
         }
-        if (body.getLinearVelocity().x < -2) {
-            body.setLinearVelocity(-2, body.getLinearVelocity().y);
+        if (body.getLinearVelocity().x < -Settings.METEOR_MAX_VEL) {
+            body.setLinearVelocity(-Settings.METEOR_MAX_VEL, body.getLinearVelocity().y);
         }
     }
 
@@ -93,9 +97,10 @@ public class Meteor {
             reset();
         } else if (body.getPosition().y * world.PIXELS_TO_METERS < world.marginOfPoints - 5) {
             reset();
-        } else if (body.getPosition().x * world.PIXELS_TO_METERS > (world.gameWidth - world.marginOfPoints + 5)) {
+        } else if (body
+                .getPosition().x * world.PIXELS_TO_METERS > (world.gameWidth - world.marginOfPoints + 5)) {
             reset();
-        } else if (body.getPosition().x * world.PIXELS_TO_METERS <  world.marginOfPoints - 5) {
+        } else if (body.getPosition().x * world.PIXELS_TO_METERS < world.marginOfPoints - 5) {
             reset();
         }
     }
@@ -105,6 +110,7 @@ public class Meteor {
     }
 
     public void reset() {
+        velRandom = MathUtils.random(Settings.METEOR_MIN_VEL, Settings.METEOR_MAX_VEL);
         Vector2 randomPoint = world.getPoints()
                 .get(MathUtils.random(0, world.getPoints().size - 1));
         Vector2 randomPointDir = world.getPointsDir()
@@ -112,9 +118,8 @@ public class Meteor {
         body.setTransform(randomPoint.x / world.PIXELS_TO_METERS,
                 randomPoint.y / world.PIXELS_TO_METERS, 0);
         //body.setLinearVelocity(Math.random() < 0.5 ? 2 : -2, Math.random() < 0.5 ? 2 : -2);
-        Vector2 vel = new Vector2((randomPointDir.x) - (sprite.getX()),
-                (randomPointDir.y) - (sprite.getY()));
-        body.setLinearVelocity(vel.nor().x * 10, vel.nor().y * 10);
-        //body.setLinearVelocity(MathUtils.random(-10, 10), MathUtils.random(-10, 10));
+        //Vector2 vel = new Vector2((randomPointDir.x) - (sprite.getX()),(randomPointDir.y) - (sprite.getY()));
+        //body.setLinearVelocity(vel.nor().x * 10, vel.nor().y * 10);
+        body.setLinearVelocity(MathUtils.random(-10, 10), MathUtils.random(-10, 10));
     }
 }

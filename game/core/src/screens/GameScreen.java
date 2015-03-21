@@ -23,13 +23,16 @@ public class GameScreen implements Screen {
     public float gameHeight = 1080;
     public float gameWidth = sW / (sH / gameHeight);
     public float w = 1080 / 100;
-
+    private NoonGame game;
+    private ActionResolver actionResolver;
 
     public float worldWidth = gameWidth * 1;
     public float worldHeight = gameHeight * 1;
 
 
     public GameScreen(NoonGame game, ActionResolver actionResolver) {
+        this.game = game;
+        this.actionResolver = actionResolver;
         Gdx.app.log("GameScreen", "Attached");
         Gdx.app.log("GameWidth " + gameWidth, "GameHeight " + gameHeight);
         world = new GameWorld(game, actionResolver, gameWidth, gameHeight, worldWidth, worldHeight);
@@ -47,7 +50,14 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        Gdx.app.log("GameScreen", "resize");
+        sW = Gdx.graphics.getWidth();
+        sH = Gdx.graphics.getHeight();
+        gameHeight = 1080;
+        gameWidth = sW / (sH / gameHeight);
+        world = new GameWorld(game, actionResolver, gameWidth, gameHeight, worldWidth, worldHeight);
+        Gdx.input.setInputProcessor(new InputHandler(world, sW / gameWidth, sH
+                / gameHeight));
+        renderer = new GameRenderer(world, (int) gameWidth, (int) gameHeight);
     }
 
     @Override

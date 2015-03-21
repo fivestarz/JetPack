@@ -1,15 +1,23 @@
 package gameobjects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
+import tweens.SpriteAccessor;
+import tweens.VectorAccessor;
 
 /**
  * Created by ManuGil on 20/03/15.
@@ -21,6 +29,8 @@ public class Hero {
     private Sprite sprite;
     private Body body;
     public boolean clickedRight, clickedLeft;
+    private ParticleEffect effect;
+    private TweenManager manager;
 
     public Hero(GameWorld world, int x, int y, float width, float height) {
         this.world = world;
@@ -54,14 +64,26 @@ public class Hero {
         body.createFixture(fixtureDef);
         shape.dispose();
 
+        effect = new ParticleEffect();
+        effect.load(Gdx.files.internal("jetpack.p"), Gdx.files.internal(""));
+        effect.setPosition(-100, -100);
+
+        Tween.registerAccessor(Sprite.class, new SpriteAccessor());
+        Tween.registerAccessor(Vector2.class, new VectorAccessor());
+        manager = new TweenManager();
+
     }
 
     public void update(float delta) {
+        manager.update(delta);
         sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS) - sprite.
                         getWidth() / 2,
                 (body.getPosition().y * world.PIXELS_TO_METERS) - sprite.getHeight() / 2);
+
+        effect.update(delta);
+
         // Ditto for rotation
-        sprite.setRotation((float) Math.toDegrees(body.getAngle()));
+
         sprite.setOriginCenter();
 
         if (body.getLinearVelocity().y > 6) {
@@ -69,20 +91,35 @@ public class Hero {
         } else {
             if (clickedRight) {
                 body.applyForceToCenter(2f, +2f, true);
-            }
-            if (clickedLeft) {
+                effect.setPosition(sprite.getX()+5, sprite.getY() + (sprite.getWidth() / 2));
+
+            } else if (clickedLeft) {
                 body.applyForceToCenter(-2f, +2f, true);
+                effect.setPosition(sprite.getX() + sprite.getWidth()-5,
+                        sprite.getY() + (sprite.getWidth() / 2));
+
+            } else {
+                effect.setPosition(sprite.getX() + sprite.getWidth()/2,
+                        sprite.getY() + (sprite.getWidth() / 2));
+
             }
         }
+
 
         limitVel();
         outOfBounds();
     }
 
+
     private void limitVel() {
         if (body.getLinearVelocity().y < -6) {
             body.setLinearVelocity(body.getLinearVelocity().x, -6);
         }
+
+        if (body.getLinearVelocity().y > 6) {
+            body.setLinearVelocity(body.getLinearVelocity().x, 6);
+        }
+
 
         if (body.getLinearVelocity().x > 3) {
             body.setLinearVelocity(3, body.getLinearVelocity().y);
@@ -94,6 +131,7 @@ public class Hero {
 
 
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
+        if (clickedLeft || clickedRight) effect.draw(batch);
         sprite.draw(batch);
 
     }
@@ -122,23 +160,40 @@ public class Hero {
     }
 
     public void clickedLeft() {
+        sprite.setFlip(true,false);
         world.getHero().getBody().applyForceToCenter(0, 7, true);
         world.getHero().clickedLeft = true;
+        effect.reset();
+        effect.start();
+        rotateEffect(+20);
+
     }
 
     public void clickedRight() {
+        sprite.setFlip(false,false);
         world.getHero().getBody().applyForceToCenter(0, 7, true);
         world.getHero().clickedRight = true;
+        effect.reset();
+        effect.start();
+        rotateEffect(-20);
     }
 
     public void notClickedLeft() {
-        world.getHero().getBody().applyForceToCenter(+2, -6, true);
+        world.getHero().getBody().applyForceToCenter(+2, -8, true);
         world.getHero().clickedLeft = false;
+        rotateEffect(0);
     }
 
     public void notClickedRight() {
-        world.getHero().getBody().applyForceToCenter(-2, -6, true);
+        world.getHero().getBody().applyForceToCenter(-2, -8, true);
         world.getHero().clickedRight = false;
+
+        rotateEffect(0);
+    }
+
+    private void rotateEffect(int i) {
+        Tween.to(sprite, SpriteAccessor.ANGLE, 0.2f).target(i).ease(
+                TweenEquations.easeInOutSine).start(manager);
     }
 
     public Body getBody() {

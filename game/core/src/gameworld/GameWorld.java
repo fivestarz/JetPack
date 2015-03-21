@@ -47,9 +47,9 @@ public class GameWorld {
     private GameState gameState;
     private int score;
     private final int numberOfStars = 180;
-    private final int numberOfMeteors = 10;
+    private final int numberOfMeteors = 20;
     private final int numberOfPoints = 10;
-    public final int marginOfPoints = 100;
+    public final int marginOfPoints = -50;
 
     //GAMEOBJECTS
     private Background background;

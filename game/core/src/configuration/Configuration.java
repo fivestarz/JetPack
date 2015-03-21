@@ -7,8 +7,8 @@ package configuration;
 public class Configuration {
 
     public static final String GAME_NAME = "Noon";
-    public static final boolean DEBUG = true;
-    public static final boolean SPLASHSCREEN = false;
+    public static final boolean DEBUG = false;
+    public static final boolean SPLASHSCREEN = true;
 
     //ADMOB IDS
     public static final String AD_UNIT_ID_BANNER = "ca-app-pub-6147578034437241/4745179018";

@@ -13,6 +13,7 @@ public class InputHandler implements InputProcessor {
     private GameWorld world;
     private float scaleFactorX;
     private float scaleFactorY;
+    private int activeTouch = 0;
 
     public InputHandler(GameWorld world, float scaleFactorX, float scaleFactorY) {
         this.world = world;
@@ -24,7 +25,7 @@ public class InputHandler implements InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.RIGHT) {
             world.getHero().clickedRight();
-        } else  if (keycode == Input.Keys.LEFT){
+        } else if (keycode == Input.Keys.LEFT) {
             world.getHero().clickedLeft();
         }
 
@@ -38,7 +39,7 @@ public class InputHandler implements InputProcessor {
         }
         if (keycode == Input.Keys.RIGHT) {
             world.getHero().notClickedRight();
-        } else  if (keycode == Input.Keys.LEFT){
+        } else if (keycode == Input.Keys.LEFT) {
             world.getHero().notClickedLeft();
         }
         return false;
@@ -53,6 +54,7 @@ public class InputHandler implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         screenX = scaleX(screenX);
         screenY = scaleY(screenY);
+        activeTouch++;
         if (world.isRunning()) {
             if (screenX > world.gameWidth / 2) {
                 world.getHero().clickedRight();
@@ -67,11 +69,17 @@ public class InputHandler implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         screenX = scaleX(screenX);
         screenY = scaleY(screenY);
+        activeTouch--;
+
         if (screenX > world.gameWidth / 2) {
             world.getHero().notClickedRight();
         } else {
             world.getHero().notClickedLeft();
         }
+        /*if (activeTouch == 0) {
+            world.getHero().notClickedLeft();
+            world.getHero().notClickedRight();
+        }*/
         return false;
     }
 
