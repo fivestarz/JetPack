@@ -65,7 +65,7 @@ public class Hero {
         shape.dispose();
 
         effect = new ParticleEffect();
-        effect.load(Gdx.files.internal("jetpack.p"), Gdx.files.internal(""));
+        effect.load(Gdx.files.internal("jetpack1.p"), Gdx.files.internal(""));
         effect.setPosition(-100, -100);
 
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
