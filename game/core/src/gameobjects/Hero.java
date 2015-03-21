@@ -59,8 +59,7 @@ public class Hero {
     public void update(float delta) {
         sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS) - sprite.
                         getWidth() / 2,
-                (body.getPosition().y * world.PIXELS_TO_METERS) - sprite.getHeight() / 2)
-        ;
+                (body.getPosition().y * world.PIXELS_TO_METERS) - sprite.getHeight() / 2);
         // Ditto for rotation
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
         sprite.setOriginCenter();

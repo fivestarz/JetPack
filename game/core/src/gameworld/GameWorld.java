@@ -13,11 +13,13 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import configuration.Configuration;
 import gameobjects.Background;
 import gameobjects.Hero;
 import gameobjects.Meteor;
 import gameobjects.Star;
 import helpers.AssetLoader;
+import helpers.FlatColors;
 import noon.ActionResolver;
 import noon.NoonGame;
 
@@ -46,11 +48,15 @@ public class GameWorld {
     private int score;
     private final int numberOfStars = 180;
     private final int numberOfMeteors = 10;
+    private final int numberOfPoints = 10;
+    public final int marginOfPoints = 100;
 
     //GAMEOBJECTS
     private Background background;
     private Array<Star> stars = new Array<Star>();
     private Array<Meteor> meteors = new Array<Meteor>();
+    private Array<Vector2> points = new Array<Vector2>();
+    private Array<Vector2> pointsDir = new Array<Vector2>();
     private Meteor meteor;
     private Hero hero;
 
@@ -89,6 +95,18 @@ public class GameWorld {
         stars.clear();
         for (int i = 0; i < numberOfStars; i++) {
             stars.add(new Star(world));
+        }
+
+        points.clear();
+        pointsDir.clear();
+        for (int i = 0; i < numberOfPoints; i++) {
+            points.add(new Vector2(marginOfPoints, gameHeight / (numberOfPoints + 1) * (i + 1)));
+            points.add(new Vector2(gameWidth - marginOfPoints,
+                    gameHeight / (numberOfPoints + 1) * (i + 1)));
+            points.add(new Vector2(gameWidth / (numberOfPoints + 1) * (i + 1), marginOfPoints));
+            points.add(new Vector2(gameWidth / (numberOfPoints + 1) * (i + 1),
+                    gameHeight - marginOfPoints));
+            pointsDir.add(new Vector2(gameWidth / 2, gameHeight / (numberOfPoints + 1) * (i + 1)));
         }
 
         //BOX2D
@@ -135,10 +153,21 @@ public class GameWorld {
         for (int i = 0; i < numberOfStars; i++) {
             stars.get(i).render(batcher, shapeRenderer);
         }
-        batcher.end();
-        debugRenderer.render(worldB, debugMatrix);
-        batcher.begin();
-
+        if (Configuration.DEBUG) {
+            batcher.end();
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(FlatColors.WHITE);
+            for (int i = 0; i < points.size; i++) {
+                shapeRenderer.circle(points.get(i).x, points.get(i).y, 4);
+            }
+            shapeRenderer.setColor(FlatColors.YELLOW);
+            for (int i = 0; i < pointsDir.size; i++) {
+                shapeRenderer.circle(pointsDir.get(i).x, pointsDir.get(i).y, 4);
+            }
+            shapeRenderer.end();
+            debugRenderer.render(worldB, debugMatrix);
+            batcher.begin();
+        }
 
     }
 
@@ -197,5 +226,13 @@ public class GameWorld {
 
     public Hero getHero() {
         return hero;
+    }
+
+    public Array<Vector2> getPoints() {
+        return points;
+    }
+
+    public Array<Vector2> getPointsDir() {
+        return pointsDir;
     }
 }

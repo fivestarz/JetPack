@@ -34,9 +34,8 @@ public class Meteor {
         sprite.setSize(radius * 2, radius * 2);
         BodyDef bodyDef1 = new BodyDef();
         bodyDef1.type = BodyDef.BodyType.DynamicBody;
-        bodyDef1.position.set((sprite.getX() + sprite.getWidth() / 2) /
-                        world.PIXELS_TO_METERS,
-                (sprite.getY() + sprite.getHeight() / 2) / world.PIXELS_TO_METERS);
+        bodyDef1.position.set(sprite.getX() / world.PIXELS_TO_METERS,
+                sprite.getY() / world.PIXELS_TO_METERS);
 
         body = world.getWorldB().createBody(bodyDef1);
         body.setGravityScale(0);
@@ -60,12 +59,11 @@ public class Meteor {
     }
 
     public void update(float delta) {
-        sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS) - sprite.
-                        getWidth() / 2,
-                (body.getPosition().y * world.PIXELS_TO_METERS) - sprite.getHeight() / 2)
-        ;
+        sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS),
+                (body.getPosition().y * world.PIXELS_TO_METERS));
         // Ditto for rotation
-        //sprite.setRotation((float) Math.toDegrees(body.getAngle()));
+        sprite.setRotation((float) Math.toDegrees(body.getAngle()));
+        sprite.setOriginCenter();
 
         body.setLinearVelocity(body.getLinearVelocity().nor().x * 2,
                 body.getLinearVelocity().nor().y * 2);
@@ -91,34 +89,32 @@ public class Meteor {
     }
 
     private void outOfBounds() {
-        if (body.getPosition().y * world.PIXELS_TO_METERS > 10 + (world.gameHeight + (sprite
-                .getHeight() / 2))) {
-            body.setTransform(body.getPosition().x,
-                    (0 - sprite.getHeight() / 2 + 5) / world.PIXELS_TO_METERS, 0);
-        } else if (body.getPosition().y * world.PIXELS_TO_METERS < -10 - sprite
-                .getHeight() / 2) {
-            body.setTransform(body.getPosition().x,
-                    (world.gameHeight - sprite.getHeight() / 2 - 5) / world.PIXELS_TO_METERS, 0);
-        }
-        if (body.getPosition().x * world.PIXELS_TO_METERS > 10 + (world.gameWidth + (sprite
-                .getWidth() / 2))) {
-            body.setTransform((0 - sprite.getWidth() / 2 + 5) / world.PIXELS_TO_METERS,
-                    body.getPosition().y, 0);
-        } else if (body.getPosition().x * world.PIXELS_TO_METERS < -10 - sprite
-                .getWidth() / 2) {
-            body.setTransform(
-                    (world.gameWidth + sprite.getWidth() / 2 - 5) / world.PIXELS_TO_METERS,
-                    body.getPosition().y, 0);
+        if (body.getPosition().y * world.PIXELS_TO_METERS > (world.gameHeight - world.marginOfPoints + 5)) {
+            reset();
+        } else if (body.getPosition().y * world.PIXELS_TO_METERS < world.marginOfPoints - 5) {
+            reset();
+        } else if (body.getPosition().x * world.PIXELS_TO_METERS > (world.gameWidth - world.marginOfPoints + 5)) {
+            reset();
+        } else if (body.getPosition().x * world.PIXELS_TO_METERS <  world.marginOfPoints - 5) {
+            reset();
         }
     }
 
     public void render(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
-
+        sprite.draw(batcher);
     }
 
     public void reset() {
-        //body.setTransform(500 / world.PIXELS_TO_METERS, 500 / world.PIXELS_TO_METERS, 0);
+        Vector2 randomPoint = world.getPoints()
+                .get(MathUtils.random(0, world.getPoints().size - 1));
+        Vector2 randomPointDir = world.getPointsDir()
+                .get(MathUtils.random(0, world.getPointsDir().size - 1));
+        body.setTransform(randomPoint.x / world.PIXELS_TO_METERS,
+                randomPoint.y / world.PIXELS_TO_METERS, 0);
         //body.setLinearVelocity(Math.random() < 0.5 ? 2 : -2, Math.random() < 0.5 ? 2 : -2);
-        body.setLinearVelocity(MathUtils.random(-10, 10), MathUtils.random(-10, 10));
+        Vector2 vel = new Vector2((randomPointDir.x) - (sprite.getX()),
+                (randomPointDir.y) - (sprite.getY()));
+        body.setLinearVelocity(vel.nor().x * 10, vel.nor().y * 10);
+        //body.setLinearVelocity(MathUtils.random(-10, 10), MathUtils.random(-10, 10));
     }
 }

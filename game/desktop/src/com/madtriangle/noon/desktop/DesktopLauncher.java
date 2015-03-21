@@ -10,7 +10,7 @@ public class DesktopLauncher {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "Color Buttons";
         config.height= (int) (1080 / 2);
-        config.width= (int) (1720 / 2);
+        config.width= (int) (1920 / 2);
         new LwjglApplication(new NoonGame(new ActionResolverDesktop()), config);
     }
 }
