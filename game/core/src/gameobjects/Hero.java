@@ -58,14 +58,14 @@ public class Hero {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.2f;
+        fixtureDef.density = 0.17f;
         fixtureDef.restitution = 1f;
         fixtureDef.friction = 1f;
         body.createFixture(fixtureDef);
         shape.dispose();
 
         effect = new ParticleEffect();
-        effect.load(Gdx.files.internal("jetpack1.p"), Gdx.files.internal(""));
+        effect.load(Gdx.files.internal("jetpack3.p"), Gdx.files.internal(""));
         effect.setPosition(-100, -100);
 
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
@@ -91,16 +91,16 @@ public class Hero {
         } else {
             if (clickedRight) {
                 body.applyForceToCenter(2f, +2f, true);
-                effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2) );
+                effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2));
 
             } else if (clickedLeft) {
                 body.applyForceToCenter(-2f, +2f, true);
                 effect.setPosition(sprite.getX() + sprite.getWidth() - 5,
-                        sprite.getY() + (sprite.getWidth() / 2) );
+                        sprite.getY() + (sprite.getWidth() / 2));
 
             } else {
                 effect.setPosition(sprite.getX() + sprite.getWidth() / 2,
-                        sprite.getY() + (sprite.getWidth() / 2));
+                        sprite.getY() + sprite.getHeight() - 4);
 
             }
         }
@@ -200,6 +200,6 @@ public class Hero {
         return body;
     }
 
-    public void start(){
+    public void start() {
     }
 }

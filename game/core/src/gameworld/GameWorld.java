@@ -46,7 +46,7 @@ public class GameWorld {
     private GameState gameState;
     private int score;
     private final int numberOfStars = 180;
-    private final int numberOfMeteors = 20;
+    private final int numberOfMeteors = 14;
     private final int numberOfPoints = 10;
     public final int marginOfPoints = -50;
 
@@ -112,7 +112,7 @@ public class GameWorld {
         //BOX2D
         worldB = new World(new Vector2(0, -6.8f), true);
         debugRenderer = new Box2DDebugRenderer();
-        hero = new Hero(this, (int) (gameWidth / 2 - 30), (int) (gameHeight / 2 - 30), 60, 60);
+        hero = new Hero(this, (int) (gameWidth / 2 - 35), (int) (gameHeight / 2 - 35), 70, 70);
         meteors.clear();
         int j = 0;
         for (int i = 0; i < numberOfMeteors; i++) {

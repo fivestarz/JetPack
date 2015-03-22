@@ -15,9 +15,8 @@ import configuration.Configuration;
  */
 public class AssetLoader {
 
-    public static Texture logoTexture, dotT, colorCircleT, outBorderT, insideBorderT, barsT, backgroundT;
-    public static TextureRegion logo, square, dot, colorCircle, outBorder, insideBorder, bar1, bar2, bar3, bar4,
-            flashBar, flashCircle, background;
+    public static Texture logoTexture, dotT, colorCircleT, backgroundT, meteorT;
+    public static TextureRegion logo, square, dot, colorCircle, flashCircle, background, meteor;
 
     public static BitmapFont font, fontS, fontXS, fontB;
     private static Preferences prefs;
@@ -41,28 +40,16 @@ public class AssetLoader {
                 colorCircleT.getHeight());
         flashCircle = new TextureRegion(colorCircleT, 0, 0, 820, colorCircleT.getHeight());
 
-        insideBorderT = new Texture(Gdx.files.internal("insideBorder.png"));
-        insideBorderT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        insideBorder = new TextureRegion(insideBorderT, 0, 0, insideBorderT.getWidth(),
-                insideBorderT.getHeight());
-
-        outBorderT = new Texture(Gdx.files.internal("outBorder.png"));
-        outBorderT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        outBorder = new TextureRegion(outBorderT, 0, 0, outBorderT.getWidth(),
-                outBorderT.getHeight());
+        meteorT = new Texture(Gdx.files.internal("meteor.png"));
+        meteorT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        meteor = new TextureRegion(meteorT, 0, 0, meteorT.getWidth(),
+                meteorT.getHeight());
 
         backgroundT = new Texture(Gdx.files.internal("background.png"));
         backgroundT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         background = new TextureRegion(backgroundT, 0, 0, backgroundT.getWidth(),
                 backgroundT.getHeight());
 
-        barsT = new Texture(Gdx.files.internal("bars.png"));
-        barsT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        bar1 = new TextureRegion(barsT, 0, 0, 30, barsT.getHeight());
-        bar2 = new TextureRegion(barsT, 30, 0, 30, barsT.getHeight());
-        bar3 = new TextureRegion(barsT, 60, 0, 30, barsT.getHeight());
-        bar4 = new TextureRegion(barsT, 90, 0, 30, barsT.getHeight());
-        flashBar = new TextureRegion(barsT, 120, 0, 30, barsT.getHeight());
 
         //LOADING FONT
         Texture tfont = new Texture(Gdx.files.internal("sans.png"), true);
@@ -116,10 +103,8 @@ public class AssetLoader {
         success.dispose();
         end.dispose();
         colorCircleT.dispose();
-        insideBorderT.dispose();
-        outBorderT.dispose();
+        meteorT.dispose();
         backgroundT.dispose();
-        barsT.dispose();
 
     }
 

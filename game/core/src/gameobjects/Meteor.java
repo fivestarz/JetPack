@@ -1,5 +1,7 @@
 package gameobjects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -13,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import configuration.Settings;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
-import helpers.FlatColors;
 
 /**
  * Created by ManuGil on 20/03/15.
@@ -25,17 +26,20 @@ public class Meteor {
     private Sprite sprite;
     private Body body;
     private float velRandom;
+    private ParticleEffect effect;
 
     public Meteor(GameWorld world, int x, int y, float radius) {
         this.world = world;
         this.x = x;
         this.y = y;
         this.radius = radius;
-        sprite = new Sprite(AssetLoader.dot);
+        sprite = new Sprite(AssetLoader.meteor);
 
         sprite.setPosition(x, y);
         sprite.setSize(radius * 2, radius * 2);
-        sprite.setColor(FlatColors.DARK_ORANGE);
+        sprite.setRotation(MathUtils.random(0, 360));
+        sprite.setOriginCenter();
+        //sprite.setAlpha(MathUtils.random(0.6f, 0.8f));
         BodyDef bodyDef1 = new BodyDef();
         bodyDef1.type = BodyDef.BodyType.DynamicBody;
         bodyDef1.position.set(sprite.getX() / world.PIXELS_TO_METERS,
@@ -60,15 +64,21 @@ public class Meteor {
         body.createFixture(fixtureDef);
         shape.dispose();
         reset();
+
+        effect = new ParticleEffect();
+        effect.load(Gdx.files.internal("meteor.p"), Gdx.files.internal(""));
+        effect.setPosition(300, 300);
     }
 
     public void update(float delta) {
         sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS),
                 (body.getPosition().y * world.PIXELS_TO_METERS));
         // Ditto for rotation
-        sprite.setRotation((float) Math.toDegrees(body.getAngle()));
+        //sprite.setRotation((float) Math.toDegrees(body.getAngle()));
         sprite.setOriginCenter();
-
+        effect.update(delta);
+        effect.setPosition(sprite.getX() + (sprite.getWidth() / 2),
+                sprite.getY() + (sprite.getHeight() / 2));
         body.setLinearVelocity(body.getLinearVelocity().nor().x * velRandom,
                 body.getLinearVelocity().nor().y * velRandom);
         limitVel();
@@ -106,8 +116,9 @@ public class Meteor {
     }
 
     public void render(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
+        effect.draw(batcher);
         sprite.draw(batcher);
-    }
+            }
 
     public void reset() {
         velRandom = MathUtils.random(Settings.METEOR_MIN_VEL, Settings.METEOR_MAX_VEL);
