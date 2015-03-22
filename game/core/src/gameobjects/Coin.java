@@ -39,6 +39,7 @@ public class Coin {
         sprite.setRotation(MathUtils.random(0, 360));
         sprite.setOriginCenter();
         sprite.setColor(FlatColors.GREEN);
+        sprite.setAlpha(0.7f);
 
         BodyDef bodyDefC = new BodyDef();
         bodyDefC.type = BodyDef.BodyType.DynamicBody;
@@ -46,6 +47,7 @@ public class Coin {
                 sprite.getY() / world.PIXELS_TO_METERS);
 
         body = world.getWorldB().createBody(bodyDefC);
+        body.setAngularDamping(0.5f);
         //body.setFixedRotation(true);
         body.setGravityScale(0);
 
@@ -65,9 +67,9 @@ public class Coin {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0f;
+        fixtureDef.density = 1f;
         fixtureDef.restitution = 0f;
-        fixtureDef.friction = 0f;
+        fixtureDef.friction = 0.05f;
 
         //TODO: Check multicursor stuff in Android Studio
 
@@ -103,7 +105,7 @@ public class Coin {
         point.setTransform(this.x / world.PIXELS_TO_METERS, this.y / world.PIXELS_TO_METERS, 0);
         limitVel();
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
-        sprite.setOrigin(0,0);
+        sprite.setOrigin(0, 0);
     }
 
     private void limitVel() {

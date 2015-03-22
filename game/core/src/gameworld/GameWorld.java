@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -49,8 +50,10 @@ public class GameWorld {
     private int score;
     private final int numberOfStars = Settings.NUMBER_INITIAL_BACKGROUND_STARS;
     private final int numberOfMeteors = Settings.NUMBER_INITIAL_METEORS;
+    public final int numberOfCoins = Settings.NUMBER_INITIAL_COINS;
     private final int numberOfPoints = 10;
     public final int marginOfPoints = -50;
+
 
     //GAMEOBJECTS
     private Background background;
@@ -58,6 +61,7 @@ public class GameWorld {
     private Array<Meteor> meteors = new Array<Meteor>();
     private Array<Vector2> points = new Array<Vector2>();
     private Array<Vector2> pointsDir = new Array<Vector2>();
+    private Array<Coin> coins = new Array<Coin>();
     private Meteor meteor;
     private Coin coin;
     private Hero hero;
@@ -128,7 +132,11 @@ public class GameWorld {
         }
 
         //CREATING COINS
-        coin = new Coin(this, (int) gameWidth / 2 + 100, (int) gameHeight / 2 + 100, 20);
+        for (int i = 0; i < numberOfCoins; i++) {
+            Vector2 p = pointsDir.get(MathUtils.random(0, pointsDir.size - 1));
+            coin = new Coin(this, (int) p.x, (int) p.y, 20);
+            coins.add(coin);
+        }
 
     }
 
@@ -140,9 +148,11 @@ public class GameWorld {
         if (isRunning()) {
             worldB.step(1f / 60f, 6, 2);
             hero.update(delta);
-            coin.update(delta);
             for (int i = 0; i < numberOfMeteors; i++) {
                 meteors.get(i).update(delta);
+            }
+            for (int i = 0; i < numberOfCoins; i++) {
+                coins.get(i).update(delta);
             }
         }
     }
@@ -164,7 +174,10 @@ public class GameWorld {
             meteors.get(i).render(batcher, shapeRenderer);
         }
         hero.render(batcher, shapeRenderer);
-        coin.render(batcher, shapeRenderer);
+
+        for (int i = 0; i < numberOfCoins; i++) {
+            coins.get(i).render(batcher, shapeRenderer);
+        }
         if (Configuration.DEBUG) {
             batcher.end();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);

@@ -10,13 +10,16 @@ public class Settings {
 
     //GAMEWORLD
     public static final int NUMBER_INITIAL_BACKGROUND_STARS = 180;
+
     //HERO
 
 
     //METEORS
-    public static final int NUMBER_INITIAL_METEORS = 25;
+    public static final int NUMBER_INITIAL_METEORS = 15;
     public static final float METEOR_MIN_VEL = 2.5f;
     public static final float METEOR_MAX_VEL = 3f;
 
-    public static final float COIN_MAX_VEL = 0.3f;
+    //COINS
+    public static final int NUMBER_INITIAL_COINS = 3;
+    public static final float COIN_MAX_VEL = 0.4f;
 }

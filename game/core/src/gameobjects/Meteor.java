@@ -39,13 +39,14 @@ public class Meteor {
         sprite = new Sprite(AssetLoader.meteor);
         sprite.setPosition(x, y);
         sprite.setSize(radius * 2, radius * 2);
-        sprite.setRotation(MathUtils.random(0, 360));
+
         sprite.setOriginCenter();
         //sprite.setAlpha(MathUtils.random(0.6f, 0.8f));
         BodyDef bodyDef1 = new BodyDef();
         bodyDef1.type = BodyDef.BodyType.DynamicBody;
-        bodyDef1.position.set(sprite.getX() / world.PIXELS_TO_METERS,
-                sprite.getY() / world.PIXELS_TO_METERS);
+        bodyDef1.position.set((sprite.getX() + sprite.getWidth() / 2) /
+                        world.PIXELS_TO_METERS,
+                (sprite.getY() + sprite.getHeight() / 2) / world.PIXELS_TO_METERS);
 
         body = world.getWorldB().createBody(bodyDef1);
         body.setGravityScale(0);
@@ -59,7 +60,7 @@ public class Meteor {
         fixtureDef.shape = shape;
         fixtureDef.density = .7f;
         fixtureDef.restitution = 1;
-        fixtureDef.friction = 0;
+        fixtureDef.friction = 0.01f;
 
         body.createFixture(fixtureDef);
         shape.dispose();
@@ -72,15 +73,16 @@ public class Meteor {
     }
 
     public void update(float delta) {
-        sprite.setRotation(sprite.getRotation() + angleVel);
+        //sprite.setRotation(sprite.getRotation() + angleVel);
         sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS),
                 (body.getPosition().y * world.PIXELS_TO_METERS));
-        // Ditto for rotation
-        //sprite.setRotation((float) Math.toDegrees(body.getAngle()));
-        sprite.setOriginCenter();
+        // Ditto for rottion
+        sprite.setRotation((float) Math.toDegrees(body.getAngle()));
+        sprite.setOrigin(0, 0);
         effect.update(delta);
-        effect.setPosition(sprite.getX() + (sprite.getWidth() / 2),
-                sprite.getY() + (sprite.getHeight() / 2));
+        effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
+                body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
+
         body.setLinearVelocity(body.getLinearVelocity().nor().x * velRandom,
                 body.getLinearVelocity().nor().y * velRandom);
         limitVel();
@@ -118,7 +120,10 @@ public class Meteor {
     }
 
     public void render(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
-        sprite.draw(batcher);
+        batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(),
+                sprite.getOriginY(),
+                sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.
+                        getScaleY(), sprite.getRotation());
         effect.draw(batcher);
     }
 

@@ -44,30 +44,8 @@ public class Configuration {
     public static final String ACHIEVEMENT_1000_T = "CgkIzf-DzsgaEAIQEg";
 
     //COLORS
-    //COLORS OF BUTTONS
-    public static final String COLOR_BUTTON_1 = "#e74c3c";
-    public static final String COLOR_BUTTON_2 = "#3498db";
-    public static final String COLOR_BUTTON_3 = "#2ecc71";
-    public static final String COLOR_BUTTON_4 = "#f1c40f";
-    public static final String COLOR_BUTTON_5 = "#e67e22";
-
-    //BOARD
-    public static final String COLOR_BOARD = "#2c3e50";
-
-    //MENU
-    public static final String COLOR_PLAY_BUTTON = "#2ecc71";
-    public static final String COLOR_LEADERBOARD_BUTTON = "#e74c3c";
-    public static final String COLOR_SHARE_BUTTON = "#3498db";
-    public static final String COLOR_ACHIEVEMENTS_BUTTON = "#f39c12";
-    public static final String COLOR_ADS_BUTTON = "#9b59b6";
-
-    public static final String COLOR_BACKGROUND_COLOR = "#ecf0f1";
 
     //GAMEPLAY VARIABLES
-    public static final float HIGHEST_ADD_TIME = 2.2f;
-    public static final float LOWEST_ADD_TIME = 1.6f;
-    public static final float START_TIMER = 8;
-    public static final int BUTTON_SIZE = 155;
 
     //TEXTs
     public static final String HIGHSCORE_TEXT = "High Score";
