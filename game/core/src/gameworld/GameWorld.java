@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -83,12 +82,13 @@ public class GameWorld {
         //TODO: Remove this line
         actionResolver.viewAd(false);
         camera = new GameCam(this, 0, 0, gameWidth, gameHeight);
-        gameState = GameState.RUNNING;
         reset();
 
     }
 
     public void reset() {
+
+        gameState = GameState.TUTORIAL;
         background = new Background(this, 0, 0, gameWidth, gameHeight, AssetLoader.background,
                 Color.WHITE);
 
@@ -112,27 +112,27 @@ public class GameWorld {
         //BOX2D
         worldB = new World(new Vector2(0, -6.8f), true);
         debugRenderer = new Box2DDebugRenderer();
-        hero = new Hero(this, 500, 500, 60, 60);
+        hero = new Hero(this, (int) (gameWidth / 2 - 30), (int) (gameHeight / 2 - 30), 60, 60);
         meteors.clear();
         int j = 0;
         for (int i = 0; i < numberOfMeteors; i++) {
-            meteor = new Meteor(this, (int) MathUtils.random(0, gameWidth),
-                    (int) MathUtils.random(0, gameHeight), 20);
+            meteor = new Meteor(this, -100, - 100,  20);
             meteors.add(meteor);
         }
     }
 
 
     public void update(float delta) {
-        worldB.step(1f / 60f, 6, 2);
         for (int i = 0; i < numberOfStars; i++) {
             stars.get(i).update(delta);
         }
-        hero.update(delta);
-        for (int i = 0; i < numberOfMeteors; i++) {
-            meteors.get(i).update(delta);
+        if (isRunning()) {
+            worldB.step(1f / 60f, 6, 2);
+            hero.update(delta);
+            for (int i = 0; i < numberOfMeteors; i++) {
+                meteors.get(i).update(delta);
+            }
         }
-        meteor.update(delta);
     }
 
 
@@ -220,6 +220,10 @@ public class GameWorld {
         return gameState == GameState.RUNNING;
     }
 
+    public boolean isTutorial() {
+        return gameState == GameState.TUTORIAL;
+    }
+
     public World getWorldB() {
         return worldB;
     }
@@ -234,5 +238,10 @@ public class GameWorld {
 
     public Array<Vector2> getPointsDir() {
         return pointsDir;
+    }
+
+    public void finishTutorial() {
+        hero.start();
+        gameState = GameState.RUNNING;
     }
 }

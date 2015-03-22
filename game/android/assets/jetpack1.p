@@ -115,14 +115,14 @@ highMin: 1.0
 highMax: 1.0
 relative: false
 scalingCount: 4
-scaling0: 0.0
+scaling0: 1.0
 scaling1: 1.0
-scaling2: 0.80701756
+scaling2: 0.877193
 scaling3: 0.0
 timelineCount: 4
 timeline0: 0.0
 timeline1: 0.19178082
-timeline2: 0.8835617
+timeline2: 0.89041096
 timeline3: 1.0
 - Options - 
 attached: false
@@ -132,7 +132,7 @@ additive: true
 behind: false
 premultipliedAlpha: false
 - Image Path -
-particle.png
+/Users/ManuGil/Downloads/libgdx/particle.png
 
 
 Red
@@ -269,4 +269,4 @@ additive: true
 behind: false
 premultipliedAlpha: false
 - Image Path -
-particle.png
+/Users/ManuGil/Downloads/libgdx/particle.png

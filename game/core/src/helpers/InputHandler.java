@@ -71,10 +71,14 @@ public class InputHandler implements InputProcessor {
         screenY = scaleY(screenY);
         activeTouch--;
 
-        if (screenX > world.gameWidth / 2) {
-            world.getHero().notClickedRight();
-        } else {
-            world.getHero().notClickedLeft();
+        if (world.isRunning()) {
+            if (screenX > world.gameWidth / 2) {
+                world.getHero().notClickedRight();
+            } else {
+                world.getHero().notClickedLeft();
+            }
+        } else if (world.isTutorial()) {
+            world.finishTutorial();
         }
         /*if (activeTouch == 0) {
             world.getHero().notClickedLeft();

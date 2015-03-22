@@ -192,11 +192,14 @@ public class Hero {
     }
 
     private void rotateEffect(int i) {
-        Tween.to(sprite, SpriteAccessor.ANGLE, 0.2f).target(i).ease(
+        Tween.to(sprite, SpriteAccessor.ANGLE, 0.6f).target(i).ease(
                 TweenEquations.easeInOutSine).start(manager);
     }
 
     public Body getBody() {
         return body;
+    }
+
+    public void start(){
     }
 }
