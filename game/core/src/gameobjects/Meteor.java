@@ -27,6 +27,7 @@ public class Meteor {
     private Body body;
     private float velRandom;
     private ParticleEffect effect;
+    private float angleVel = MathUtils.random(-3f,3f);
 
     public Meteor(GameWorld world, int x, int y, float radius) {
         this.world = world;
@@ -68,9 +69,11 @@ public class Meteor {
         effect = new ParticleEffect();
         effect.load(Gdx.files.internal("meteor.p"), Gdx.files.internal(""));
         effect.setPosition(300, 300);
+
     }
 
     public void update(float delta) {
+        sprite.setRotation(sprite.getRotation()+angleVel);
         sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS),
                 (body.getPosition().y * world.PIXELS_TO_METERS));
         // Ditto for rotation
@@ -116,8 +119,9 @@ public class Meteor {
     }
 
     public void render(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
-        effect.draw(batcher);
+
         sprite.draw(batcher);
+        effect.draw(batcher);
             }
 
     public void reset() {
