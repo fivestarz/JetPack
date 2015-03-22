@@ -91,15 +91,15 @@ public class Hero {
         } else {
             if (clickedRight) {
                 body.applyForceToCenter(2f, +2f, true);
-                effect.setPosition(sprite.getX()+5, sprite.getY() + (sprite.getWidth() / 2));
+                effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2) - 5);
 
             } else if (clickedLeft) {
                 body.applyForceToCenter(-2f, +2f, true);
-                effect.setPosition(sprite.getX() + sprite.getWidth()-5,
-                        sprite.getY() + (sprite.getWidth() / 2));
+                effect.setPosition(sprite.getX() + sprite.getWidth() - 5,
+                        sprite.getY() + (sprite.getWidth() / 2) - 5);
 
             } else {
-                effect.setPosition(sprite.getX() + sprite.getWidth()/2,
+                effect.setPosition(sprite.getX() + sprite.getWidth() / 2,
                         sprite.getY() + (sprite.getWidth() / 2));
 
             }
@@ -160,7 +160,7 @@ public class Hero {
     }
 
     public void clickedLeft() {
-        sprite.setFlip(true,false);
+        sprite.setFlip(true, false);
         world.getHero().getBody().applyForceToCenter(0, 7, true);
         world.getHero().clickedLeft = true;
         effect.reset();
@@ -170,7 +170,7 @@ public class Hero {
     }
 
     public void clickedRight() {
-        sprite.setFlip(false,false);
+        sprite.setFlip(false, false);
         world.getHero().getBody().applyForceToCenter(0, 7, true);
         world.getHero().clickedRight = true;
         effect.reset();

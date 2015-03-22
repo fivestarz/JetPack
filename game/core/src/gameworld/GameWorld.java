@@ -89,8 +89,8 @@ public class GameWorld {
     }
 
     public void reset() {
-        background = new Background(this, 0, 0, gameWidth, gameHeight, AssetLoader.square,
-                world.parseColor("11031A", 1f));
+        background = new Background(this, 0, 0, gameWidth, gameHeight, AssetLoader.background,
+                Color.WHITE);
 
         stars.clear();
         for (int i = 0; i < numberOfStars; i++) {
