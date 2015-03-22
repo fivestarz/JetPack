@@ -91,12 +91,12 @@ public class Hero {
         } else {
             if (clickedRight) {
                 body.applyForceToCenter(2f, +2f, true);
-                effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2) - 5);
+                effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2) );
 
             } else if (clickedLeft) {
                 body.applyForceToCenter(-2f, +2f, true);
                 effect.setPosition(sprite.getX() + sprite.getWidth() - 5,
-                        sprite.getY() + (sprite.getWidth() / 2) - 5);
+                        sprite.getY() + (sprite.getWidth() / 2) );
 
             } else {
                 effect.setPosition(sprite.getX() + sprite.getWidth() / 2,
