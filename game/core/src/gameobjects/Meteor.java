@@ -27,15 +27,16 @@ public class Meteor {
     private Body body;
     private float velRandom;
     private ParticleEffect effect;
-    private float angleVel = MathUtils.random(-3f,3f);
+    private float angleVel = MathUtils.random(-3f, 3f);
 
     public Meteor(GameWorld world, int x, int y, float radius) {
         this.world = world;
         this.x = x;
         this.y = y;
         this.radius = radius;
-        sprite = new Sprite(AssetLoader.meteor);
 
+        //ToDO: Solve Texture
+        sprite = new Sprite(AssetLoader.meteor);
         sprite.setPosition(x, y);
         sprite.setSize(radius * 2, radius * 2);
         sprite.setRotation(MathUtils.random(0, 360));
@@ -48,8 +49,6 @@ public class Meteor {
 
         body = world.getWorldB().createBody(bodyDef1);
         body.setGravityScale(0);
-
-
         CircleShape shape = new CircleShape();
         shape.setPosition(new Vector2(sprite.getWidth() / 2 / world.PIXELS_TO_METERS,
                 sprite.getHeight()
@@ -73,7 +72,7 @@ public class Meteor {
     }
 
     public void update(float delta) {
-        sprite.setRotation(sprite.getRotation()+angleVel);
+        sprite.setRotation(sprite.getRotation() + angleVel);
         sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS),
                 (body.getPosition().y * world.PIXELS_TO_METERS));
         // Ditto for rotation
@@ -119,10 +118,9 @@ public class Meteor {
     }
 
     public void render(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
-
         sprite.draw(batcher);
         effect.draw(batcher);
-            }
+    }
 
     public void reset() {
         velRandom = MathUtils.random(Settings.METEOR_MIN_VEL, Settings.METEOR_MAX_VEL);

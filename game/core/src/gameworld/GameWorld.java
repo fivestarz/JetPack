@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 import configuration.Configuration;
+import configuration.Settings;
 import gameobjects.Background;
 import gameobjects.Hero;
 import gameobjects.Meteor;
@@ -45,8 +46,8 @@ public class GameWorld {
     //VARIABLES
     private GameState gameState;
     private int score;
-    private final int numberOfStars = 180;
-    private final int numberOfMeteors = 14;
+    private final int numberOfStars = Settings.NUMBER_INITIAL_BACKGROUND_STARS;
+    private final int numberOfMeteors = Settings.NUMBER_INITIAL_METEORS;
     private final int numberOfPoints = 10;
     public final int marginOfPoints = -50;
 
@@ -106,6 +107,7 @@ public class GameWorld {
             points.add(new Vector2(gameWidth / (numberOfPoints + 1) * (i + 1), marginOfPoints));
             points.add(new Vector2(gameWidth / (numberOfPoints + 1) * (i + 1),
                     gameHeight - marginOfPoints));
+            //TODO: More spawn points for the coins
             pointsDir.add(new Vector2(gameWidth / 2, gameHeight / (numberOfPoints + 1) * (i + 1)));
         }
 
@@ -116,7 +118,7 @@ public class GameWorld {
         meteors.clear();
         int j = 0;
         for (int i = 0; i < numberOfMeteors; i++) {
-            meteor = new Meteor(this, -100, - 100,  20);
+            meteor = new Meteor(this, -100, -100, 20);
             meteors.add(meteor);
         }
     }

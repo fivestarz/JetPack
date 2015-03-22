@@ -134,7 +134,7 @@ scaling2: 0.8245614
 scaling3: 0.0
 timelineCount: 4
 timeline0: 0.0
-timeline1: 0.4520548
+timeline1: 0.42465752
 timeline2: 0.8835617
 timeline3: 1.0
 - Options - 
@@ -143,6 +143,6 @@ continuous: true
 aligned: false
 additive: true
 behind: false
-premultipliedAlpha: false
+premultipliedAlpha: true
 - Image Path -
 particle.png

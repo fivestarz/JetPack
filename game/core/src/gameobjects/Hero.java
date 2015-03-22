@@ -100,12 +100,10 @@ public class Hero {
 
             } else {
                 effect.setPosition(sprite.getX() + sprite.getWidth() / 2,
-                        sprite.getY() + sprite.getHeight() - 4);
+                        sprite.getY() + sprite.getHeight() - 10);
 
             }
         }
-
-
         limitVel();
         outOfBounds();
     }

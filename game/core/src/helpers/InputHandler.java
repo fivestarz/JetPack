@@ -54,12 +54,15 @@ public class InputHandler implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         screenX = scaleX(screenX);
         screenY = scaleY(screenY);
+
         activeTouch++;
         if (world.isRunning()) {
-            if (screenX > world.gameWidth / 2) {
-                world.getHero().clickedRight();
-            } else {
-                world.getHero().clickedLeft();
+            if (activeTouch == 1) {
+                if (screenX > world.gameWidth / 2) {
+                    world.getHero().clickedRight();
+                } else {
+                    world.getHero().clickedLeft();
+                }
             }
         }
         return false;
@@ -72,10 +75,15 @@ public class InputHandler implements InputProcessor {
         activeTouch--;
 
         if (world.isRunning()) {
-            if (screenX > world.gameWidth / 2) {
+            if (activeTouch == 0) {
                 world.getHero().notClickedRight();
-            } else {
                 world.getHero().notClickedLeft();
+            } else {
+                if (screenX > world.gameWidth / 2) {
+                    world.getHero().notClickedRight();
+                } else {
+                    world.getHero().notClickedLeft();
+                }
             }
         } else if (world.isTutorial()) {
             world.finishTutorial();
