@@ -14,8 +14,9 @@ public class Settings {
 
 
     //METEORS
-    public static final int NUMBER_INITIAL_METEORS = 12;
+    public static final int NUMBER_INITIAL_METEORS = 25;
     public static final float METEOR_MIN_VEL = 2.5f;
     public static final float METEOR_MAX_VEL = 3f;
 
+    public static final float COIN_MAX_VEL = 0.3f;
 }

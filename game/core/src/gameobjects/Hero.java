@@ -59,7 +59,7 @@ public class Hero {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.17f;
-        fixtureDef.restitution = 1f;
+        fixtureDef.restitution = 0f;
         fixtureDef.friction = 1f;
         body.createFixture(fixtureDef);
         shape.dispose();

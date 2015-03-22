@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import configuration.Configuration;
 import configuration.Settings;
 import gameobjects.Background;
+import gameobjects.Coin;
 import gameobjects.Hero;
 import gameobjects.Meteor;
 import gameobjects.Star;
@@ -58,6 +59,7 @@ public class GameWorld {
     private Array<Vector2> points = new Array<Vector2>();
     private Array<Vector2> pointsDir = new Array<Vector2>();
     private Meteor meteor;
+    private Coin coin;
     private Hero hero;
 
     //BOX2D
@@ -114,13 +116,20 @@ public class GameWorld {
         //BOX2D
         worldB = new World(new Vector2(0, -6.8f), true);
         debugRenderer = new Box2DDebugRenderer();
+        //CREATING HERO
         hero = new Hero(this, (int) (gameWidth / 2 - 35), (int) (gameHeight / 2 - 35), 70, 70);
+
+        //CREATING METEORS
         meteors.clear();
         int j = 0;
         for (int i = 0; i < numberOfMeteors; i++) {
             meteor = new Meteor(this, -100, -100, 20);
             meteors.add(meteor);
         }
+
+        //CREATING COINS
+        coin = new Coin(this, (int) gameWidth / 2 + 100, (int) gameHeight / 2 + 100, 20);
+
     }
 
 
@@ -131,6 +140,7 @@ public class GameWorld {
         if (isRunning()) {
             worldB.step(1f / 60f, 6, 2);
             hero.update(delta);
+            coin.update(delta);
             for (int i = 0; i < numberOfMeteors; i++) {
                 meteors.get(i).update(delta);
             }
@@ -147,14 +157,14 @@ public class GameWorld {
 
         //RENDERING GAME OBJECTS
         background.render(batcher, shapeRenderer);
+        for (int i = 0; i < numberOfStars; i++) {
+            stars.get(i).render(batcher, shapeRenderer);
+        }
         for (int i = 0; i < numberOfMeteors; i++) {
             meteors.get(i).render(batcher, shapeRenderer);
         }
         hero.render(batcher, shapeRenderer);
-
-        for (int i = 0; i < numberOfStars; i++) {
-            stars.get(i).render(batcher, shapeRenderer);
-        }
+        coin.render(batcher, shapeRenderer);
         if (Configuration.DEBUG) {
             batcher.end();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
