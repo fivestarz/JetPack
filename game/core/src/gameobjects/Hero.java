@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import configuration.Configuration;
@@ -117,11 +118,11 @@ public class Hero {
             body.setLinearVelocity(body.getLinearVelocity().x, 6);
         } else {
             if (clickedRight) {
-                body.applyForceToCenter(2f, +2f, true);
+                body.applyForceToCenter(2f, +2.1f, true);
                 //effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2));
 
             } else if (clickedLeft) {
-                body.applyForceToCenter(-2f, +2f, true);
+                body.applyForceToCenter(-2f, +2.1f, true);
                 //effect.setPosition(sprite.getX() + sprite.getWidth() - 5,                        sprite.getY() + (sprite.getWidth() / 2));
 
             } else {
@@ -172,9 +173,9 @@ public class Hero {
 
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         if (clickedLeft || clickedRight) effect.draw(batch);
-        if (heroState == HeroState.ALIVE) {
-            sprite.draw(batch);
-        }
+
+        sprite.draw(batch);
+
         if (heroState == HeroState.DEAD) {
             explosion.draw(batch);
         }
@@ -267,7 +268,15 @@ public class Hero {
             explosion.start();
             body.setGravityScale(0);
             world.finishGame();
+            fadeOut(.6f, 0f);
         }
         heroState = HeroState.DEAD;
+    }
+
+    public void fadeOut(float duration, float delay) {
+        sprite.setAlpha(1);
+        Tween.to(sprite, SpriteAccessor.ALPHA, duration).target(.0f).setCallbackTriggers(
+                TweenCallback.COMPLETE).delay(delay)
+                .ease(TweenEquations.easeInOutSine).start(manager);
     }
 }
