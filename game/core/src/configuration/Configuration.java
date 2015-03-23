@@ -6,7 +6,7 @@ package configuration;
 
 public class Configuration {
 
-    public static final String GAME_NAME = "Noon";
+    public static final String GAME_NAME = "Impossible Jetpack";
     public static final boolean DEBUG = false;
     public static final boolean SPLASHSCREEN = false;
 

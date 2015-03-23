@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -51,7 +52,7 @@ public class GameWorld {
     private final int numberOfStars = Settings.NUMBER_INITIAL_BACKGROUND_STARS;
     private final int numberOfMeteors = Settings.NUMBER_INITIAL_METEORS;
     public final int numberOfCoins = Settings.NUMBER_INITIAL_COINS;
-    private final int numberOfPoints = 10;
+    private final int numberOfPoints = 15;
     public final int marginOfPoints = -50;
 
 
@@ -89,7 +90,8 @@ public class GameWorld {
         //TODO: Remove this line
         actionResolver.viewAd(false);
         camera = new GameCam(this, 0, 0, gameWidth, gameHeight);
-        reset();
+
+        startGame();
 
     }
 
@@ -114,8 +116,9 @@ public class GameWorld {
             points.add(new Vector2(gameWidth / (numberOfPoints + 1) * (i + 1),
                     gameHeight - marginOfPoints));
             //TODO: More spawn points for the coins
-            for(int j = 0;j <numberOfPoints;j++){
-                pointsDir.add(new Vector2(gameWidth / (numberOfPoints + 1) * (j + 1), gameHeight / (numberOfPoints + 1) * (i + 1)));
+            for (int j = 0; j < numberOfPoints; j++) {
+                pointsDir.add(new Vector2((int) (gameWidth / ((numberOfPoints) + 1) * (j + 1)),
+                        (int) (gameHeight / ((numberOfPoints) + 1) * (i + 1))));
             }
 
         }
@@ -158,7 +161,24 @@ public class GameWorld {
             for (int i = 0; i < numberOfCoins; i++) {
                 coins.get(i).update(delta);
             }
+            collisions();
         }
+    }
+
+    private void collisions() {
+        for (int i = 0; i < numberOfCoins; i++) {
+            if (Intersector.overlaps(coins.get(i).circle, hero.rectangle)) {
+                coins.get(i).collide();
+            }
+        }
+
+        for (int i = 0; i < numberOfMeteors; i++) {
+            if (Intersector.overlaps(meteors.get(i).circle, hero.rectangle)) {
+                hero.collide();
+
+            }
+        }
+
     }
 
 
@@ -201,6 +221,7 @@ public class GameWorld {
     }
 
     public void finishGame() {
+        //gameState = GameState.GAMEOVER;
         saveScoreLogic();
     }
 
@@ -219,6 +240,7 @@ public class GameWorld {
 
     public void startGame() {
         score = 0;
+        reset();
     }
 
     public GameCam getCamera() {
@@ -272,5 +294,9 @@ public class GameWorld {
     public void finishTutorial() {
         hero.start();
         gameState = GameState.RUNNING;
+    }
+
+    public void addScore(int i) {
+        score += 1;
     }
 }

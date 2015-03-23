@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
+import configuration.Configuration;
 import configuration.Settings;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
@@ -28,6 +30,7 @@ public class Meteor {
     private float velRandom;
     private ParticleEffect effect;
     private float angleVel = MathUtils.random(-3f, 3f);
+    public Circle circle;
 
     public Meteor(GameWorld world, int x, int y, float radius) {
         this.world = world;
@@ -39,8 +42,9 @@ public class Meteor {
         sprite = new Sprite(AssetLoader.meteor);
         sprite.setPosition(x, y);
         sprite.setSize(radius * 2, radius * 2);
-
         sprite.setOriginCenter();
+
+        circle = new Circle(x, y, radius + Settings.COIN_COLLISION_MARGIN);
         //sprite.setAlpha(MathUtils.random(0.6f, 0.8f));
         BodyDef bodyDef1 = new BodyDef();
         bodyDef1.type = BodyDef.BodyType.DynamicBody;
@@ -80,6 +84,10 @@ public class Meteor {
         // Ditto for rottion
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
         sprite.setOrigin(0, 0);
+
+        circle.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
+                body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
+
         effect.update(delta);
         effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
                 body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
@@ -126,6 +134,14 @@ public class Meteor {
                 sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.
                         getScaleY(), sprite.getRotation());
         effect.draw(batcher);
+
+        if (Configuration.DEBUG) {
+            batcher.end();
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.circle(circle.x, circle.y, circle.radius);
+            shapeRenderer.end();
+            batcher.begin();
+        }
     }
 
     public void reset() {

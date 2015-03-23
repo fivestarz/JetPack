@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
+import configuration.Configuration;
 import configuration.Settings;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
@@ -30,8 +32,13 @@ public class Hero {
     private Sprite sprite;
     private Body body;
     public boolean clickedRight, clickedLeft;
-    private ParticleEffect effect;
+    private ParticleEffect effect, explosion;
     private TweenManager manager;
+    public Rectangle rectangle;
+
+    public enum HeroState {DEAD, ALIVE}
+
+    public HeroState heroState;
 
     public Hero(GameWorld world, int x, int y, float width, float height) {
         this.world = world;
@@ -40,16 +47,20 @@ public class Hero {
         this.width = width;
         this.height = height;
 
+        heroState = HeroState.ALIVE;
         sprite = new Sprite(AssetLoader.colorCircle);
 
         sprite.setPosition(x, y);
         sprite.setSize(width, height);
+        rectangle = new Rectangle(x, y, width, height);
+
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) /
                         world.PIXELS_TO_METERS,
                 (sprite.getY() + sprite.getHeight() / 2) / world.PIXELS_TO_METERS);
         bodyDef.fixedRotation = true;
+
 
         body = world.getWorldB().createBody(bodyDef);
 
@@ -70,6 +81,10 @@ public class Hero {
         effect.load(Gdx.files.internal("jetpack3.p"), Gdx.files.internal(""));
         effect.setPosition(-100, -100);
 
+        explosion = new ParticleEffect();
+        explosion.load(Gdx.files.internal("explosion.p"), Gdx.files.internal(""));
+        explosion.setPosition(-100, -100);
+
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
         Tween.registerAccessor(Vector2.class, new VectorAccessor());
         manager = new TweenManager();
@@ -78,11 +93,21 @@ public class Hero {
 
     public void update(float delta) {
         manager.update(delta);
-        sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS) - sprite.
-                        getWidth() / 2,
-                (body.getPosition().y * world.PIXELS_TO_METERS) - sprite.getHeight() / 2);
+        if (heroState == HeroState.ALIVE) {
+            sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS) - sprite.
+                            getWidth() / 2,
+                    (body.getPosition().y * world.PIXELS_TO_METERS) - sprite.getHeight() / 2);
+            rectangle.setPosition((body.getPosition().x * world.PIXELS_TO_METERS) - sprite.
+                            getWidth() / 2,
+                    (body.getPosition().y * world.PIXELS_TO_METERS) - sprite.getHeight() / 2);
+            explosion.setPosition(
+                    body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
+                    body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
 
+        }
         effect.update(delta);
+        explosion.update(delta);
+
 
         // Ditto for rotation
 
@@ -147,7 +172,21 @@ public class Hero {
 
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         if (clickedLeft || clickedRight) effect.draw(batch);
-        sprite.draw(batch);
+        if (heroState == HeroState.ALIVE) {
+            sprite.draw(batch);
+        }
+        if (heroState == HeroState.DEAD) {
+            explosion.draw(batch);
+        }
+
+        if (Configuration.DEBUG) {
+            batch.end();
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.rect(rectangle.x, rectangle.y + 10, rectangle.width,
+                    rectangle.height - 10);
+            shapeRenderer.end();
+            batch.begin();
+        }
 
     }
 
@@ -216,5 +255,19 @@ public class Hero {
     }
 
     public void start() {
+    }
+
+    public Vector2 getPosition() {
+        return new Vector2(sprite.getX(), sprite.getY());
+    }
+
+    public void collide() {
+        if (heroState == HeroState.ALIVE) {
+            explosion.reset();
+            explosion.start();
+            body.setGravityScale(0);
+            world.finishGame();
+        }
+        heroState = HeroState.DEAD;
     }
 }

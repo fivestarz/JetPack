@@ -17,14 +17,14 @@ public class Settings {
     public static final short CATEGORY_METEOR = 0x0004; // 0000000000000100 in binary
     public static final short MASK_HERO = CATEGORY_METEOR; // or ~CATEGORY_PLAYER
     public static final short MASK_COIN = CATEGORY_METEOR; // or ~CATEGORY_MONSTER
-    public static final short MASK_METEOR = CATEGORY_HERO | CATEGORY_COIN; // or ~CATEGORY_MONSTER
+    public static final short MASK_METEOR = CATEGORY_HERO | CATEGORY_COIN | CATEGORY_METEOR; // or ~CATEGORY_MONSTER
 
     //final short MASK_SCENERY = -1;
     //HERO
 
 
     //METEORS
-    public static final int NUMBER_INITIAL_METEORS = 15;
+    public static final int NUMBER_INITIAL_METEORS = 10;
     public static final float METEOR_MIN_VEL = 2.5f;
     public static final float METEOR_MAX_VEL = 3f;
 
@@ -32,4 +32,5 @@ public class Settings {
     public static final int NUMBER_INITIAL_COINS = 3;
     public static final float COIN_MAX_VEL = 0.2f;
     public static final float COIN_JOINT_DISTANCE = 15f;
+    public static final float COIN_COLLISION_MARGIN =  5;
 }
