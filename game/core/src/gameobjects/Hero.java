@@ -114,15 +114,15 @@ public class Hero {
 
         sprite.setOriginCenter();
 
-        if (body.getLinearVelocity().y > 6) {
-            body.setLinearVelocity(body.getLinearVelocity().x, 6);
+        if (body.getLinearVelocity().y > Settings.MAX_Y_VEL) {
+            body.setLinearVelocity(body.getLinearVelocity().x, Settings.MAX_Y_VEL);
         } else {
             if (clickedRight) {
-                body.applyForceToCenter(2f, +2.1f, true);
+                body.applyForceToCenter(Settings.JETPACK_X_ACCELERATION, Settings.JETPACK_Y_ACCELERATION, true);
                 //effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2));
 
             } else if (clickedLeft) {
-                body.applyForceToCenter(-2f, +2.1f, true);
+                body.applyForceToCenter(-Settings.JETPACK_X_ACCELERATION, Settings.JETPACK_Y_ACCELERATION, true);
                 //effect.setPosition(sprite.getX() + sprite.getWidth() - 5,                        sprite.getY() + (sprite.getWidth() / 2));
 
             } else {
@@ -138,6 +138,7 @@ public class Hero {
 
     private void effectPosition() {
         if (clickedLeft || clickedRight) {
+           // AssetLoader.jetpack.play();
             if (sprite.isFlipX()) {
                 effect.setPosition(sprite.getX() + sprite.getWidth() - 5,
                         sprite.getY() + (sprite.getWidth() / 2));
@@ -153,20 +154,17 @@ public class Hero {
 
 
     private void limitVel() {
-        if (body.getLinearVelocity().y < -6) {
-            body.setLinearVelocity(body.getLinearVelocity().x, -6);
+        if (body.getLinearVelocity().y < Settings.MIN_Y_VEL) {
+            body.setLinearVelocity(body.getLinearVelocity().x, Settings.MIN_Y_VEL);
         }
-
-        if (body.getLinearVelocity().y > 6) {
-            body.setLinearVelocity(body.getLinearVelocity().x, 6);
+        if (body.getLinearVelocity().y > Settings.MAX_Y_VEL) {
+            body.setLinearVelocity(body.getLinearVelocity().x, Settings.MAX_Y_VEL);
         }
-
-
-        if (body.getLinearVelocity().x > 3) {
-            body.setLinearVelocity(3, body.getLinearVelocity().y);
+        if (body.getLinearVelocity().x > Settings.MAX_X_VEL) {
+            body.setLinearVelocity(Settings.MAX_X_VEL, body.getLinearVelocity().y);
         }
-        if (body.getLinearVelocity().x < -3) {
-            body.setLinearVelocity(-3, body.getLinearVelocity().y);
+        if (body.getLinearVelocity().x < Settings.MIN_X_VEL) {
+            body.setLinearVelocity(Settings.MIN_X_VEL, body.getLinearVelocity().y);
         }
     }
 
@@ -234,13 +232,13 @@ public class Hero {
     }
 
     public void notClickedLeft() {
-        world.getHero().getBody().applyForceToCenter(+2, -8, true);
+        world.getHero().getBody().applyForceToCenter(+Settings.JETPACK_X_DECELERATION, -Settings.JETPACK_Y_DECELERATION, true);
         world.getHero().clickedLeft = false;
         rotateEffect(0);
     }
 
     public void notClickedRight() {
-        world.getHero().getBody().applyForceToCenter(-2, -8, true);
+        world.getHero().getBody().applyForceToCenter(-Settings.JETPACK_X_DECELERATION, -Settings.JETPACK_Y_DECELERATION, true);
         world.getHero().clickedRight = false;
 
         rotateEffect(0);
@@ -269,6 +267,7 @@ public class Hero {
             body.setGravityScale(0);
             world.finishGame();
             fadeOut(.6f, 0f);
+            AssetLoader.explosion.play();
         }
         heroState = HeroState.DEAD;
     }

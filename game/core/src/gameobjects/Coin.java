@@ -209,7 +209,7 @@ public class Coin {
         jointDef.collideConnected = false;
         //point.createFixture(fixtureDefP);
         world.getWorldB().createJoint(jointDef);
-        fadeIn(.4f, .1f);
+        fadeIn(MathUtils.random(.4f,.4f), MathUtils.random(.1f,.7f));
 
     }
 

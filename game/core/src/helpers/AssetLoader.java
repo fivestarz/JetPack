@@ -21,7 +21,7 @@ public class AssetLoader {
     public static BitmapFont font, fontS, fontXS, fontB;
     private static Preferences prefs;
 
-    public static Sound click, success, end;
+    public static Sound click, success, end, select, explosion, pickup, jetpack;
 
     public static void load() {
         //LOGO TEXTURE "logo.png"
@@ -45,10 +45,10 @@ public class AssetLoader {
         meteor = new TextureRegion(meteorT, 0, 0, meteorT.getWidth(),
                 meteorT.getHeight());
 
-       coinT = new Texture(Gdx.files.internal("coin.png"));
-       coinT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-       coin = new TextureRegion(coinT, 0, 0,coinT.getWidth(),
-               coinT.getHeight());
+        coinT = new Texture(Gdx.files.internal("coin.png"));
+        coinT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        coin = new TextureRegion(coinT, 0, 0, coinT.getWidth(),
+                coinT.getHeight());
 
         backgroundT = new Texture(Gdx.files.internal("background.png"));
         backgroundT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -95,6 +95,11 @@ public class AssetLoader {
         click = Gdx.audio.newSound(Gdx.files.internal("blip_click.wav"));
         success = Gdx.audio.newSound(Gdx.files.internal("blip_success.wav"));
         end = Gdx.audio.newSound(Gdx.files.internal("blip_end.wav"));
+
+        select = Gdx.audio.newSound(Gdx.files.internal("select.wav"));
+        explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.wav"));
+        pickup = Gdx.audio.newSound(Gdx.files.internal("pickup.wav"));
+        jetpack = Gdx.audio.newSound(Gdx.files.internal("jetpack.wav"));
     }
 
     public static void dispose() {

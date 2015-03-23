@@ -4,12 +4,13 @@ package configuration;
  * Created by ManuGil on 21/03/15.
  */
 public class Settings {
-    //The values listed above are game variables, that modify how the game actually is
+    //The values listed above are game variables, that modify how the game actually is and works
     //I do not recommend changing this values at all
     //Take care
 
     //GAMEWORLD
     public static final int NUMBER_INITIAL_BACKGROUND_STARS = 180;
+    public static final float WORLD_GRAVITY = -6.8f;
 
     //COLLISION
     public static final short CATEGORY_HERO = 0x0001;  // 0000000000000001 in binary
@@ -19,9 +20,15 @@ public class Settings {
     public static final short MASK_COIN = CATEGORY_METEOR; // or ~CATEGORY_MONSTER
     public static final short MASK_METEOR = CATEGORY_HERO | CATEGORY_COIN | CATEGORY_METEOR; // or ~CATEGORY_MONSTER
 
-    //final short MASK_SCENERY = -1;
     //HERO
-
+    public static final float MAX_Y_VEL = 6;
+    public static final float MIN_Y_VEL = -6;
+    public static final float MAX_X_VEL = 3;
+    public static final float MIN_X_VEL = -3;
+    public static final float JETPACK_Y_ACCELERATION = 2.1f;
+    public static final float JETPACK_X_ACCELERATION = 2.0f;
+    public static final float JETPACK_Y_DECELERATION = 9f;
+    public static final float JETPACK_X_DECELERATION = 2f;
 
     //METEORS
     public static final int NUMBER_INITIAL_METEORS = 10;

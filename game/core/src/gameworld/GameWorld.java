@@ -124,7 +124,7 @@ public class GameWorld {
         }
 
         //BOX2D
-        worldB = new World(new Vector2(0, -6.8f), true);
+        worldB = new World(new Vector2(0, Settings.WORLD_GRAVITY), true);
         debugRenderer = new Box2DDebugRenderer();
         //CREATING HERO
         hero = new Hero(this, (int) (gameWidth / 2 - 35), (int) (gameHeight / 2 - 35), 70, 70);
