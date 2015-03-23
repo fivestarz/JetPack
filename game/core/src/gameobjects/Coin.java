@@ -13,9 +13,14 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
 import configuration.Settings;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
+import tweens.SpriteAccessor;
+import tweens.VectorAccessor;
 
 /**
  * Created by ManuGil on 22/03/15.
@@ -28,6 +33,7 @@ public class Coin {
     private Sprite sprite;
     private Body body, point;
     private ParticleEffect effect;
+    private TweenManager manager;
 
     public Coin(GameWorld world, int x, int y, float radius) {
         this.world = world;
@@ -51,13 +57,13 @@ public class Coin {
         body.setAngularDamping(0.5f);
         body.setLinearDamping(0.5f);
         //body.setFixedRotation(true);
-        body.setLinearVelocity(MathUtils.random(-2,2), MathUtils.random(-2,2));
+        body.setLinearVelocity(MathUtils.random(-2, 2), MathUtils.random(-2, 2));
         body.setGravityScale(0);
 
         BodyDef bodyDefP = new BodyDef();
         bodyDefP.type = BodyDef.BodyType.DynamicBody;
         bodyDefP.position.set((sprite.getX()) / world.PIXELS_TO_METERS,
-                (sprite.getY()+10) / world.PIXELS_TO_METERS);
+                (sprite.getY() + 10) / world.PIXELS_TO_METERS);
         point = world.getWorldB().createBody(bodyDefP);
         point.setGravityScale(0);
 
@@ -89,24 +95,31 @@ public class Coin {
                         point.getPosition().y + (radius / world.PIXELS_TO_METERS)));
         jointDef.dampingRatio = 0f;
         jointDef.frequencyHz = 50;
-        jointDef.length = Settings.COIN_JOINT_DISTANCE/ world.PIXELS_TO_METERS;
+        jointDef.length = Settings.COIN_JOINT_DISTANCE / world.PIXELS_TO_METERS;
         jointDef.collideConnected = false;
-
-
         body.createFixture(fixtureDef);
         //point.createFixture(fixtureDefP);
         world.getWorldB().createJoint(jointDef);
         //world.getWorldB().createJoint(jointDef2);
         shape.dispose();
 
+        //PARTICLE EFFECT
         effect = new ParticleEffect();
         effect.load(Gdx.files.internal("coin.p"), Gdx.files.internal(""));
         effect.setPosition(300, 300);
+
+
+        //TWEENS
+        Tween.registerAccessor(Sprite.class, new SpriteAccessor());
+        Tween.registerAccessor(Vector2.class, new VectorAccessor());
+        manager = new TweenManager();
+
         reset();
     }
 
     public void update(float delta) {
 
+        manager.update(delta);
         sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS),
                 (body.getPosition().y * world.PIXELS_TO_METERS));
         point.setTransform(this.x / world.PIXELS_TO_METERS, this.y / world.PIXELS_TO_METERS, 0);
@@ -135,10 +148,17 @@ public class Coin {
     }
 
     public void render(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
-        sprite.draw(batcher); effect.draw(batcher);
+        sprite.draw(batcher);
+        effect.draw(batcher);
     }
 
     public void reset() {
+        scale(0, .4f, .1f);
+    }
 
+    public void scale(float from, float duration, float delay) {
+        sprite.setScale(from);
+        Tween.to(sprite, SpriteAccessor.SCALE, duration).target(1).delay(delay)
+                .ease(TweenEquations.easeOutBounce).start(manager);
     }
 }
