@@ -61,7 +61,8 @@ public class Meteor {
         fixtureDef.density = .7f;
         fixtureDef.restitution = 1;
         fixtureDef.friction = 0.01f;
-
+        fixtureDef.filter.categoryBits = Settings.CATEGORY_METEOR;
+        fixtureDef.filter.maskBits = Settings.MASK_METEOR;
         body.createFixture(fixtureDef);
         shape.dispose();
         reset();

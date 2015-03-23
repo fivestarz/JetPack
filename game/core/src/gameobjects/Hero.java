@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
+import configuration.Settings;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
 import tweens.SpriteAccessor;
@@ -55,12 +56,13 @@ public class Hero {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(sprite.getWidth() / 2 / world.PIXELS_TO_METERS, sprite.getHeight()
                 / 2 / world.PIXELS_TO_METERS);
-
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.17f;
         fixtureDef.restitution = 1f;
         fixtureDef.friction = 0.1f;
+        fixtureDef.filter.categoryBits = Settings.CATEGORY_HERO;
+        fixtureDef.filter.maskBits = Settings.MASK_HERO;
         body.createFixture(fixtureDef);
         shape.dispose();
 
@@ -113,7 +115,7 @@ public class Hero {
             if (sprite.isFlipX()) {
                 effect.setPosition(sprite.getX() + sprite.getWidth() - 5,
                         sprite.getY() + (sprite.getWidth() / 2));
-            }else{
+            } else {
                 effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2));
             }
 

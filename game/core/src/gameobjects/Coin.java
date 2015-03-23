@@ -73,7 +73,8 @@ public class Coin {
         fixtureDef.density = 1f;
         fixtureDef.restitution = 0f;
         fixtureDef.friction = 0.05f;
-
+        fixtureDef.filter.categoryBits = Settings.CATEGORY_COIN;
+        fixtureDef.filter.maskBits = Settings.MASK_COIN;
         //TODO: Check multicursor stuff in Android Studio
 
         DistanceJointDef jointDef = new DistanceJointDef();
