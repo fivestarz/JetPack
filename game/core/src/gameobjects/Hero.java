@@ -20,7 +20,9 @@ import configuration.Configuration;
 import configuration.Settings;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
+import helpers.Rumble;
 import tweens.SpriteAccessor;
+import tweens.Value;
 import tweens.VectorAccessor;
 
 /**
@@ -40,6 +42,9 @@ public class Hero {
     public enum HeroState {DEAD, ALIVE}
 
     public HeroState heroState;
+    Tween sound;
+    Value second = new Value();
+    public Rumble rumble;
 
     public Hero(GameWorld world, int x, int y, float width, float height) {
         this.world = world;
@@ -89,6 +94,12 @@ public class Hero {
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
         Tween.registerAccessor(Vector2.class, new VectorAccessor());
         manager = new TweenManager();
+        second.setValue(0);
+        sound = Tween.to(second, 0, 0).target(1).start(manager);
+
+
+        this.rumble = new Rumble(world);
+
 
     }
 
@@ -113,32 +124,44 @@ public class Hero {
         // Ditto for rotation
 
         sprite.setOriginCenter();
-
-        if (body.getLinearVelocity().y > Settings.MAX_Y_VEL) {
-            body.setLinearVelocity(body.getLinearVelocity().x, Settings.MAX_Y_VEL);
-        } else {
-            if (clickedRight) {
-                body.applyForceToCenter(Settings.JETPACK_X_ACCELERATION, Settings.JETPACK_Y_ACCELERATION, true);
-                //effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2));
-
-            } else if (clickedLeft) {
-                body.applyForceToCenter(-Settings.JETPACK_X_ACCELERATION, Settings.JETPACK_Y_ACCELERATION, true);
-                //effect.setPosition(sprite.getX() + sprite.getWidth() - 5,                        sprite.getY() + (sprite.getWidth() / 2));
-
+        if (heroState == HeroState.ALIVE) {
+            if (body.getLinearVelocity().y > Settings.MAX_Y_VEL) {
+                body.setLinearVelocity(body.getLinearVelocity().x, Settings.MAX_Y_VEL);
             } else {
-                // effect.setPosition(sprite.getX() + sprite.getWidth() / 2,                sprite.getY() + sprite.getHeight() - 10);
+                if (clickedRight) {
+                    body.applyForceToCenter(Settings.JETPACK_X_ACCELERATION,
+                            Settings.JETPACK_Y_ACCELERATION, true);
+                    //effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2));
 
+                } else if (clickedLeft) {
+                    body.applyForceToCenter(-Settings.JETPACK_X_ACCELERATION,
+                            Settings.JETPACK_Y_ACCELERATION, true);
+                    //effect.setPosition(sprite.getX() + sprite.getWidth() - 5,                        sprite.getY() + (sprite.getWidth() / 2));
+
+                } else {
+                    // effect.setPosition(sprite.getX() + sprite.getWidth() / 2,                sprite.getY() + sprite.getHeight() - 10);
+
+                }
+                effectPosition();
             }
-            effectPosition();
+            limitVel();
+            outOfBounds();
         }
-
-        limitVel();
-        outOfBounds();
+        if (rumble.time > 0) {
+            rumble.tick(delta, new Vector2(world.gameWidth / 2, world.gameHeight / 2));
+        }
     }
 
     private void effectPosition() {
         if (clickedLeft || clickedRight) {
-           // AssetLoader.jetpack.play();
+            if (second.getValue() == 1) {
+                second.setValue(0);
+                sound = Tween.to(second, -1, Settings.JETPACK_SOUND_REPETITION_TIME).target(1)
+                        .start(
+                                manager);
+                AssetLoader.click.play();
+                //Gdx.app.log("Playing Sound", new Date()+"");
+            }
             if (sprite.isFlipX()) {
                 effect.setPosition(sprite.getX() + sprite.getWidth() - 5,
                         sprite.getY() + (sprite.getWidth() / 2));
@@ -232,13 +255,15 @@ public class Hero {
     }
 
     public void notClickedLeft() {
-        world.getHero().getBody().applyForceToCenter(+Settings.JETPACK_X_DECELERATION, -Settings.JETPACK_Y_DECELERATION, true);
+        world.getHero().getBody().applyForceToCenter(+Settings.JETPACK_X_DECELERATION,
+                -Settings.JETPACK_Y_DECELERATION, true);
         world.getHero().clickedLeft = false;
         rotateEffect(0);
     }
 
     public void notClickedRight() {
-        world.getHero().getBody().applyForceToCenter(-Settings.JETPACK_X_DECELERATION, -Settings.JETPACK_Y_DECELERATION, true);
+        world.getHero().getBody().applyForceToCenter(-Settings.JETPACK_X_DECELERATION,
+                -Settings.JETPACK_Y_DECELERATION, true);
         world.getHero().clickedRight = false;
 
         rotateEffect(0);
@@ -267,6 +292,7 @@ public class Hero {
             body.setGravityScale(0);
             world.finishGame();
             fadeOut(.6f, 0f);
+            rumble.rumble(20f, .6f);
             AssetLoader.explosion.play();
         }
         heroState = HeroState.DEAD;

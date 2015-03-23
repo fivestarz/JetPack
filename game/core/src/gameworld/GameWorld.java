@@ -98,7 +98,7 @@ public class GameWorld {
     public void reset() {
 
         gameState = GameState.TUTORIAL;
-        background = new Background(this, 0, 0, gameWidth, gameHeight, AssetLoader.background,
+        background = new Background(this, -30, -30, gameWidth+60, gameHeight+60, AssetLoader.background,
                 Color.WHITE);
 
         stars.clear();

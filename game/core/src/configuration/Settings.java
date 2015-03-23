@@ -11,6 +11,7 @@ public class Settings {
     //GAMEWORLD
     public static final int NUMBER_INITIAL_BACKGROUND_STARS = 180;
     public static final float WORLD_GRAVITY = -6.8f;
+    public static final float JETPACK_SOUND_REPETITION_TIME = .1f;
 
     //COLLISION
     public static final short CATEGORY_HERO = 0x0001;  // 0000000000000001 in binary
