@@ -1,5 +1,7 @@
 package gameobjects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,7 +16,6 @@ import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import configuration.Settings;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
-import helpers.FlatColors;
 
 /**
  * Created by ManuGil on 22/03/15.
@@ -26,6 +27,7 @@ public class Coin {
     private float radius;
     private Sprite sprite;
     private Body body, point;
+    private ParticleEffect effect;
 
     public Coin(GameWorld world, int x, int y, float radius) {
         this.world = world;
@@ -33,13 +35,12 @@ public class Coin {
         this.y = y;
         this.radius = radius;
 
-        sprite = new Sprite(AssetLoader.meteor);
+        sprite = new Sprite(AssetLoader.coin);
         sprite.setPosition(x, y);
         sprite.setSize(radius * 2, radius * 2);
         sprite.setRotation(MathUtils.random(0, 360));
         sprite.setOriginCenter();
-        sprite.setColor(FlatColors.GREEN);
-        sprite.setAlpha(0.7f);
+        sprite.setAlpha(0.8f);
 
         BodyDef bodyDefC = new BodyDef();
         bodyDefC.type = BodyDef.BodyType.DynamicBody;
@@ -48,13 +49,15 @@ public class Coin {
 
         body = world.getWorldB().createBody(bodyDefC);
         body.setAngularDamping(0.5f);
+        body.setLinearDamping(0.5f);
         //body.setFixedRotation(true);
+        body.setLinearVelocity(MathUtils.random(-2,2), MathUtils.random(-2,2));
         body.setGravityScale(0);
 
         BodyDef bodyDefP = new BodyDef();
         bodyDefP.type = BodyDef.BodyType.DynamicBody;
-        bodyDefP.position.set((sprite.getX() - 10) / world.PIXELS_TO_METERS,
-                sprite.getY() / world.PIXELS_TO_METERS);
+        bodyDefP.position.set((sprite.getX()) / world.PIXELS_TO_METERS,
+                (sprite.getY()+10) / world.PIXELS_TO_METERS);
         point = world.getWorldB().createBody(bodyDefP);
         point.setGravityScale(0);
 
@@ -73,7 +76,6 @@ public class Coin {
 
         //TODO: Check multicursor stuff in Android Studio
 
-        //TODO: Spring Stuff
         DistanceJointDef jointDef = new DistanceJointDef();
         jointDef.bodyA = body;
 
@@ -84,9 +86,9 @@ public class Coin {
                         body.getPosition().y + (radius / world.PIXELS_TO_METERS)),
                 new Vector2(point.getPosition().x + (radius / world.PIXELS_TO_METERS),
                         point.getPosition().y + (radius / world.PIXELS_TO_METERS)));
-        jointDef.dampingRatio = 1f;
-        jointDef.frequencyHz = 500;
-        jointDef.length = 15f / world.PIXELS_TO_METERS;
+        jointDef.dampingRatio = 0f;
+        jointDef.frequencyHz = 50;
+        jointDef.length = Settings.COIN_JOINT_DISTANCE/ world.PIXELS_TO_METERS;
         jointDef.collideConnected = false;
 
 
@@ -95,6 +97,10 @@ public class Coin {
         world.getWorldB().createJoint(jointDef);
         //world.getWorldB().createJoint(jointDef2);
         shape.dispose();
+
+        effect = new ParticleEffect();
+        effect.load(Gdx.files.internal("coin.p"), Gdx.files.internal(""));
+        effect.setPosition(300, 300);
         reset();
     }
 
@@ -104,6 +110,9 @@ public class Coin {
                 (body.getPosition().y * world.PIXELS_TO_METERS));
         point.setTransform(this.x / world.PIXELS_TO_METERS, this.y / world.PIXELS_TO_METERS, 0);
         limitVel();
+        effect.update(delta);
+        effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
+                body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
         sprite.setOrigin(0, 0);
     }
@@ -125,7 +134,7 @@ public class Coin {
     }
 
     public void render(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
-        sprite.draw(batcher);
+        sprite.draw(batcher); effect.draw(batcher);
     }
 
     public void reset() {

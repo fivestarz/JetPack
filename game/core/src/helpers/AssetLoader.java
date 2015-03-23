@@ -15,8 +15,8 @@ import configuration.Configuration;
  */
 public class AssetLoader {
 
-    public static Texture logoTexture, dotT, colorCircleT, backgroundT, meteorT;
-    public static TextureRegion logo, square, dot, colorCircle, flashCircle, background, meteor;
+    public static Texture logoTexture, dotT, colorCircleT, backgroundT, meteorT, coinT;
+    public static TextureRegion logo, square, dot, colorCircle, flashCircle, background, meteor, coin;
 
     public static BitmapFont font, fontS, fontXS, fontB;
     private static Preferences prefs;
@@ -44,6 +44,11 @@ public class AssetLoader {
         meteorT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         meteor = new TextureRegion(meteorT, 0, 0, meteorT.getWidth(),
                 meteorT.getHeight());
+
+       coinT = new Texture(Gdx.files.internal("coin.png"));
+       coinT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+       coin = new TextureRegion(coinT, 0, 0,coinT.getWidth(),
+               coinT.getHeight());
 
         backgroundT = new Texture(Gdx.files.internal("background.png"));
         backgroundT.setFilter(TextureFilter.Linear, TextureFilter.Linear);

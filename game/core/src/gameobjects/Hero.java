@@ -91,22 +91,36 @@ public class Hero {
         } else {
             if (clickedRight) {
                 body.applyForceToCenter(2f, +2f, true);
-                effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2));
+                //effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2));
 
             } else if (clickedLeft) {
                 body.applyForceToCenter(-2f, +2f, true);
-                effect.setPosition(sprite.getX() + sprite.getWidth() - 5,
-                        sprite.getY() + (sprite.getWidth() / 2));
+                //effect.setPosition(sprite.getX() + sprite.getWidth() - 5,                        sprite.getY() + (sprite.getWidth() / 2));
 
             } else {
-                effect.setPosition(sprite.getX() + sprite.getWidth() / 2,
-                        sprite.getY() + sprite.getHeight() - 10);
+                // effect.setPosition(sprite.getX() + sprite.getWidth() / 2,                sprite.getY() + sprite.getHeight() - 10);
 
             }
+            effectPosition();
         }
 
         limitVel();
         outOfBounds();
+    }
+
+    private void effectPosition() {
+        if (clickedLeft || clickedRight) {
+            if (sprite.isFlipX()) {
+                effect.setPosition(sprite.getX() + sprite.getWidth() - 5,
+                        sprite.getY() + (sprite.getWidth() / 2));
+            }else{
+                effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2));
+            }
+
+        } else {
+            effect.setPosition(sprite.getX() + sprite.getWidth() / 2,
+                    sprite.getY() + sprite.getHeight() - 10);
+        }
     }
 
 

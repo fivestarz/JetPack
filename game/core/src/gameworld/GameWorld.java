@@ -114,7 +114,10 @@ public class GameWorld {
             points.add(new Vector2(gameWidth / (numberOfPoints + 1) * (i + 1),
                     gameHeight - marginOfPoints));
             //TODO: More spawn points for the coins
-            pointsDir.add(new Vector2(gameWidth / 2, gameHeight / (numberOfPoints + 1) * (i + 1)));
+            for(int j = 0;j <numberOfPoints;j++){
+                pointsDir.add(new Vector2(gameWidth / (numberOfPoints + 1) * (j + 1), gameHeight / (numberOfPoints + 1) * (i + 1)));
+            }
+
         }
 
         //BOX2D
@@ -132,6 +135,7 @@ public class GameWorld {
         }
 
         //CREATING COINS
+        coins.clear();
         for (int i = 0; i < numberOfCoins; i++) {
             Vector2 p = pointsDir.get(MathUtils.random(0, pointsDir.size - 1));
             coin = new Coin(this, (int) p.x, (int) p.y, 20);

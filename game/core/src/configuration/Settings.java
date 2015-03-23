@@ -21,5 +21,6 @@ public class Settings {
 
     //COINS
     public static final int NUMBER_INITIAL_COINS = 3;
-    public static final float COIN_MAX_VEL = 0.4f;
+    public static final float COIN_MAX_VEL = 0.2f;
+    public static final float COIN_JOINT_DISTANCE = 15f;
 }

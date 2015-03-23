@@ -1,11 +1,13 @@
 package com.madtriangle.noon;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -60,8 +62,10 @@ public class AndroidLauncher extends AndroidApplication implements
     SharedPreferences prefs;
 
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onCreate(Bundle savedInstanceState) {
+       
         super.onCreate(savedInstanceState);
 
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();

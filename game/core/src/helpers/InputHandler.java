@@ -63,6 +63,12 @@ public class InputHandler implements InputProcessor {
                 } else {
                     world.getHero().clickedLeft();
                 }
+            }else if(activeTouch==2){
+                if(world.getHero().clickedLeft){
+                    world.getHero().clickedRight();
+                }else if(world.getHero().clickedRight){
+                    world.getHero().clickedLeft();
+                }
             }
         }
         return false;
