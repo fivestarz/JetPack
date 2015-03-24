@@ -35,7 +35,7 @@ public class AssetLoader {
         dotT = new Texture(Gdx.files.internal("dot.png"));
         dot = new TextureRegion(dotT, 0, 0, dotT.getWidth(), dotT.getHeight());
 
-        colorCircleT = new Texture(Gdx.files.internal("circle.png"));
+        colorCircleT = new Texture(Gdx.files.internal("hero.png"));
         colorCircleT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         colorCircle = new TextureRegion(colorCircleT, 0, 0, 820,
                 colorCircleT.getHeight());
