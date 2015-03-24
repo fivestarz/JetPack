@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
@@ -25,6 +26,7 @@ import helpers.AssetLoader;
 import helpers.FlatColors;
 import noon.ActionResolver;
 import noon.NoonGame;
+import screenlogics.Menu;
 
 /**
  * Created by ManuGil on 09/03/15.
@@ -47,7 +49,7 @@ public class GameWorld {
     private GameCam camera;
 
     //VARIABLES
-    private GameState gameState;
+    public GameState gameState;
     private int score;
     private final int numberOfStars = Settings.NUMBER_INITIAL_BACKGROUND_STARS;
     private final int numberOfMeteors = Settings.NUMBER_INITIAL_METEORS;
@@ -57,7 +59,7 @@ public class GameWorld {
 
 
     //GAMEOBJECTS
-    private Background background;
+    private Background background, tutorial;
     private Array<Star> stars = new Array<Star>();
     private Array<Meteor> meteors = new Array<Meteor>();
     private Array<Vector2> points = new Array<Vector2>();
@@ -66,6 +68,8 @@ public class GameWorld {
     private Meteor meteor;
     private Coin coin;
     private Hero hero;
+
+    private Menu menu;
 
     //BOX2D
     private World worldB;
@@ -90,17 +94,19 @@ public class GameWorld {
         //TODO: Remove this line
         actionResolver.viewAd(false);
         camera = new GameCam(this, 0, 0, gameWidth, gameHeight);
-
+        gameState = GameState.MENU;
         startGame();
 
     }
 
     public void reset() {
 
-        gameState = GameState.TUTORIAL;
-        background = new Background(this, -30, -30, gameWidth+60, gameHeight+60, AssetLoader.background,
+        background = new Background(this, -100, -100, gameWidth + 200, gameHeight + 200,
+                AssetLoader.background,
                 Color.WHITE);
-
+        tutorial = new Background(this, 0, 0, gameWidth, gameHeight, AssetLoader.tutorial,
+                Color.WHITE);
+        menu = new Menu(this);
         stars.clear();
         for (int i = 0; i < numberOfStars; i++) {
             stars.add(new Star(world));
@@ -127,7 +133,7 @@ public class GameWorld {
         worldB = new World(new Vector2(0, Settings.WORLD_GRAVITY), true);
         debugRenderer = new Box2DDebugRenderer();
         //CREATING HERO
-        hero = new Hero(this, (int) (gameWidth / 2 - 35), (int) (gameHeight / 2 - 35), 70, 70);
+        hero = new Hero(this, (int) (gameWidth / 2 - 35), (int) (gameHeight / 2 - 45), 70, 70);
 
         //CREATING METEORS
         meteors.clear();
@@ -145,24 +151,31 @@ public class GameWorld {
             coins.add(coin);
         }
 
+        menu.start();
     }
 
 
     public void update(float delta) {
+        menu.update(delta);
         for (int i = 0; i < numberOfStars; i++) {
             stars.get(i).update(delta);
         }
+
+        worldB.step(1f / 60f, 6, 2);
         if (isRunning()) {
-            worldB.step(1f / 60f, 6, 2);
-            hero.update(delta);
-            for (int i = 0; i < numberOfMeteors; i++) {
-                meteors.get(i).update(delta);
-            }
-            for (int i = 0; i < numberOfCoins; i++) {
-                coins.get(i).update(delta);
-            }
             collisions();
+        } else if (isTutorial()) {
+            tutorial.update(delta);
         }
+        hero.update(delta);
+        for (int i = 0; i < numberOfMeteors; i++) {
+            meteors.get(i).update(delta);
+        }
+        for (int i = 0; i < numberOfCoins; i++) {
+            coins.get(i).update(delta);
+        }
+        //Gdx.app.log("GameState", gameState.toString());
+
     }
 
     private void collisions() {
@@ -178,6 +191,7 @@ public class GameWorld {
 
             }
         }
+
 
     }
 
@@ -202,6 +216,14 @@ public class GameWorld {
         for (int i = 0; i < numberOfCoins; i++) {
             coins.get(i).render(batcher, shapeRenderer);
         }
+
+        if (gameState == GameState.TUTORIAL) {
+            tutorial.render(batcher, shapeRenderer);
+        }
+
+
+        menu.render(batcher, shapeRenderer);
+
         if (Configuration.DEBUG) {
             batcher.end();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -221,7 +243,8 @@ public class GameWorld {
     }
 
     public void finishGame() {
-        //gameState = GameState.GAMEOVER;
+        menu.makeThemReturn();
+        menu.start();
         saveScoreLogic();
     }
 
@@ -293,10 +316,68 @@ public class GameWorld {
 
     public void finishTutorial() {
         hero.start();
-        gameState = GameState.RUNNING;
+        for (int i = 0; i < coins.size; i++) {
+            coins.get(i).start();
+        }
+        tutorial.fadeOutTutorial(.3f, 0f);
     }
 
     public void addScore(int i) {
         score += 1;
+    }
+
+    public boolean isMenu() {
+        return gameState == GameState.MENU;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public Background getTutorial() {
+        return tutorial;
+    }
+
+    public void resetGAME() {
+
+        removeBodies();
+
+        hero = new Hero(this, (int) (gameWidth / 2 - 35), (int) (gameHeight / 2 - 45), 70, 70);
+
+        //CREATING METEORS
+        meteors.clear();
+        for (int i = 0; i < numberOfMeteors; i++) {
+            meteor = new Meteor(this, -100, -100, 20);
+            meteors.add(meteor);
+        }
+
+        //CREATING COINS
+        coins.clear();
+        for (int i = 0; i < numberOfCoins; i++) {
+            Vector2 p = pointsDir.get(MathUtils.random(0, pointsDir.size - 1));
+            coin = new Coin(this, (int) p.x, (int) p.y, 20);
+            coins.add(coin);
+        }
+    }
+
+    private void removeBodies() {
+        removeBodySafely(hero.getBody());
+        for (int i = 0; i < numberOfCoins; i++) {
+            removeBodySafely(coins.get(i).getBody());
+        }
+        for (int i = 0; i < numberOfMeteors; i++) {
+            removeBodySafely(meteors.get(i).getBody());
+        }
+
+    }
+
+    public void removeBodySafely(Body body) {
+        //to prevent some obscure c assertion that happened randomly once in a blue moon
+        final Array<JointEdge> list = body.getJointList();
+        while (list.size > 0) {
+            getWorldB().destroyJoint(list.get(0).joint);
+        }
+        // actual remove
+        worldB.destroyBody(body);
     }
 }

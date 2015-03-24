@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import configuration.Configuration;
 import configuration.Settings;
+import gameworld.GameState;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
 
@@ -79,6 +80,7 @@ public class Meteor {
 
     public void update(float delta) {
         //sprite.setRotation(sprite.getRotation() + angleVel);
+        //Todo: On Collision send them all to one random point in the screen
         sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS),
                 (body.getPosition().y * world.PIXELS_TO_METERS));
         // Ditto for rottion
@@ -88,10 +90,11 @@ public class Meteor {
         circle.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
                 body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
 
-        effect.update(delta);
-        effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
-                body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
-
+        if (world.gameState == GameState.RUNNING) {
+            effect.update(delta);
+            effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
+                    body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
+        }
         body.setLinearVelocity(body.getLinearVelocity().nor().x * velRandom,
                 body.getLinearVelocity().nor().y * velRandom);
         limitVel();
@@ -145,16 +148,22 @@ public class Meteor {
     }
 
     public void reset() {
-        velRandom = MathUtils.random(Settings.METEOR_MIN_VEL, Settings.METEOR_MAX_VEL);
-        Vector2 randomPoint = world.getPoints()
-                .get(MathUtils.random(0, world.getPoints().size - 1));
-        Vector2 randomPointDir = world.getPointsDir()
-                .get(MathUtils.random(0, world.getPointsDir().size - 1));
-        body.setTransform(randomPoint.x / world.PIXELS_TO_METERS,
-                randomPoint.y / world.PIXELS_TO_METERS, 0);
-        //body.setLinearVelocity(Math.random() < 0.5 ? 2 : -2, Math.random() < 0.5 ? 2 : -2);
-        //Vector2 vel = new Vector2((randomPointDir.x) - (sprite.getX()),(randomPointDir.y) - (sprite.getY()));
-        //body.setLinearVelocity(vel.nor().x * 10, vel.nor().y * 10);
-        body.setLinearVelocity(MathUtils.random(-10, 10), MathUtils.random(-10, 10));
+        if (world.isRunning()) {
+            velRandom = MathUtils.random(Settings.METEOR_MIN_VEL, Settings.METEOR_MAX_VEL);
+            Vector2 randomPoint = world.getPoints()
+                    .get(MathUtils.random(0, world.getPoints().size - 1));
+            Vector2 randomPointDir = world.getPointsDir()
+                    .get(MathUtils.random(0, world.getPointsDir().size - 1));
+            body.setTransform(randomPoint.x / world.PIXELS_TO_METERS,
+                    randomPoint.y / world.PIXELS_TO_METERS, 0);
+            //body.setLinearVelocity(Math.random() < 0.5 ? 2 : -2, Math.random() < 0.5 ? 2 : -2);
+            //Vector2 vel = new Vector2((randomPointDir.x) - (sprite.getX()),(randomPointDir.y) - (sprite.getY()));
+            //body.setLinearVelocity(vel.nor().x * 10, vel.nor().y * 10);
+            body.setLinearVelocity(MathUtils.random(-10, 10), MathUtils.random(-10, 10));
+        }
+    }
+
+    public Body getBody() {
+        return body;
     }
 }

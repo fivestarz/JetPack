@@ -8,10 +8,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import configuration.Configuration;
+import gameworld.GameState;
 import gameworld.GameWorld;
 import helpers.FlatColors;
 import tweens.SpriteAccessor;
@@ -33,8 +36,9 @@ public class GameObject {
     public boolean isPressed = false;
 
     private TweenManager manager;
+    private TweenCallback cbTutorial;
 
-    public GameObject(GameWorld world, float x, float y, float width, float height,
+    public GameObject(final GameWorld world, float x, float y, float width, float height,
                       TextureRegion texture, Color color) {
         this.world = world;
         this.x = x;
@@ -63,6 +67,12 @@ public class GameObject {
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
         Tween.registerAccessor(Vector2.class, new VectorAccessor());
         manager = new TweenManager();
+        cbTutorial = new TweenCallback() {
+            @Override
+            public void onEvent(int type, BaseTween<?> source) {
+                world.gameState = GameState.RUNNING;
+            }
+        };
 
     }
 
@@ -84,6 +94,7 @@ public class GameObject {
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         sprite.draw(batch);
 
+
         if (flashSprite.getColor().a != 0) {
             flashSprite.draw(batch);
         }
@@ -103,6 +114,7 @@ public class GameObject {
     public boolean isTouchDown(int screenX, int screenY) {
         if (rectangle.contains(screenX, screenY)) {
             //!Gdx.app.log("TouchedDown", screenX + " " + screenY);
+
             isPressed = true;
             return true;
         }
@@ -112,6 +124,7 @@ public class GameObject {
     public boolean isTouchUp(int screenX, int screenY) {
         if (rectangle.contains(screenX, screenY) && isPressed) {
             //Gdx.app.log("TouchedUp", screenX + " " + screenY);
+
             isPressed = false;
             return true;
         }
@@ -192,9 +205,20 @@ public class GameObject {
         return manager;
     }
 
-    public TextureRegion getTexture(){
+    public TextureRegion getTexture() {
         return texture;
     }
 
 
+    public void fadeOutTutorial(float duration, float delay) {
+        sprite.setAlpha(1);
+        Tween.to(getSprite(), SpriteAccessor.ALPHA, duration).setCallback(cbTutorial)
+                .setCallbackTriggers(
+                        TweenCallback.COMPLETE).target(0).delay(delay)
+                .ease(TweenEquations.easeInOutSine).start(manager);
+    }
+
+    public void setX(float x) {
+        this.position.x = x;
+    }
 }

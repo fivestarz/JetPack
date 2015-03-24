@@ -23,6 +23,7 @@ import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import configuration.Configuration;
 import configuration.Settings;
+import gameworld.GameState;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
 import tweens.SpriteAccessor;
@@ -36,7 +37,7 @@ public class Coin {
     private GameWorld world;
     private int x, y;
     private float radius;
-    private Sprite sprite;
+    private Sprite sprite, backsprite;
     private Body body, point;
     private ParticleEffect effect;
     private TweenManager manager;
@@ -62,6 +63,12 @@ public class Coin {
         sprite.setRotation(MathUtils.random(0, 360));
         sprite.setOriginCenter();
         sprite.setAlpha(0.8f);
+
+        backsprite = new Sprite(AssetLoader.coin);
+        backsprite.setSize(radius * 2 + 10, radius * 2 + 10);
+        backsprite.setAlpha(0.3f);
+        backsprite.setRotation(MathUtils.random(0, 360));
+        backsprite.setOriginCenter();
 
         circle = new Circle(x, y, radius + Settings.COIN_COLLISION_MARGIN);
 
@@ -111,7 +118,7 @@ public class Coin {
                         body.getPosition().y + (radius / world.PIXELS_TO_METERS)),
                 new Vector2(point.getPosition().x + (radius / world.PIXELS_TO_METERS),
                         point.getPosition().y + (radius / world.PIXELS_TO_METERS)));
-        jointDef.dampingRatio = 0f;
+        jointDef.dampingRatio = 1f;
         jointDef.frequencyHz = 50;
         jointDef.length = Settings.COIN_JOINT_DISTANCE / world.PIXELS_TO_METERS;
         jointDef.collideConnected = false;
@@ -124,14 +131,19 @@ public class Coin {
         //PARTICLE EFFECT
         effect = new ParticleEffect();
         effect.load(Gdx.files.internal("coin.p"), Gdx.files.internal(""));
-        effect.setPosition(300, 300);
+        effect.setPosition(-300, -300);
 
 
         //TWEENS
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
         Tween.registerAccessor(Vector2.class, new VectorAccessor());
         manager = new TweenManager();
+        randomP = world.getPointsDir().get(MathUtils.random(0, world.getPointsDir().size - 1));
+        sprite.setAlpha(0);
 
+    }
+
+    public void start() {
         reset();
     }
 
@@ -140,14 +152,17 @@ public class Coin {
         manager.update(delta);
         sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS),
                 (body.getPosition().y * world.PIXELS_TO_METERS));
+
         circle.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
                 body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
         point.setTransform(randomP.x / world.PIXELS_TO_METERS, randomP.y / world.PIXELS_TO_METERS,
                 0);
         limitVel();
-        effect.update(delta);
-        effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
-                body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
+        if (world.gameState == GameState.RUNNING) {
+            effect.update(delta);
+            effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
+                    body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
+        }
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
         sprite.setOrigin(0, 0);
 
@@ -171,6 +186,7 @@ public class Coin {
     }
 
     public void render(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
+
         sprite.draw(batcher);
         effect.draw(batcher);
 
@@ -209,7 +225,7 @@ public class Coin {
         jointDef.collideConnected = false;
         //point.createFixture(fixtureDefP);
         world.getWorldB().createJoint(jointDef);
-        fadeIn(MathUtils.random(.4f,.4f), MathUtils.random(.1f,.7f));
+        fadeIn(MathUtils.random(.4f, .4f), MathUtils.random(.1f, .7f));
 
     }
 
@@ -264,4 +280,10 @@ public class Coin {
         }
         // actual remove
     }
+
+    public Body getBody() {
+        return body;
+    }
+
+
 }

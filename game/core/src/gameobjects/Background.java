@@ -13,4 +13,6 @@ public class Background extends GameObject {
                       TextureRegion texture, Color color) {
         super(world, x, y, width, height, texture, color);
     }
+
+
 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenEquations;
@@ -38,6 +39,7 @@ public class Hero {
     private ParticleEffect effect, explosion;
     private TweenManager manager;
     public Rectangle rectangle;
+    private TweenCallback cbFinish;
 
     public enum HeroState {DEAD, ALIVE}
 
@@ -46,7 +48,7 @@ public class Hero {
     Value second = new Value();
     public Rumble rumble;
 
-    public Hero(GameWorld world, int x, int y, float width, float height) {
+    public Hero(final GameWorld world, int x, int y, float width, float height) {
         this.world = world;
         this.x = x;
         this.y = y;
@@ -100,6 +102,12 @@ public class Hero {
 
         this.rumble = new Rumble(world);
 
+        cbFinish = new TweenCallback() {
+            @Override
+            public void onEvent(int type, BaseTween<?> source) {
+                world.finishGame();
+            }
+        };
 
     }
 
@@ -150,6 +158,13 @@ public class Hero {
         if (rumble.time > 0) {
             rumble.tick(delta, new Vector2(world.gameWidth / 2, world.gameHeight / 2));
         }
+
+
+        //DEAD CHECK
+        if(heroState == HeroState.DEAD){
+            body.setLinearVelocity(0,0);
+            body.setGravityScale(0);
+        }
     }
 
     private void effectPosition() {
@@ -157,9 +172,8 @@ public class Hero {
             if (second.getValue() == 1) {
                 second.setValue(0);
                 sound = Tween.to(second, -1, Settings.JETPACK_SOUND_REPETITION_TIME).target(1)
-                        .start(
-                                manager);
-                AssetLoader.click.play();
+                        .start(manager);
+                AssetLoader.jetpack.play(.05f);
                 //Gdx.app.log("Playing Sound", new Date()+"");
             }
             if (sprite.isFlipX()) {
@@ -290,10 +304,11 @@ public class Hero {
             explosion.reset();
             explosion.start();
             body.setGravityScale(0);
-            world.finishGame();
             fadeOut(.6f, 0f);
             rumble.rumble(20f, .6f);
             AssetLoader.explosion.play();
+            finish();
+
         }
         heroState = HeroState.DEAD;
     }
@@ -303,5 +318,11 @@ public class Hero {
         Tween.to(sprite, SpriteAccessor.ALPHA, duration).target(.0f).setCallbackTriggers(
                 TweenCallback.COMPLETE).delay(delay)
                 .ease(TweenEquations.easeInOutSine).start(manager);
+    }
+
+    private void finish() {
+        second.setValue(0);
+        Tween.to(second, -1, 1f).setCallback(cbFinish).setCallbackTriggers(
+                TweenCallback.COMPLETE).target(1).start(manager);
     }
 }

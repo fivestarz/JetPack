@@ -15,9 +15,9 @@ import configuration.Configuration;
  */
 public class AssetLoader {
 
-    public static Texture logoTexture, dotT, colorCircleT, backgroundT, meteorT, coinT;
-    public static TextureRegion logo, square, dot, colorCircle, flashCircle, background, meteor, coin;
-
+    public static Texture logoTexture, dotT, colorCircleT, backgroundT, tutorialT, meteorT, coinT, buttonsT, titleT;
+    public static TextureRegion logo, square, dot, colorCircle, flashCircle, background, tutorial, meteor, coin,
+            playButton, shareButton, scoresButton, removeadsButton, title;
     public static BitmapFont font, fontS, fontXS, fontB;
     private static Preferences prefs;
 
@@ -50,11 +50,28 @@ public class AssetLoader {
         coin = new TextureRegion(coinT, 0, 0, coinT.getWidth(),
                 coinT.getHeight());
 
+        //BUTTONS
+        buttonsT = new Texture(Gdx.files.internal("buttons.png"));
+        buttonsT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        playButton = new TextureRegion(buttonsT, 0, 0, buttonsT.getWidth(), 120);
+        scoresButton = new TextureRegion(buttonsT, 0, 120, buttonsT.getWidth(), 120);
+        shareButton = new TextureRegion(buttonsT, 0, 120 * 2, buttonsT.getWidth(), 120);
+        removeadsButton = new TextureRegion(buttonsT, 0, 120 * 3, buttonsT.getWidth(), 120);
+
+        titleT = new Texture(Gdx.files.internal("jetpacklogo.png"));
+        titleT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        title = new TextureRegion(titleT, 0, 0, titleT.getWidth(), titleT.getHeight());
+
+        tutorialT = new Texture(Gdx.files.internal("tutorial.png"));
+        tutorialT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        tutorial = new TextureRegion(tutorialT, 0, 0, tutorialT.getWidth(),
+                tutorialT.getHeight());
+
+
         backgroundT = new Texture(Gdx.files.internal("background.png"));
         backgroundT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         background = new TextureRegion(backgroundT, 0, 0, backgroundT.getWidth(),
                 backgroundT.getHeight());
-
 
         //LOADING FONT
         Texture tfont = new Texture(Gdx.files.internal("sans.png"), true);
