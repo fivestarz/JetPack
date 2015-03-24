@@ -162,7 +162,7 @@ public class GameWorld {
                 Color.WHITE, 30,
                 BitmapFont.HAlignment.CENTER);
 
-        menu.start();
+        menu.start(1f);
     }
 
 

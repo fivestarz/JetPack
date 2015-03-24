@@ -25,13 +25,15 @@ import tweens.ValueAccessor;
  */
 public class SplashScreen implements Screen {
 
-    float height;
     private TweenManager manager;
     private SpriteBatch batcher;
     private Sprite sprite;
     private NoonGame game;
     private ActionResolver actionResolver;
     private Sprite spriteBack;
+    private float width = Gdx.graphics.getWidth();
+    private float height = Gdx.graphics.getHeight();
+
 
     public SplashScreen(NoonGame game, ActionResolver actionResolver) {
         this.game = game;
@@ -40,6 +42,7 @@ public class SplashScreen implements Screen {
         spriteBack.setColor(FlatColors.WHITE);
         spriteBack.setPosition(0, 0);
         spriteBack.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        actionResolver.viewAd(false);
     }
 
     @Override
@@ -47,8 +50,6 @@ public class SplashScreen implements Screen {
         sprite = new Sprite(AssetLoader.logo);
         sprite.setColor(1, 1, 1, 0);
 
-        float width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
         float desiredWidth = width * .2f;
         float scale = desiredWidth / sprite.getWidth();
 
@@ -75,7 +76,7 @@ public class SplashScreen implements Screen {
         if (!Configuration.SPLASHSCREEN) {
             game.setScreen(new GameScreen(game, actionResolver));
         }
-        Tween.to(sprite, SpriteAccessor.ALPHA, 1.5f).target(1)
+        Tween.to(sprite, SpriteAccessor.ALPHA, 1.5f).target(1).delay(.7f)
                 .ease(TweenEquations.easeInOutQuad).repeatYoyo(1, .2f)
                 .setCallback(cb).setCallbackTriggers(TweenCallback.COMPLETE)
                 .start(manager);

@@ -84,7 +84,7 @@ public class Gameover {
             public void onEvent(int type, BaseTween<?> source) {
 
                 world.getMenu().makeThemReturn();
-                world.getMenu().start();
+                world.getMenu().start(0f);
             }
         };
 
