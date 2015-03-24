@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.madtriangle.noon.util;
+package com.madtriangle.impossiblejetpack.util;
 
 import org.json.JSONException;
 import org.json.JSONObject;

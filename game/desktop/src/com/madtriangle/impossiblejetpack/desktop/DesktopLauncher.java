@@ -1,4 +1,4 @@
-package com.madtriangle.noon.desktop;
+package com.madtriangle.impossiblejetpack.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;

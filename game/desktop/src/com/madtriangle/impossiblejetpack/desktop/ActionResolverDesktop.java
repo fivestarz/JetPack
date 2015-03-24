@@ -1,4 +1,4 @@
-package com.madtriangle.noon.desktop;
+package com.madtriangle.impossiblejetpack.desktop;
 
 import noon.ActionResolver;
 

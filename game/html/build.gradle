@@ -7,8 +7,8 @@ gwt {
     minHeapSize="1G"
 
     src = files(file("src/")) // Needs to be in front of "modules" below.
-    modules 'com.madtriangle.noon.GdxDefinition'
-    devModules 'com.madtriangle.noon.GdxDefinitionSuperdev'
+    modules 'com.madtriangle.impossiblejetpack.GdxDefinition'
+    devModules 'com.madtriangle.impossiblejetpack.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
 
     compiler {

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.madtriangle.noon.util;
+package com.madtriangle.impossiblejetpack.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;

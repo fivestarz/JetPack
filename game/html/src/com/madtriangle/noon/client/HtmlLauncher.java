@@ -1,9 +1,9 @@
-package com.madtriangle.noon.client;
+package com.madtriangle.impossiblejetpack.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.madtriangle.noon.NoonGame;
+import com.madtriangle.impossiblejetpack.NoonGame;
 
 public class HtmlLauncher extends GwtApplication {
 

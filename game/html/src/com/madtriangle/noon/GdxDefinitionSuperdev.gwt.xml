@@ -3,7 +3,7 @@
 <module rename-to="html">
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 
-    <inherits name='com.madtriangle.noon.GdxDefinition' />
+    <inherits name='com.madtriangle.impossiblejetpack.GdxDefinition' />
     
     <collapse-all-properties />
     

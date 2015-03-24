@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.madtriangle.noon.util;
+package com.madtriangle.impossiblejetpack.util;
 
 /**
  * Represents the result of an in-app billing operation.

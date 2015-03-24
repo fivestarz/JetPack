@@ -1,4 +1,4 @@
-package com.madtriangle.noon;
+package com.madtriangle.impossiblejetpack;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -28,10 +28,10 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.GameHelper;
-import com.madtriangle.noon.util.IabHelper;
-import com.madtriangle.noon.util.IabResult;
-import com.madtriangle.noon.util.Inventory;
-import com.madtriangle.noon.util.Purchase;
+import com.madtriangle.impossiblejetpack.util.IabHelper;
+import com.madtriangle.impossiblejetpack.util.IabResult;
+import com.madtriangle.impossiblejetpack.util.Inventory;
+import com.madtriangle.impossiblejetpack.util.Purchase;
 
 import configuration.Configuration;
 import helpers.AssetLoader;

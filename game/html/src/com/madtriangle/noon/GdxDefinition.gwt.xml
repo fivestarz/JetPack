@@ -4,7 +4,7 @@
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 
 	<inherits name='NoonGame' />
-	<entry-point class='com.madtriangle.noon.client.HtmlLauncher' />
+	<entry-point class='com.madtriangle.impossiblejetpack.client.HtmlLauncher' />
 	
 	<set-configuration-property name="gdx.assetpath" value="../android/assets" />
 </module>
