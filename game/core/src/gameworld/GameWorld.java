@@ -1,6 +1,7 @@
 package gameworld;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -28,6 +29,7 @@ import noon.ActionResolver;
 import noon.NoonGame;
 import screenlogics.Gameover;
 import screenlogics.Menu;
+import ui.Text;
 
 /**
  * Created by ManuGil on 09/03/15.
@@ -72,6 +74,7 @@ public class GameWorld {
 
     private Menu menu;
     private Gameover gameover;
+    private Text scoreText;
 
     //BOX2D
     private World worldB;
@@ -154,13 +157,23 @@ public class GameWorld {
             coins.add(coin);
         }
 
+        scoreText = new Text(this, 0, 0, gameWidth, gameHeight,
+                AssetLoader.transparent, Color.WHITE, score + "", AssetLoader.fontS,
+                Color.WHITE, 30,
+                BitmapFont.HAlignment.CENTER);
+
         menu.start();
     }
 
 
     public void update(float delta) {
+        //UI
         menu.update(delta);
         gameover.update(delta);
+        scoreText.update(delta);
+        scoreText.setText(score + "");
+
+        //GAMEOBJECTS
         for (int i = 0; i < numberOfStars; i++) {
             stars.get(i).update(delta);
         }
@@ -223,6 +236,11 @@ public class GameWorld {
             coins.get(i).render(batcher, shapeRenderer);
         }
 
+        if (gameState == GameState.RUNNING) {
+            scoreText.render(batcher, shapeRenderer, fontShader);
+        }
+
+
         if (gameState == GameState.TUTORIAL) {
             tutorial.render(batcher, shapeRenderer);
         }
@@ -231,7 +249,7 @@ public class GameWorld {
             menu.render(batcher, shapeRenderer);
         }
         if (gameState == GameState.GAMEOVER) {
-            gameover.render(batcher, shapeRenderer);
+            gameover.render(batcher, shapeRenderer, fontShader);
         }
 
         if (Configuration.DEBUG) {
@@ -285,7 +303,6 @@ public class GameWorld {
     public int getScore() {
         return score;
     }
-
 
     public static Color parseColor(String hex, float alpha) {
         String hex1 = hex;

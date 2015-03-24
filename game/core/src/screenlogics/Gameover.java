@@ -1,7 +1,9 @@
 package screenlogics;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
@@ -14,6 +16,7 @@ import gameworld.GameWorld;
 import helpers.AssetLoader;
 import tweens.Value;
 import ui.MenuButton;
+import ui.Text;
 
 /**
  * Created by ManuGil on 23/03/15.
@@ -25,6 +28,7 @@ public class Gameover {
     private Value second = new Value();
     private TweenManager manager;
     private TweenCallback cbStartGame, cbStartMenu;
+    private Text scoreText, bestText;
 
     public Gameover(final GameWorld world) {
         this.world = world;
@@ -83,10 +87,32 @@ public class Gameover {
                 world.getMenu().start();
             }
         };
+
+        //TEXTS
+        scoreText = new Text(world, world.gameWidth / 2 - 360,
+                world.gameHeight - 60 - AssetLoader.boardOver
+                        .getRegionHeight() - 35 + world.gameHeight,
+                AssetLoader.boardOver.getRegionWidth() - 80,
+                AssetLoader.boardOver.getRegionHeight(),
+                AssetLoader.transparent, Color.WHITE, "0", AssetLoader.fontS,
+                Color.WHITE, 170,
+                BitmapFont.HAlignment.RIGHT);
+
+        bestText = new Text(world, world.gameWidth / 2 - 360,
+                world.gameHeight - 60 - AssetLoader.boardOver
+                        .getRegionHeight() - 35 + world.gameHeight,
+                AssetLoader.boardOver.getRegionWidth() - 80,
+                AssetLoader.boardOver.getRegionHeight(),
+                AssetLoader.transparent, Color.WHITE, AssetLoader.getHighScore() + "",
+                AssetLoader.fontS,
+                Color.WHITE, 320,
+                BitmapFont.HAlignment.RIGHT);
     }
 
     public void start() {
-
+        AssetLoader.woosh.play();
+        scoreText.setText(world.getScore()+"");
+        bestText.setText(AssetLoader.getHighScore()+"");
         world.gameState = GameState.GAMEOVER;
         for (int i = 0; i < menubuttons.size; i++) {
             menubuttons.get(i).effectY(menubuttons.get(i).getPosition().y,
@@ -96,6 +122,7 @@ public class Gameover {
 
 
     public void startGame() {
+        AssetLoader.woosh.play();
         Tween.to(second, -1, .6f).target(1).setCallback(cbStartGame)
                 .setCallbackTriggers(TweenCallback.COMPLETE).start(
                 manager);
@@ -111,15 +138,25 @@ public class Gameover {
         for (int i = 0; i < menubuttons.size; i++) {
             menubuttons.get(i).update(delta);
         }
+        scoreText.update(delta);
+        scoreText.setY(board.getPosition().y);
+
+        bestText.update(delta);
+        bestText.setY(board.getPosition().y);
+
     }
 
-    public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
+    public void render(SpriteBatch batch, ShapeRenderer shapeRenderer, ShaderProgram fontshader) {
         for (int i = 0; i < menubuttons.size; i++) {
             menubuttons.get(i).render(batch, shapeRenderer);
         }
+        scoreText.render(batch, shapeRenderer, fontshader);
+        bestText.render(batch, shapeRenderer, fontshader);
     }
 
     public void startMenu() {
+
+        AssetLoader.woosh.play();
         Tween.to(second, -1, .4f).target(1).setCallback(cbStartMenu)
                 .setCallbackTriggers(TweenCallback.COMPLETE).start(
                 manager);

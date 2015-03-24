@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import gameobjects.GameObject;
 import gameworld.GameWorld;
+import helpers.AssetLoader;
 
 /**
  * Created by ManuGil on 14/03/15.
@@ -39,13 +40,10 @@ public class Text extends GameObject {
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer, ShaderProgram fontshader) {
 
         super.render(batch, shapeRenderer);
-
         batch.setShader(fontshader);
-        font.setColor(fontColor);
-        font.drawWrapped(batch, text, getRectangle().x + 40,
-                getRectangle().y + getRectangle().height - distance, getRectangle().width - 80,
+        AssetLoader.font.drawWrapped(batch, text, getRectangle().x,
+                getRectangle().y + getRectangle().height - distance, getRectangle().width,
                 center);
-        font.setColor(Color.WHITE);
         batch.setShader(null);
     }
 

@@ -16,12 +16,12 @@ import configuration.Configuration;
 public class AssetLoader {
 
     public static Texture logoTexture, dotT, colorCircleT, backgroundT, tutorialT, meteorT, coinT, buttonsT, titleT;
-    public static TextureRegion logo, square, dot, colorCircle, flashCircle, background, tutorial, meteor, coin,
+    public static TextureRegion transparent, logo, square, dot, colorCircle, flashCircle, background, tutorial, meteor, coin,
             playButton, shareButton, scoresButton, removeadsButton, title, playButtonOver, shareButtonOver, boardOver, backButtonOver;
     public static BitmapFont font, fontS, fontXS, fontB;
     private static Preferences prefs;
 
-    public static Sound click, success, end, select, explosion, pickup, jetpack;
+    public static Sound click, success, end, select, explosion, pickup, jetpack,woosh;
 
     public static void load() {
         //LOGO TEXTURE "logo.png"
@@ -29,7 +29,8 @@ public class AssetLoader {
         logoTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         logo = new TextureRegion(logoTexture, 0, 0, logoTexture.getWidth(),
                 logoTexture.getHeight());
-
+        transparent = new TextureRegion(new Texture(Gdx.files.internal("transparent.png")), 0, 0,
+                10, 10);
         square = new TextureRegion(new Texture(Gdx.files.internal("square.png")), 0, 0, 10, 10);
         dotT = new Texture(Gdx.files.internal("dot.png"));
         dot = new TextureRegion(dotT, 0, 0, dotT.getWidth(), dotT.getHeight());
@@ -84,22 +85,22 @@ public class AssetLoader {
         font = new BitmapFont(Gdx.files.internal("sans.fnt"),
                 new TextureRegion(tfont), true);
         font.setScale(1.9f, -1.9f);
-        font.setColor(FlatColors.WHITE);
+        //font.setColor(FlatColors.WHITE);
 
         fontB = new BitmapFont(Gdx.files.internal("sans.fnt"),
                 new TextureRegion(tfont), true);
         fontB.setScale(1.4f, -1.4f);
-        fontB.setColor(FlatColors.WHITE);
+        //fontB.setColor(FlatColors.WHITE);
 
         fontS = new BitmapFont(Gdx.files.internal("sans.fnt"),
                 new TextureRegion(tfont), true);
         fontS.setScale(1.2f, -1.2f);
-        fontS.setColor(FlatColors.WHITE);
+        //fontS.setColor(FlatColors.WHITE);
 
         fontXS = new BitmapFont(Gdx.files.internal("sans.fnt"),
                 new TextureRegion(tfont), true);
         fontXS.setScale(0.9f, -0.9f);
-        fontXS.setColor(FlatColors.WHITE);
+        //fontXS.setColor(FlatColors.WHITE);
 
 
         //PREFERENCES - SAVE DATA IN FILE
@@ -121,6 +122,7 @@ public class AssetLoader {
         explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.wav"));
         pickup = Gdx.audio.newSound(Gdx.files.internal("pickup.wav"));
         jetpack = Gdx.audio.newSound(Gdx.files.internal("jetpack.wav"));
+        woosh = Gdx.audio.newSound(Gdx.files.internal("woosh.wav"));
     }
 
     public static void dispose() {

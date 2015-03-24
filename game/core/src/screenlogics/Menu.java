@@ -67,6 +67,8 @@ public class Menu {
                     menubuttons.get(i).getPosition().x, .5f, .05f * i);
         }
         world.gameState = GameState.MENU;
+
+        AssetLoader.woosh.play();
     }
 
     public void update(float delta) {
@@ -83,6 +85,8 @@ public class Menu {
     }
 
     public void startGame() {
+
+        AssetLoader.woosh.play();
         Tween.to(second, -1, .6f).target(1).setCallback(cbStartGame)
                 .setCallbackTriggers(TweenCallback.COMPLETE).start(
                 manager);

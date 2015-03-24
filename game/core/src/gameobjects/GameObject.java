@@ -86,20 +86,20 @@ public class GameObject {
         sprite.setPosition(position.x, position.y);
         sprite.setOriginCenter();
 
-        if (flashSprite.getColor().a != 0) {
+       /* if (flashSprite.getColor().a != 0) {
             flashSprite.setPosition(position.x, position.y);
             flashSprite.setOriginCenter();
-        }
+        }*/
         //if (isPressed) sprite.setAlpha(0.6f);
-       // else sprite.setAlpha(1);
+        // else sprite.setAlpha(1);
     }
 
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         sprite.draw(batch);
 
-        if (flashSprite.getColor().a != 0) {
+       /* if (flashSprite.getColor().a != 0) {
             flashSprite.draw(batch);
-        }
+        }*/
 
         if (Configuration.DEBUG) {
             batch.end();
@@ -222,5 +222,9 @@ public class GameObject {
 
     public void setX(float x) {
         this.position.x = x;
+    }
+
+    public void setY(float y) {
+        this.position.y = y;
     }
 }
