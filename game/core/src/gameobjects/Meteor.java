@@ -88,11 +88,11 @@ public class Meteor {
 
         circle.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
                 body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
-
-        effect.update(delta);
-        effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
-                body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
-
+        if (Settings.METEOR_PARTICLES) {
+            effect.update(delta);
+            effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
+                    body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
+        }
         body.setLinearVelocity(body.getLinearVelocity().nor().x * velRandom,
                 body.getLinearVelocity().nor().y * velRandom);
         limitVel();
@@ -134,7 +134,9 @@ public class Meteor {
                 sprite.getOriginY(),
                 sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.
                         getScaleY(), sprite.getRotation());
-        effect.draw(batcher);
+        if (Settings.METEOR_PARTICLES) {
+            effect.draw(batcher);
+        }
 
         if (Configuration.DEBUG) {
             batcher.end();

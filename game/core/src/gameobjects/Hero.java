@@ -118,13 +118,15 @@ public class Hero {
             @Override
             public void onEvent(int type, BaseTween<?> source) {
                 inmortal.setValue(0);
-                godTween = Tween.to(inmortal, -1, 0.8f).target(1).setCallback(cbInmortal)
+                godTween = Tween.to(inmortal, -1, Settings.INITIAL_FLASH_TIME).target(1)
+                        .setCallback(cbInmortal)
                         .setCallbackTriggers(TweenCallback.COMPLETE).target(
                                 1).start(manager);
             }
         };
         inmortal.setValue(0);
-        godTween = Tween.to(inmortal, -1, 0.8f).target(1).setCallback(cbInmortal)
+        godTween = Tween.to(inmortal, -1, Settings.INITIAL_FLASH_TIME).target(1)
+                .setCallback(cbInmortal)
                 .setCallbackTriggers(TweenCallback.COMPLETE).target(
                         1).start(manager);
     }
@@ -132,7 +134,7 @@ public class Hero {
     public void update(float delta) {
         manager.update(delta);
         if (heroState == HeroState.ALIVE) {
-            if (inmortal.getValue() >0.5) {
+            if (inmortal.getValue() > 0.5) {
                 sprite.setColor(FlatColors.BLUE);
             } else {
                 sprite.setColor(FlatColors.WHITE);
@@ -173,7 +175,9 @@ public class Hero {
                     // effect.setPosition(sprite.getX() + sprite.getWidth() / 2,                sprite.getY() + sprite.getHeight() - 10);
 
                 }
-                effectPosition();
+                if (Settings.JETPACK_PARTICLES) {
+                    effectPosition();
+                }
             }
             limitVel();
             outOfBounds();
@@ -200,10 +204,12 @@ public class Hero {
                 //Gdx.app.log("Playing Sound", new Date()+"");
             }
             if (sprite.isFlipX()) {
-                effect.setPosition(sprite.getX() + sprite.getWidth() - 5,
+                effect.setPosition(
+                        sprite.getX() + sprite.getWidth() - Settings.LOCAL_JETPACK_LOCATION_X,
                         sprite.getY() + (sprite.getWidth() / 2));
             } else {
-                effect.setPosition(sprite.getX() + 5, sprite.getY() + (sprite.getWidth() / 2));
+                effect.setPosition(sprite.getX() + Settings.LOCAL_JETPACK_LOCATION_X,
+                        sprite.getY() + (sprite.getWidth() / 2));
             }
 
         } else {
@@ -230,12 +236,14 @@ public class Hero {
 
 
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        if (clickedLeft || clickedRight) effect.draw(batch);
+        if ((clickedLeft || clickedRight) && Settings.JETPACK_PARTICLES) effect.draw(batch);
 
         sprite.draw(batch);
 
         if (heroState == HeroState.DEAD) {
+
             explosion.draw(batch);
+
         }
 
         if (Configuration.DEBUG) {
@@ -330,10 +338,9 @@ public class Hero {
             explosion.start();
             body.setGravityScale(0);
             fadeOut(.6f, 0f);
-            rumble.rumble(20f, .6f);
+            rumble.rumble(Settings.RUMBLE_POWER, Settings.RUMBLE_TIME);
             AssetLoader.explosion.play();
             finish();
-
         }
         heroState = HeroState.DEAD;
     }

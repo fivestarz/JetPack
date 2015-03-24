@@ -229,7 +229,7 @@ public class GameWorld {
         for (int i = 0; i < numberOfMeteors; i++) {
             meteors.get(i).render(batcher, shapeRenderer);
         }
-        if (!world.isMenu()) {
+        if (!world.isMenu() && !isTransition()) {
             hero.render(batcher, shapeRenderer);
         }
         for (int i = 0; i < numberOfCoins; i++) {
@@ -241,14 +241,14 @@ public class GameWorld {
         }
 
 
-        if (gameState == GameState.TUTORIAL) {
+        if (isTutorial()) {
             tutorial.render(batcher, shapeRenderer);
         }
 
-        if (gameState == GameState.MENU) {
+        if (isMenu() || isTransition()) {
             menu.render(batcher, shapeRenderer);
         }
-        if (gameState == GameState.GAMEOVER) {
+        if (isGameOver() || isTransition()) {
             gameover.render(batcher, shapeRenderer, fontShader);
         }
 
@@ -414,5 +414,9 @@ public class GameWorld {
 
     public Gameover getGameOver() {
         return gameover;
+    }
+
+    public boolean isTransition() {
+        return gameState == GameState.TRANSITION;
     }
 }

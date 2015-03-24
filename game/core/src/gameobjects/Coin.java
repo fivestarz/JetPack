@@ -157,10 +157,11 @@ public class Coin {
         point.setTransform(randomP.x / world.PIXELS_TO_METERS, randomP.y / world.PIXELS_TO_METERS,
                 0);
         limitVel();
-        effect.update(delta);
-        effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
-                body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
-
+        if (Settings.COIN_PARTICLES) {
+            effect.update(delta);
+            effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
+                    body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
+        }
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
         sprite.setOrigin(0, 0);
 
@@ -187,7 +188,9 @@ public class Coin {
 
         sprite.draw(batcher);
         if (sprite.getColor().a >= .6f) {
-            effect.draw(batcher);
+            if (Settings.COIN_PARTICLES) {
+                effect.draw(batcher);
+            }
         }
 
         if (Configuration.DEBUG) {

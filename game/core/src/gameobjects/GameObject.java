@@ -127,6 +127,7 @@ public class GameObject {
         if (rectangle.contains(screenX, screenY) && isPressed) {
             //Gdx.app.log("TouchedUp", screenX + " " + screenY);
             sprite.setColor(Color.WHITE);
+
             isPressed = false;
             return true;
         }

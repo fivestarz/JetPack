@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 
 import configuration.Configuration;
+import gameworld.GameState;
 import gameworld.GameWorld;
 
 /**
@@ -139,6 +140,7 @@ public class InputHandler implements InputProcessor {
 
     private void checkButtonsUp(int screenX, int screenY) {
         if (world.getMenu().menubuttons.get(1).isTouchUp(screenX, screenY)) {
+            world.gameState = GameState.TRANSITION;
             world.getMenu().startGame();
         } else if (world.getMenu().menubuttons.get(2).isTouchUp(screenX, screenY)) {
             world.actionResolver.showScores();
@@ -160,6 +162,7 @@ public class InputHandler implements InputProcessor {
         } else if (world.getGameOver().menubuttons.get(1).isTouchUp(screenX, screenY)) {
             world.actionResolver.shareGame(Configuration.SHARE_MESSAGE);
         } else if (world.getGameOver().menubuttons.get(2).isTouchUp(screenX, screenY)) {
+            world.gameState = GameState.TRANSITION;
             world.getGameOver().startMenu();
         } else if (world.getGameOver().menubuttons.get(3).isTouchUp(screenX, screenY)) {
             world.actionResolver.IAPClick();

@@ -30,19 +30,19 @@ public class Menu {
         this.world = world;
         title = new MenuButton(world,
                 world.gameWidth / 2 - (AssetLoader.title.getRegionWidth() / 2),
-                world.gameHeight - 80 - AssetLoader.title.getRegionHeight(),
+                world.gameHeight - 90 - AssetLoader.title.getRegionHeight(),
                 AssetLoader.title.getRegionWidth(), AssetLoader.title.getRegionHeight(),
                 AssetLoader.title, Color.WHITE);
 
-        playButton = new MenuButton(world, world.gameWidth / 2 - 400, 130 + 360 + 20, 800, 120,
+        playButton = new MenuButton(world, world.gameWidth / 2 - 400, 130 + 360 + 30, 800, 120,
                 AssetLoader.playButton, Color.WHITE);
         scoresButton = new MenuButton(world, world.gameWidth / 2 - 400,
-                100 + 240 + 20, 800, 120,
+                100 + 240 + 30, 800, 120,
                 AssetLoader.scoresButton, Color.WHITE);
         shareButton = new MenuButton(world, world.gameWidth / 2 - 400,
-                70 + 120 + 20, 800, 120,
+                70 + 120 + 30, 800, 120,
                 AssetLoader.shareButton, Color.WHITE);
-        removeadsButton = new MenuButton(world, world.gameWidth / 2 - 400, 60, 800, 120,
+        removeadsButton = new MenuButton(world, world.gameWidth / 2 - 400, 60+10, 800, 120,
                 AssetLoader.removeadsButton, Color.WHITE);
 
         menubuttons.add(title);
@@ -70,8 +70,8 @@ public class Menu {
                     menubuttons.get(i).getPosition().x, .5f, .05f * i + (v));
         }
         world.gameState = GameState.MENU;
-        if(v==0)
-        AssetLoader.woosh.play();
+        if (v == 0)
+            AssetLoader.woosh.play();
     }
 
     public void update(float delta) {
@@ -101,8 +101,8 @@ public class Menu {
     }
 
     public void makeThemReturn() {
-        for (int i = 0; i <menubuttons.size; i++) {
-            menubuttons.get(i).setX(menubuttons.get(i).getPosition().x-(world.gameWidth*1));
+        for (int i = 0; i < menubuttons.size; i++) {
+            menubuttons.get(i).setX(menubuttons.get(i).getPosition().x - (world.gameWidth * 1));
         }
     }
 }

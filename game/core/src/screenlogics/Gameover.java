@@ -34,31 +34,31 @@ public class Gameover {
         this.world = world;
         playButtonOver = new MenuButton(world,
                 world.gameWidth / 2 - AssetLoader.playButtonOver.getRegionWidth() - 30,
-                40 + 60 + 120 + world.gameHeight,
+                220+ world.gameHeight+10,
                 AssetLoader.playButtonOver.getRegionWidth(),
                 AssetLoader.playButtonOver.getRegionHeight(),
                 AssetLoader.playButtonOver, Color.WHITE);
 
         shareButtonOver = new MenuButton(world, world.gameWidth / 2 + 30,
-                40 + 60 + 120 + world.gameHeight,
+                220 + world.gameHeight+10,
                 AssetLoader.shareButtonOver.getRegionWidth(),
                 AssetLoader.shareButtonOver.getRegionHeight(),
                 AssetLoader.shareButtonOver, Color.WHITE);
 
         backButtonOver = new MenuButton(world, world.gameWidth / 2 - 400,
                 world.gameHeight - 60 - AssetLoader.backButtonOver
-                        .getRegionHeight() + world.gameHeight,
+                        .getRegionHeight() + world.gameHeight+10,
                 AssetLoader.backButtonOver.getRegionWidth(),
                 AssetLoader.backButtonOver.getRegionHeight(),
                 AssetLoader.backButtonOver, Color.WHITE);
 
         board = new MenuButton(world, world.gameWidth / 2 - 400,
                 world.gameHeight - 60 - AssetLoader.boardOver
-                        .getRegionHeight() - 35 + world.gameHeight,
+                        .getRegionHeight() - 35 + world.gameHeight+10,
                 AssetLoader.boardOver.getRegionWidth(),
                 AssetLoader.boardOver.getRegionHeight(),
                 AssetLoader.boardOver, Color.WHITE);
-        removeadsButton = new MenuButton(world, world.gameWidth / 2 - 400, 40 + world.gameHeight,
+        removeadsButton = new MenuButton(world, world.gameWidth / 2 - 400, 40 + world.gameHeight+10,
                 800, 120,
                 AssetLoader.removeadsButton, Color.WHITE);
 
@@ -95,7 +95,7 @@ public class Gameover {
                 AssetLoader.boardOver.getRegionWidth() - 80,
                 AssetLoader.boardOver.getRegionHeight(),
                 AssetLoader.transparent, Color.WHITE, "0", AssetLoader.fontS,
-                Color.WHITE, 170,
+                Color.WHITE, 165,
                 BitmapFont.HAlignment.RIGHT);
 
         bestText = new Text(world, world.gameWidth / 2 - 360,

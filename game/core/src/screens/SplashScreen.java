@@ -13,7 +13,6 @@ import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import configuration.Configuration;
 import helpers.AssetLoader;
-import helpers.FlatColors;
 import noon.ActionResolver;
 import noon.NoonGame;
 import tweens.SpriteAccessor;
@@ -30,6 +29,7 @@ public class SplashScreen implements Screen {
     private Sprite sprite;
     private NoonGame game;
     private ActionResolver actionResolver;
+    private Sprite background;
     private Sprite spriteBack;
     private float width = Gdx.graphics.getWidth();
     private float height = Gdx.graphics.getHeight();
@@ -38,8 +38,8 @@ public class SplashScreen implements Screen {
     public SplashScreen(NoonGame game, ActionResolver actionResolver) {
         this.game = game;
         this.actionResolver = actionResolver;
-        spriteBack = new Sprite(AssetLoader.square);
-        spriteBack.setColor(FlatColors.WHITE);
+        spriteBack = new Sprite(AssetLoader.background);
+        //spriteBack.setColor(FlatColors.WHITE);
         spriteBack.setPosition(0, 0);
         spriteBack.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         actionResolver.viewAd(false);

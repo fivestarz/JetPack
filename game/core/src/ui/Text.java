@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import gameobjects.GameObject;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
+import helpers.FlatColors;
 
 /**
  * Created by ManuGil on 14/03/15.
@@ -41,9 +42,15 @@ public class Text extends GameObject {
 
         super.render(batch, shapeRenderer);
         batch.setShader(fontshader);
+        AssetLoader.font.setColor(FlatColors.DARK_BLACK);
+        AssetLoader.font.drawWrapped(batch, text, getRectangle().x,
+                getRectangle().y + getRectangle().height - distance - 3, getRectangle().width,
+                center);
+        AssetLoader.font.setColor(Color.WHITE);
         AssetLoader.font.drawWrapped(batch, text, getRectangle().x,
                 getRectangle().y + getRectangle().height - distance, getRectangle().width,
                 center);
+
         batch.setShader(null);
     }
 
