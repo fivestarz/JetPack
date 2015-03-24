@@ -108,7 +108,7 @@ public class Hero {
                 world.finishGame();
             }
         };
-
+        fadeIn(.3f, .1f);
     }
 
     public void update(float delta) {
@@ -161,8 +161,8 @@ public class Hero {
 
 
         //DEAD CHECK
-        if(heroState == HeroState.DEAD){
-            body.setLinearVelocity(0,0);
+        if (heroState == HeroState.DEAD) {
+            body.setLinearVelocity(0, 0);
             body.setGravityScale(0);
         }
     }
@@ -326,5 +326,11 @@ public class Hero {
         second.setValue(0);
         Tween.to(second, -1, 1f).setCallback(cbFinish).setCallbackTriggers(
                 TweenCallback.COMPLETE).target(1).start(manager);
+    }
+
+    public void fadeIn(float duration, float delay) {
+        sprite.setAlpha(0);
+        Tween.to(sprite, SpriteAccessor.ALPHA, duration).target(1).delay(delay)
+                .ease(TweenEquations.easeInOutSine).start(manager);
     }
 }

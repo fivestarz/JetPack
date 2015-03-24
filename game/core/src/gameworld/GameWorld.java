@@ -191,7 +191,8 @@ public class GameWorld {
 
         for (int i = 0; i < numberOfMeteors; i++) {
             if (Intersector.overlaps(meteors.get(i).circle, hero.rectangle)) {
-                hero.collide();
+                if (score != 0)
+                    hero.collide();
 
             }
         }
@@ -252,7 +253,6 @@ public class GameWorld {
     }
 
     public void finishGame() {
-        menu.makeThemReturn();
         gameover.start();
         for (int i = 0; i < numberOfCoins; i++) {
             coins.get(i).end();
@@ -350,7 +350,7 @@ public class GameWorld {
     }
 
     public void resetGAME() {
-
+        score = 0;
         removeBodies();
 
         hero = new Hero(this, (int) (gameWidth / 2 - 35), (int) (gameHeight / 2 - 45), 70, 70);

@@ -24,7 +24,7 @@ public class Gameover {
     public MenuButton playButtonOver, shareButtonOver, backButtonOver, removeadsButton, board;
     private Value second = new Value();
     private TweenManager manager;
-    private TweenCallback cbStartGame,cbStartMenu;
+    private TweenCallback cbStartGame, cbStartMenu;
 
     public Gameover(final GameWorld world) {
         this.world = world;
@@ -75,20 +75,22 @@ public class Gameover {
             }
         };
 
-        cbStartMenu= new TweenCallback() {
+        cbStartMenu = new TweenCallback() {
             @Override
             public void onEvent(int type, BaseTween<?> source) {
 
+                world.getMenu().makeThemReturn();
                 world.getMenu().start();
             }
         };
     }
 
     public void start() {
+
         world.gameState = GameState.GAMEOVER;
         for (int i = 0; i < menubuttons.size; i++) {
             menubuttons.get(i).effectY(menubuttons.get(i).getPosition().y,
-                    menubuttons.get(i).getPosition().y - 1080, .6f, 0f);
+                    menubuttons.get(i).getPosition().y - 1080, .4f, 0f);
         }
     }
 
@@ -118,12 +120,12 @@ public class Gameover {
     }
 
     public void startMenu() {
-        Tween.to(second, -1, .6f).target(1).setCallback(cbStartMenu)
+        Tween.to(second, -1, .4f).target(1).setCallback(cbStartMenu)
                 .setCallbackTriggers(TweenCallback.COMPLETE).start(
                 manager);
         for (int i = menubuttons.size - 1; i >= 0; i--) {
             menubuttons.get(i).effectY(menubuttons.get(i).getPosition().y,
-                    menubuttons.get(i).getPosition().y + 1080, .5f, 0f);
+                    menubuttons.get(i).getPosition().y + 1080, .4f, 0f);
         }
     }
 }

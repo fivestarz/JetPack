@@ -130,7 +130,7 @@ public class InputHandler implements InputProcessor {
     }
 
     private void checkButtonsDownGameOver(float screenX, float screenY) {
-        for (int i = 0; i < world.getGameOver().menubuttons.size-1; i++) {
+        for (int i = 0; i < world.getGameOver().menubuttons.size - 1; i++) {
             if (world.getGameOver().menubuttons.get(i).isTouchDown((int) screenX, (int) screenY)) {
                 AssetLoader.click.play();
             }
@@ -161,6 +161,8 @@ public class InputHandler implements InputProcessor {
             world.actionResolver.shareGame(Configuration.SHARE_MESSAGE);
         } else if (world.getGameOver().menubuttons.get(2).isTouchUp(screenX, screenY)) {
             world.getGameOver().startMenu();
+        } else if (world.getGameOver().menubuttons.get(3).isTouchUp(screenX, screenY)) {
+            world.actionResolver.IAPClick();
         } else {
             for (int i = 0; i < world.getGameOver().menubuttons.size - 1; i++) {
                 world.getGameOver().menubuttons.get(i).isPressed = false;
