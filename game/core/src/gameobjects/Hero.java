@@ -21,6 +21,7 @@ import configuration.Configuration;
 import configuration.Settings;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
+import helpers.FlatColors;
 import helpers.Rumble;
 import tweens.SpriteAccessor;
 import tweens.Value;
@@ -39,14 +40,16 @@ public class Hero {
     private ParticleEffect effect, explosion;
     private TweenManager manager;
     public Rectangle rectangle;
-    private TweenCallback cbFinish;
+    private TweenCallback cbFinish, cbInmortal;
 
     public enum HeroState {DEAD, ALIVE}
 
     public HeroState heroState;
     Tween sound;
     Value second = new Value();
+    Value inmortal = new Value();
     public Rumble rumble;
+    public Tween godTween;
 
     public Hero(final GameWorld world, int x, int y, float width, float height) {
         this.world = world;
@@ -109,11 +112,31 @@ public class Hero {
             }
         };
         fadeIn(.3f, .1f);
+
+
+        cbInmortal = new TweenCallback() {
+            @Override
+            public void onEvent(int type, BaseTween<?> source) {
+                inmortal.setValue(0);
+                godTween = Tween.to(inmortal, -1, 0.8f).target(1).setCallback(cbInmortal)
+                        .setCallbackTriggers(TweenCallback.COMPLETE).target(
+                                1).start(manager);
+            }
+        };
+        inmortal.setValue(0);
+        godTween = Tween.to(inmortal, -1, 0.8f).target(1).setCallback(cbInmortal)
+                .setCallbackTriggers(TweenCallback.COMPLETE).target(
+                        1).start(manager);
     }
 
     public void update(float delta) {
         manager.update(delta);
         if (heroState == HeroState.ALIVE) {
+            if (inmortal.getValue() >0.5) {
+                sprite.setColor(FlatColors.BLUE);
+            } else {
+                sprite.setColor(FlatColors.WHITE);
+            }
             sprite.setPosition((body.getPosition().x * world.PIXELS_TO_METERS) - sprite.
                             getWidth() / 2,
                     (body.getPosition().y * world.PIXELS_TO_METERS) - sprite.getHeight() / 2);
@@ -333,4 +356,6 @@ public class Hero {
         Tween.to(sprite, SpriteAccessor.ALPHA, duration).target(1).delay(delay)
                 .ease(TweenEquations.easeInOutSine).start(manager);
     }
+
+
 }

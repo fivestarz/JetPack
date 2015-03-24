@@ -186,7 +186,7 @@ public class Coin {
     public void render(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
 
         sprite.draw(batcher);
-        if (sprite.getColor().a>= .6f) {
+        if (sprite.getColor().a >= .6f) {
             effect.draw(batcher);
         }
 
@@ -281,6 +281,11 @@ public class Coin {
             fadeOut(.4f, .0f);
             effect.reset();
             world.addScore(1);
+            if (world.getScore() == 1) {
+                //Stop the flashing
+                world.getHero().godTween.free();
+                world.getHero().inmortal.setValue(0);
+            }
         }
 
         coinState = CoinState.COLLECTED;
