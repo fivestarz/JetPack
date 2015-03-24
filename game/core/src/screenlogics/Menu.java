@@ -62,11 +62,11 @@ public class Menu {
     }
 
     public void start() {
-        world.gameState = GameState.MENU;
         for (int i = 0; i < menubuttons.size; i++) {
             menubuttons.get(i).effectX(menubuttons.get(i).getPosition().x - world.gameWidth,
                     menubuttons.get(i).getPosition().x, .5f, .05f * i);
         }
+        world.gameState = GameState.MENU;
     }
 
     public void update(float delta) {

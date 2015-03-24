@@ -17,7 +17,7 @@ public class AssetLoader {
 
     public static Texture logoTexture, dotT, colorCircleT, backgroundT, tutorialT, meteorT, coinT, buttonsT, titleT;
     public static TextureRegion logo, square, dot, colorCircle, flashCircle, background, tutorial, meteor, coin,
-            playButton, shareButton, scoresButton, removeadsButton, title;
+            playButton, shareButton, scoresButton, removeadsButton, title, playButtonOver, shareButtonOver, boardOver, backButtonOver;
     public static BitmapFont font, fontS, fontXS, fontB;
     private static Preferences prefs;
 
@@ -57,6 +57,10 @@ public class AssetLoader {
         scoresButton = new TextureRegion(buttonsT, 0, 120, buttonsT.getWidth(), 120);
         shareButton = new TextureRegion(buttonsT, 0, 120 * 2, buttonsT.getWidth(), 120);
         removeadsButton = new TextureRegion(buttonsT, 0, 120 * 3, buttonsT.getWidth(), 120);
+        playButtonOver = new TextureRegion(buttonsT, 0, 120 * 4, 200, 210);
+        shareButtonOver = new TextureRegion(buttonsT, 200, 120 * 4, 200, 210);
+        backButtonOver = new TextureRegion(buttonsT, 400, 120 * 4, 110, 120);
+        boardOver = new TextureRegion(buttonsT, 0, 120 * 4 + 211, buttonsT.getWidth(), 492);
 
         titleT = new Texture(Gdx.files.internal("jetpacklogo.png"));
         titleT.setFilter(TextureFilter.Linear, TextureFilter.Linear);

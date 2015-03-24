@@ -23,7 +23,6 @@ import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import configuration.Configuration;
 import configuration.Settings;
-import gameworld.GameState;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
 import tweens.SpriteAccessor;
@@ -118,7 +117,7 @@ public class Coin {
                         body.getPosition().y + (radius / world.PIXELS_TO_METERS)),
                 new Vector2(point.getPosition().x + (radius / world.PIXELS_TO_METERS),
                         point.getPosition().y + (radius / world.PIXELS_TO_METERS)));
-        jointDef.dampingRatio = 1f;
+        jointDef.dampingRatio = .3f;
         jointDef.frequencyHz = 50;
         jointDef.length = Settings.COIN_JOINT_DISTANCE / world.PIXELS_TO_METERS;
         jointDef.collideConnected = false;
@@ -158,11 +157,10 @@ public class Coin {
         point.setTransform(randomP.x / world.PIXELS_TO_METERS, randomP.y / world.PIXELS_TO_METERS,
                 0);
         limitVel();
-        if (world.gameState == GameState.RUNNING) {
-            effect.update(delta);
-            effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
-                    body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
-        }
+        effect.update(delta);
+        effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
+                body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
+
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
         sprite.setOrigin(0, 0);
 
@@ -188,7 +186,9 @@ public class Coin {
     public void render(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
 
         sprite.draw(batcher);
-        effect.draw(batcher);
+        if (sprite.getColor().a>= .6f) {
+            effect.draw(batcher);
+        }
 
         if (Configuration.DEBUG) {
             batcher.end();
@@ -201,14 +201,15 @@ public class Coin {
 
     public void reset() {
         coinState = CoinState.IDLE;
-        body.applyForce(MathUtils.random(-0.05f, 0.05f), MathUtils.random(-0.05f, 0.05f), 4, 4,
-                true);
+        //
         //body.setAngularVelocity(MathUtils.random(-2,2));
         randomP = world.getPointsDir().get(MathUtils.random(0, world.getPointsDir().size - 1));
-        body.setTransform(randomP.x / world.PIXELS_TO_METERS, randomP.y / world.PIXELS_TO_METERS,
+        body.setTransform((randomP.x + 10) / world.PIXELS_TO_METERS,
+                randomP.y / world.PIXELS_TO_METERS,
                 0);
         point.setTransform(randomP.x / world.PIXELS_TO_METERS, randomP.y / world.PIXELS_TO_METERS,
                 0);
+        body.applyForce(MathUtils.random(-1f, 1f), MathUtils.random(-1f, 1f), 4, 4, true);
         jointDef = new DistanceJointDef();
         jointDef.bodyA = body;
 
@@ -219,7 +220,7 @@ public class Coin {
                         body.getPosition().y + (radius / world.PIXELS_TO_METERS)),
                 new Vector2(point.getPosition().x + (radius / world.PIXELS_TO_METERS),
                         point.getPosition().y + (radius / world.PIXELS_TO_METERS)));
-        jointDef.dampingRatio = 0f;
+        jointDef.dampingRatio = 1f;
         jointDef.frequencyHz = 50;
         jointDef.length = Settings.COIN_JOINT_DISTANCE / world.PIXELS_TO_METERS;
         jointDef.collideConnected = false;
@@ -241,6 +242,7 @@ public class Coin {
                 .ease(TweenEquations.easeInOutSine).start(manager);
     }
 
+
     public void fadeOut(float duration, float delay) {
         sprite.setAlpha(.75f);
         TweenCallback cbFadeOut = new TweenCallback() {
@@ -254,6 +256,22 @@ public class Coin {
                 .ease(TweenEquations.easeInOutSine).start(manager);
     }
 
+    public void fadeOutNothing(float duration, float delay) {
+        sprite.setAlpha(.75f);
+        TweenCallback cbFadeOut = new TweenCallback() {
+            @Override
+            public void onEvent(int type, BaseTween<?> source) {
+                reset();
+            }
+        };
+        Tween.to(sprite, SpriteAccessor.ALPHA, duration).target(.0f).delay(delay)
+                .ease(TweenEquations.easeInOutSine).start(manager);
+    }
+
+    public void end() {
+        effect.reset();
+        fadeOutNothing(.3f, .3f);
+    }
 
     public void collide() {
 

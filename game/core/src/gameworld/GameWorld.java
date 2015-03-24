@@ -26,6 +26,7 @@ import helpers.AssetLoader;
 import helpers.FlatColors;
 import noon.ActionResolver;
 import noon.NoonGame;
+import screenlogics.Gameover;
 import screenlogics.Menu;
 
 /**
@@ -70,6 +71,7 @@ public class GameWorld {
     private Hero hero;
 
     private Menu menu;
+    private Gameover gameover;
 
     //BOX2D
     private World worldB;
@@ -107,6 +109,7 @@ public class GameWorld {
         tutorial = new Background(this, 0, 0, gameWidth, gameHeight, AssetLoader.tutorial,
                 Color.WHITE);
         menu = new Menu(this);
+        gameover = new Gameover(this);
         stars.clear();
         for (int i = 0; i < numberOfStars; i++) {
             stars.add(new Star(world));
@@ -114,7 +117,7 @@ public class GameWorld {
 
         points.clear();
         pointsDir.clear();
-        for (int i = 0; i < numberOfPoints; i++) {
+        for (int i = 1; i < numberOfPoints - 1; i++) {
             points.add(new Vector2(marginOfPoints, gameHeight / (numberOfPoints + 1) * (i + 1)));
             points.add(new Vector2(gameWidth - marginOfPoints,
                     gameHeight / (numberOfPoints + 1) * (i + 1)));
@@ -122,8 +125,8 @@ public class GameWorld {
             points.add(new Vector2(gameWidth / (numberOfPoints + 1) * (i + 1),
                     gameHeight - marginOfPoints));
             //TODO: More spawn points for the coins
-            for (int j = 0; j < numberOfPoints; j++) {
-                pointsDir.add(new Vector2((int) (gameWidth / ((numberOfPoints) + 1) * (j + 1)),
+            for (int j = 0; j < numberOfPoints - 1; j++) {
+                pointsDir.add(new Vector2((int) (gameWidth / ((numberOfPoints)) * (j + 1)),
                         (int) (gameHeight / ((numberOfPoints) + 1) * (i + 1))));
             }
 
@@ -157,6 +160,7 @@ public class GameWorld {
 
     public void update(float delta) {
         menu.update(delta);
+        gameover.update(delta);
         for (int i = 0; i < numberOfStars; i++) {
             stars.get(i).update(delta);
         }
@@ -211,8 +215,9 @@ public class GameWorld {
         for (int i = 0; i < numberOfMeteors; i++) {
             meteors.get(i).render(batcher, shapeRenderer);
         }
-        hero.render(batcher, shapeRenderer);
-
+        if (!world.isMenu()) {
+            hero.render(batcher, shapeRenderer);
+        }
         for (int i = 0; i < numberOfCoins; i++) {
             coins.get(i).render(batcher, shapeRenderer);
         }
@@ -221,8 +226,12 @@ public class GameWorld {
             tutorial.render(batcher, shapeRenderer);
         }
 
-
-        menu.render(batcher, shapeRenderer);
+        if (gameState == GameState.MENU) {
+            menu.render(batcher, shapeRenderer);
+        }
+        if (gameState == GameState.GAMEOVER) {
+            gameover.render(batcher, shapeRenderer);
+        }
 
         if (Configuration.DEBUG) {
             batcher.end();
@@ -244,7 +253,10 @@ public class GameWorld {
 
     public void finishGame() {
         menu.makeThemReturn();
-        menu.start();
+        gameover.start();
+        for (int i = 0; i < numberOfCoins; i++) {
+            coins.get(i).end();
+        }
         saveScoreLogic();
     }
 
@@ -315,7 +327,6 @@ public class GameWorld {
     }
 
     public void finishTutorial() {
-        hero.start();
         for (int i = 0; i < coins.size; i++) {
             coins.get(i).start();
         }
@@ -343,7 +354,6 @@ public class GameWorld {
         removeBodies();
 
         hero = new Hero(this, (int) (gameWidth / 2 - 35), (int) (gameHeight / 2 - 45), 70, 70);
-
         //CREATING METEORS
         meteors.clear();
         for (int i = 0; i < numberOfMeteors; i++) {
@@ -379,5 +389,13 @@ public class GameWorld {
         }
         // actual remove
         worldB.destroyBody(body);
+    }
+
+    public boolean isGameOver() {
+        return gameState == GameState.GAMEOVER;
+    }
+
+    public Gameover getGameOver() {
+        return gameover;
     }
 }

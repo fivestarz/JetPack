@@ -3,7 +3,7 @@ font.size=55
 font.bold=false
 font.italic=false
 
-font2.file=/Users/ManuGil/Downloads/Josefin-Sans/JosefinSans-SemiBold.ttf
+font2.file=/Users/ManuGil/Downloads/retro_computer/Retro Computer_DEMO.ttf
 font2.use=true
 
 pad.top=6
@@ -22,4 +22,9 @@ effect.class=com.badlogic.gdx.tools.hiero.unicodefont.effects.DistanceFieldEffec
 effect.Color=ffffff
 effect.Scale=32
 effect.Spread=4.0
+
+effect.class=com.badlogic.gdx.tools.hiero.unicodefont.effects.OutlineEffect
+effect.Color=000000
+effect.Width=2.0
+effect.Join=2
 

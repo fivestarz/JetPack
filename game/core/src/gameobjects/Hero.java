@@ -55,7 +55,7 @@ public class Hero {
         this.width = width;
         this.height = height;
 
-        heroState = HeroState.ALIVE;
+        heroState = HeroState.DEAD;
         sprite = new Sprite(AssetLoader.colorCircle);
 
         sprite.setPosition(x, y);
@@ -293,6 +293,8 @@ public class Hero {
     }
 
     public void start() {
+        heroState = HeroState.ALIVE;
+        body.setGravityScale(1);
     }
 
     public Vector2 getPosition() {

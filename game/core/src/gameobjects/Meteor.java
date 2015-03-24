@@ -15,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import configuration.Configuration;
 import configuration.Settings;
-import gameworld.GameState;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
 
@@ -90,11 +89,10 @@ public class Meteor {
         circle.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
                 body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
 
-        if (world.gameState == GameState.RUNNING) {
-            effect.update(delta);
-            effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
-                    body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
-        }
+        effect.update(delta);
+        effect.setPosition(body.getWorldPoint(body.getLocalCenter()).x * world.PIXELS_TO_METERS,
+                body.getWorldPoint(body.getLocalCenter()).y * world.PIXELS_TO_METERS);
+
         body.setLinearVelocity(body.getLinearVelocity().nor().x * velRandom,
                 body.getLinearVelocity().nor().y * velRandom);
         limitVel();

@@ -71,6 +71,7 @@ public class GameObject {
             @Override
             public void onEvent(int type, BaseTween<?> source) {
                 world.gameState = GameState.RUNNING;
+                world.getHero().start();
             }
         };
 
@@ -89,11 +90,12 @@ public class GameObject {
             flashSprite.setPosition(position.x, position.y);
             flashSprite.setOriginCenter();
         }
+        //if (isPressed) sprite.setAlpha(0.6f);
+       // else sprite.setAlpha(1);
     }
 
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         sprite.draw(batch);
-
 
         if (flashSprite.getColor().a != 0) {
             flashSprite.draw(batch);
@@ -114,7 +116,7 @@ public class GameObject {
     public boolean isTouchDown(int screenX, int screenY) {
         if (rectangle.contains(screenX, screenY)) {
             //!Gdx.app.log("TouchedDown", screenX + " " + screenY);
-
+            sprite.setColor(FlatColors.GREY);
             isPressed = true;
             return true;
         }
@@ -124,7 +126,7 @@ public class GameObject {
     public boolean isTouchUp(int screenX, int screenY) {
         if (rectangle.contains(screenX, screenY) && isPressed) {
             //Gdx.app.log("TouchedUp", screenX + " " + screenY);
-
+            sprite.setColor(Color.WHITE);
             isPressed = false;
             return true;
         }

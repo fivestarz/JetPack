@@ -27,7 +27,7 @@ public class MenuButton extends GameObject {
 
     @Override
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        getSprite().setColor(this.color);
+
         super.render(batch, shapeRenderer);
     }
 

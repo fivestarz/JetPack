@@ -1,5 +1,7 @@
 package configuration;
 
+import helpers.AssetLoader;
+
 /**
  * Created by ManuGil on 09/03/15.
  */
@@ -45,15 +47,9 @@ public class Configuration {
 
     //COLORS
 
-    //GAMEPLAY VARIABLES
-
     //TEXTs
-    public static final String HIGHSCORE_TEXT = "High Score";
-    public static final String GAMESPLAYED_TEXT = "Games Played";
-    public static final String BUTTONSCLICKED_TEXT = "Total Taps";
-    public static final String SCORE_TEXT = "Score";
 
     //Share Message
-    public static final String SHARE_MESSAGE = "Have you tried " + GAME_NAME +
-            "? Best Game EVER! Download here! ";
+    public static final String SHARE_MESSAGE = "Can you beat my high score of " + AssetLoader
+            .getHighScore() + " at " + GAME_NAME + "?";
 }

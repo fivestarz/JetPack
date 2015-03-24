@@ -2,6 +2,7 @@ package helpers;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 
 import configuration.Configuration;
 import gameworld.GameWorld;
@@ -66,6 +67,8 @@ public class InputHandler implements InputProcessor {
 
         } else if (world.isMenu()) {
             checkButtonsDown(screenX, screenY);
+        } else if (world.isGameOver()) {
+            checkButtonsDownGameOver(screenX, screenY);
         }
 
         return false;
@@ -94,10 +97,13 @@ public class InputHandler implements InputProcessor {
             world.finishTutorial();
         } else if (world.isMenu()) {
             checkButtonsUp(screenX, screenY);
+        } else if (world.isGameOver()) {
+            checkButtonsUpGameOver(screenX, screenY);
         }
 
         return false;
     }
+
 
     private void runningTouchDown(float screenX) {
         if (activeTouch == 1) {
@@ -116,8 +122,16 @@ public class InputHandler implements InputProcessor {
     }
 
     private void checkButtonsDown(float screenX, float screenY) {
-        for (int i = 0; i < world.getMenu().menubuttons.size; i++) {
+        for (int i = 1; i < world.getMenu().menubuttons.size; i++) {
             if (world.getMenu().menubuttons.get(i).isTouchDown((int) screenX, (int) screenY)) {
+                AssetLoader.click.play();
+            }
+        }
+    }
+
+    private void checkButtonsDownGameOver(float screenX, float screenY) {
+        for (int i = 0; i < world.getGameOver().menubuttons.size-1; i++) {
+            if (world.getGameOver().menubuttons.get(i).isTouchDown((int) screenX, (int) screenY)) {
                 AssetLoader.click.play();
             }
         }
@@ -132,6 +146,26 @@ public class InputHandler implements InputProcessor {
             world.actionResolver.shareGame(Configuration.SHARE_MESSAGE);
         } else if (world.getMenu().menubuttons.get(4).isTouchUp(screenX, screenY)) {
             world.actionResolver.IAPClick();
+        } else {
+            for (int i = 1; i < world.getMenu().menubuttons.size; i++) {
+                world.getMenu().menubuttons.get(i).isPressed = false;
+                world.getMenu().menubuttons.get(i).getSprite().setColor(Color.WHITE);
+            }
+        }
+    }
+
+    private void checkButtonsUpGameOver(int screenX, int screenY) {
+        if (world.getGameOver().menubuttons.get(0).isTouchUp(screenX, screenY)) {
+            world.getGameOver().startGame();
+        } else if (world.getGameOver().menubuttons.get(1).isTouchUp(screenX, screenY)) {
+            world.actionResolver.shareGame(Configuration.SHARE_MESSAGE);
+        } else if (world.getGameOver().menubuttons.get(2).isTouchUp(screenX, screenY)) {
+            world.getGameOver().startMenu();
+        } else {
+            for (int i = 0; i < world.getGameOver().menubuttons.size - 1; i++) {
+                world.getGameOver().menubuttons.get(i).isPressed = false;
+                world.getGameOver().menubuttons.get(i).getSprite().setColor(Color.WHITE);
+            }
         }
     }
 
