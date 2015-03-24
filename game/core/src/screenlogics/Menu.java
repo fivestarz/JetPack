@@ -57,8 +57,11 @@ public class Menu {
                 world.gameState = GameState.TUTORIAL;
                 world.getTutorial().fadeIn(.3f, 0f);
                 world.resetGAME();
+
             }
         };
+
+        start(.5f);
     }
 
     public void start(float v) {
@@ -67,7 +70,7 @@ public class Menu {
                     menubuttons.get(i).getPosition().x, .5f, .05f * i + (v));
         }
         world.gameState = GameState.MENU;
-
+        if(v==0)
         AssetLoader.woosh.play();
     }
 
