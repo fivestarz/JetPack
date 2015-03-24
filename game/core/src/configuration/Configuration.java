@@ -26,29 +26,6 @@ public class Configuration {
     public static final String LEADERBOARD_GAMESPLAYED = "CgkIzf-DzsgaEAIQAg";
     public static final String LEADERBOARD_BUTTONS_CLICKED = "CgkIzf-DzsgaEAIQAQ";
 
-    //ACHIEVEMENTS IDS Points
-    public static final String ACHIEVEMENT_50_P = "CgkIzf-DzsgaEAIQBA";
-    public static final String ACHIEVEMENT_100_P = "CgkIzf-DzsgaEAIQBQ";
-    public static final String ACHIEVEMENT_200_P = "CgkIzf-DzsgaEAIQBg";
-    public static final String ACHIEVEMENT_300_P = "CgkIzf-DzsgaEAIQBw";
-    public static final String ACHIEVEMENT_500_P = "CgkIzf-DzsgaEAIQCA";
-    public static final String ACHIEVEMENT_1000_P = "CgkIzf-DzsgaEAIQCQ";
-    //GAMES PLAYED
-    public static final String ACHIEVEMENT_10_GP = "CgkIzf-DzsgaEAIQCg";
-    public static final String ACHIEVEMENT_25_GP = "CgkIzf-DzsgaEAIQCw";
-    public static final String ACHIEVEMENT_50_GP = "CgkIzf-DzsgaEAIQDA";
-    public static final String ACHIEVEMENT_100_GP = "CgkIzf-DzsgaEAIQDQ";
-    public static final String ACHIEVEMENT_200_GP = "CgkIzf-DzsgaEAIQDg";
-    //TOTAL TAPS
-    public static final String ACHIEVEMENT_50_T = "CgkIzf-DzsgaEAIQDw";
-    public static final String ACHIEVEMENT_200_T = "CgkIzf-DzsgaEAIQEA";
-    public static final String ACHIEVEMENT_500_T = "CgkIzf-DzsgaEAIQEQ";
-    public static final String ACHIEVEMENT_1000_T = "CgkIzf-DzsgaEAIQEg";
-
-    //COLORS
-
-    //TEXTs
-
     //Share Message
     public static final String SHARE_MESSAGE = "Can you beat my high score of " + AssetLoader
             .getHighScore() + " at " + GAME_NAME + "?";
