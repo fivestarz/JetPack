@@ -123,6 +123,9 @@ public class AssetLoader {
         pickup = Gdx.audio.newSound(Gdx.files.internal("pickup.wav"));
         jetpack = Gdx.audio.newSound(Gdx.files.internal("jetpack.wav"));
         woosh = Gdx.audio.newSound(Gdx.files.internal("woosh.wav"));
+
+
+
     }
 
     public static void dispose() {
@@ -166,5 +169,9 @@ public class AssetLoader {
 
     public static boolean getAds() {
         return prefs.getBoolean("ads", false);
+    }
+
+    public static void prefs() {
+        prefs = Gdx.app.getPreferences(Configuration.GAME_NAME);
     }
 }

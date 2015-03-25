@@ -27,6 +27,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.wearable.Asset;
 import com.google.example.games.basegameutils.GameHelper;
 import com.madtriangle.impossiblejetpack.util.IabHelper;
 import com.madtriangle.impossiblejetpack.util.IabResult;
@@ -192,6 +193,7 @@ public class AndroidLauncher extends AndroidApplication implements
             Purchase premiumPurchase = inventory.getPurchase(SKU_PREMIUM);
             removeAdsVersion = premiumPurchase != null
                     && verifyDeveloperPayload(premiumPurchase);
+            AssetLoader.prefs();
             saveData();
 
 

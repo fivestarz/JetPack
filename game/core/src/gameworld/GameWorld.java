@@ -446,4 +446,8 @@ public class GameWorld {
     public void finishPause() {
         pause.finish();
     }
+
+    public NoonGame getGame() {
+        return game;
+    }
 }

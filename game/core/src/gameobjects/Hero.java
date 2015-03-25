@@ -23,6 +23,7 @@ import gameworld.GameWorld;
 import helpers.AssetLoader;
 import helpers.FlatColors;
 import helpers.Rumble;
+import helpers.ScreenShot;
 import tweens.SpriteAccessor;
 import tweens.Value;
 import tweens.VectorAccessor;
@@ -40,14 +41,17 @@ public class Hero {
     private ParticleEffect effect, explosion;
     private TweenManager manager;
     public Rectangle rectangle;
-    private TweenCallback cbFinish, cbInmortal;
+    private TweenCallback cbFinish, cbInmortal, cbPhoto;
 
     public enum HeroState {DEAD, ALIVE}
 
     public HeroState heroState;
     Tween sound;
+
     Value second = new Value();
     Value inmortal = new Value();
+    Value photoSecond = new Value();
+
     public Rumble rumble;
     public Tween godTween;
 
@@ -109,6 +113,15 @@ public class Hero {
             @Override
             public void onEvent(int type, BaseTween<?> source) {
                 world.finishGame();
+            }
+        };
+        cbPhoto = new TweenCallback() {
+            @Override
+            public void onEvent(int type, BaseTween<?> source) {
+                //ScreenshotFactory.saveScreenshot();
+                ScreenShot worker = new ScreenShot();
+                worker.prepare();			// grab screenshot
+                world.getGame().executor.execute(worker);
             }
         };
         fadeIn(.3f, .1f);
@@ -336,7 +349,7 @@ public class Hero {
             explosion.reset();
             explosion.start();
             body.setGravityScale(0);
-            fadeOut(.6f, 0f);
+            fadeOut(.3f, .5f);
             rumble.rumble(Settings.RUMBLE_POWER, Settings.RUMBLE_TIME);
             AssetLoader.explosion.play();
             finish();
@@ -354,6 +367,10 @@ public class Hero {
     private void finish() {
         second.setValue(0);
         Tween.to(second, -1, 1f).setCallback(cbFinish).setCallbackTriggers(
+                TweenCallback.COMPLETE).target(1).start(manager);
+
+        photoSecond.setValue(0);
+        Tween.to(photoSecond, -1, Settings.PHOTO_WAIT_TIME).setCallback(cbPhoto).setCallbackTriggers(
                 TweenCallback.COMPLETE).target(1).start(manager);
     }
 

@@ -12,6 +12,7 @@ public class Settings {
     public static final int NUMBER_INITIAL_BACKGROUND_STARS = 180;
     public static final float WORLD_GRAVITY = -6.8f;
     public static final float JETPACK_SOUND_REPETITION_TIME = .15f;
+    public static final float PHOTO_WAIT_TIME = .1f;
 
     //COLLISION
     public static final short CATEGORY_HERO = 0x0001;  // 0000000000000001 in binary
@@ -31,7 +32,7 @@ public class Settings {
     public static final float JETPACK_Y_DECELERATION = 9f;
     public static final float JETPACK_X_DECELERATION = 2f;
     public static final float INITIAL_FLASH_TIME = .5f;
-    public static final float RUMBLE_POWER = 20f ;
+    public static final float RUMBLE_POWER = 20f;
     public static final float RUMBLE_TIME = .6f;
     public static final float LOCAL_JETPACK_LOCATION_X = 5;
     public static final float LOCAL_JETPACK_LOCATION_Y = 0; //NOT USED, ALWAYS IN CENTER
@@ -47,6 +48,6 @@ public class Settings {
     public static final int NUMBER_INITIAL_COINS = 3;
     public static final float COIN_MAX_VEL = 0.2f;
     public static final float COIN_JOINT_DISTANCE = 10f;
-    public static final float COIN_COLLISION_MARGIN =  5;
+    public static final float COIN_COLLISION_MARGIN = 5;
     public static final boolean COIN_PARTICLES = true;
 }
