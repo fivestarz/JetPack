@@ -267,7 +267,6 @@ public class Hero {
             body.setTransform(body.getPosition().x,
                     (world.gameHeight + (sprite.getHeight() / 2)) / world.PIXELS_TO_METERS, 0);
         }
-
         if (body.getPosition().x * world.PIXELS_TO_METERS > (world.gameWidth + (sprite
                 .getWidth() / 2))) {
             body.setTransform((((-sprite.getWidth() / 2)) / world.PIXELS_TO_METERS),

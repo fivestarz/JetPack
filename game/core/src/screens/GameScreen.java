@@ -61,13 +61,13 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
         Gdx.app.log("GameScreen", "hide called");
-        //world.setPauseMode();
+        world.setPauseMode();
     }
 
     @Override
     public void pause() {
         Gdx.app.log("GameScreen", "pause called");
-        //world.setPauseMode();
+        world.setPauseMode();
     }
 
     @Override

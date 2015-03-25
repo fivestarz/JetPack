@@ -144,7 +144,7 @@ public class GameObject {
     }
 
     public void fadeOut(float duration, float delay) {
-        sprite.setAlpha(1);
+        //sprite.setAlpha(1);
         Tween.to(getSprite(), SpriteAccessor.ALPHA, duration).target(0).delay(delay)
                 .ease(TweenEquations.easeInOutSine).start(manager);
     }
@@ -227,5 +227,11 @@ public class GameObject {
 
     public void setY(float y) {
         this.position.y = y;
+    }
+
+    public void fadeIn(float to, float duration, float delay) {
+        sprite.setAlpha(0);
+        Tween.to(getSprite(), SpriteAccessor.ALPHA, duration).target(to).delay(delay)
+                .ease(TweenEquations.easeInOutSine).start(manager);
     }
 }

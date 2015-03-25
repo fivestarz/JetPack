@@ -93,13 +93,14 @@ public class InputHandler implements InputProcessor {
                     world.getHero().notClickedLeft();
                 }
             }
-
         } else if (world.isTutorial()) {
             world.finishTutorial();
         } else if (world.isMenu()) {
             checkButtonsUp(screenX, screenY);
         } else if (world.isGameOver()) {
             checkButtonsUpGameOver(screenX, screenY);
+        }else if(world.isPause()){
+            world.finishPause();
         }
 
         return false;

@@ -29,6 +29,7 @@ import noon.ActionResolver;
 import noon.NoonGame;
 import screenlogics.Gameover;
 import screenlogics.Menu;
+import screenlogics.Pause;
 import ui.Text;
 
 /**
@@ -72,8 +73,10 @@ public class GameWorld {
     private Coin coin;
     private Hero hero;
 
+    //UI
     private Menu menu;
     private Gameover gameover;
+    private Pause pause;
     private Text scoreText;
 
     //BOX2D
@@ -107,12 +110,12 @@ public class GameWorld {
     public void reset() {
 
         background = new Background(this, -100, -100, gameWidth + 200, gameHeight + 200,
-                AssetLoader.background,
-                Color.WHITE);
+                AssetLoader.background, Color.WHITE);
         tutorial = new Background(this, 0, 0, gameWidth, gameHeight, AssetLoader.tutorial,
                 Color.WHITE);
         menu = new Menu(this);
         gameover = new Gameover(this);
+        pause = new Pause(this);
         stars.clear();
         for (int i = 0; i < numberOfStars; i++) {
             stars.add(new Star(world));
@@ -170,6 +173,9 @@ public class GameWorld {
         //UI
         menu.update(delta);
         gameover.update(delta);
+        pause.update(delta);
+
+        //TEXTS
         scoreText.update(delta);
         scoreText.setText(score + "");
 
@@ -177,19 +183,22 @@ public class GameWorld {
         for (int i = 0; i < numberOfStars; i++) {
             stars.get(i).update(delta);
         }
-
-        worldB.step(1f / 60f, 6, 2);
+        if (!isPause()) {
+            worldB.step(1f / 60f, 6, 2);
+            hero.update(delta);
+        }
         if (isRunning()) {
             collisions();
         } else if (isTutorial()) {
             tutorial.update(delta);
         }
-        hero.update(delta);
-        for (int i = 0; i < numberOfMeteors; i++) {
-            meteors.get(i).update(delta);
-        }
-        for (int i = 0; i < numberOfCoins; i++) {
-            coins.get(i).update(delta);
+        if (!isPause()) {
+            for (int i = 0; i < numberOfMeteors; i++) {
+                meteors.get(i).update(delta);
+            }
+            for (int i = 0; i < numberOfCoins; i++) {
+                coins.get(i).update(delta);
+            }
         }
         //Gdx.app.log("GameState", gameState.toString());
 
@@ -250,6 +259,10 @@ public class GameWorld {
         }
         if (isGameOver() || isTransition()) {
             gameover.render(batcher, shapeRenderer, fontShader);
+        }
+
+        if (isPause()) {
+            pause.render(batcher, shapeRenderer, fontShader);
         }
 
         if (Configuration.DEBUG) {
@@ -418,5 +431,19 @@ public class GameWorld {
 
     public boolean isTransition() {
         return gameState == GameState.TRANSITION;
+    }
+
+    public boolean isPause() {
+        return gameState == GameState.PAUSE;
+    }
+
+    public void setPauseMode() {
+        if (isRunning()) {
+            pause.start();
+        }
+    }
+
+    public void finishPause() {
+        pause.finish();
     }
 }
