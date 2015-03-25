@@ -62,7 +62,10 @@ public class Menu {
         };
 
         start(.5f);
+
     }
+
+
 
     public void start(float v) {
         for (int i = 0; i < menubuttons.size; i++) {

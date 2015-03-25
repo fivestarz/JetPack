@@ -2,6 +2,7 @@ package helpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -17,11 +18,13 @@ public class AssetLoader {
 
     public static Texture logoTexture, dotT, colorCircleT, backgroundT, tutorialT, meteorT, coinT, buttonsT, titleT;
     public static TextureRegion transparent, logo, square, dot, colorCircle, flashCircle, background, tutorial, meteor, coin,
-            playButton, shareButton, scoresButton, removeadsButton, title, playButtonOver, shareButtonOver, boardOver, backButtonOver;
+            playButton, shareButton, scoresButton, removeadsButton, title, playButtonOver, shareButtonOver, boardOver, backButtonOver,
+            soundButton, muteButton, pauseButton;
     public static BitmapFont font, fontS, fontXS, fontB;
     private static Preferences prefs;
 
-    public static Sound click, success, end, select, explosion, pickup, jetpack,woosh;
+    public static Sound click, success, end, select, explosion, pickup, jetpack, woosh;
+    public static Music music;
 
     public static void load() {
         //LOGO TEXTURE "logo.png"
@@ -62,6 +65,12 @@ public class AssetLoader {
         shareButtonOver = new TextureRegion(buttonsT, 200, 120 * 4, 200, 210);
         backButtonOver = new TextureRegion(buttonsT, 400, 120 * 4, 110, 120);
         boardOver = new TextureRegion(buttonsT, 0, 120 * 4 + 211, buttonsT.getWidth(), 492);
+        soundButton = new TextureRegion(buttonsT, 0,
+                120 * 4 + 211 + boardOver.getRegionHeight() + 1, 256, 202);
+        muteButton = new TextureRegion(buttonsT, 256,
+                120 * 4 + 211 + boardOver.getRegionHeight() + 1, 256, 202);
+        pauseButton = new TextureRegion(buttonsT, 257 + 256,
+                120 * 4 + 211 + boardOver.getRegionHeight() + 1, 155, 204);
 
         titleT = new Texture(Gdx.files.internal("jetpacklogo.png"));
         titleT.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -125,7 +134,7 @@ public class AssetLoader {
         woosh = Gdx.audio.newSound(Gdx.files.internal("woosh.wav"));
 
 
-
+        music = Gdx.audio.newMusic(Gdx.files.internal("music.ogg"));
     }
 
     public static void dispose() {
@@ -174,4 +183,14 @@ public class AssetLoader {
     public static void prefs() {
         prefs = Gdx.app.getPreferences(Configuration.GAME_NAME);
     }
+
+    public static void setVolume(boolean val) {
+        prefs.putBoolean("volume", val);
+        prefs.flush();
+    }
+
+    public static boolean getVolume() {
+        return prefs.getBoolean("volume");
+    }
 }
+

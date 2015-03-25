@@ -72,6 +72,8 @@ public class InputHandler implements InputProcessor {
             checkButtonsDownGameOver(screenX, screenY);
         }
 
+        world.muteButton.isTouchDown(screenX,screenY);
+
         return false;
     }
 
@@ -102,6 +104,7 @@ public class InputHandler implements InputProcessor {
         }else if(world.isPause()){
             world.finishPause();
         }
+        //world.muteButton.isTouchUp(screenX,screenY);
 
         return false;
     }

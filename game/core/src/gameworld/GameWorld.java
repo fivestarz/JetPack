@@ -30,6 +30,7 @@ import noon.NoonGame;
 import screenlogics.Gameover;
 import screenlogics.Menu;
 import screenlogics.Pause;
+import ui.MuteButton;
 import ui.Text;
 
 /**
@@ -72,6 +73,7 @@ public class GameWorld {
     private Meteor meteor;
     private Coin coin;
     private Hero hero;
+    public MuteButton muteButton;
 
     //UI
     private Menu menu;
@@ -165,7 +167,25 @@ public class GameWorld {
                 Color.WHITE, 30,
                 BitmapFont.HAlignment.CENTER);
 
+        muteButton = new MuteButton(40 + 40, gameHeight - 40 - ((202 * 80 / 256)/2), 80, 202 * 80 / 256,
+                AssetLoader.soundButton, AssetLoader.muteButton, FlatColors.WHITE);
+        muteButton.fadeIn(.75f,.8f,.1f);
+        checkIfMusicWasPlaying();
         //menu.start(.6f);
+    }
+
+
+    private void checkIfMusicWasPlaying() {
+        if (AssetLoader.getVolume()) {
+            AssetLoader.music.setLooping(true);
+            AssetLoader.music.play();
+            AssetLoader.setVolume(true);
+        }
+        if (AssetLoader.music.isPlaying()) {
+            world.muteButton.isPressed = false;
+        } else {
+            world.muteButton.isPressed = true;
+        }
     }
 
 
@@ -174,7 +194,7 @@ public class GameWorld {
         menu.update(delta);
         gameover.update(delta);
         pause.update(delta);
-
+        muteButton.update(delta);
         //TEXTS
         scoreText.update(delta);
         scoreText.setText(score + "");
@@ -265,6 +285,7 @@ public class GameWorld {
             pause.render(batcher, shapeRenderer, fontShader);
         }
 
+        muteButton.draw(batcher);
         if (Configuration.DEBUG) {
             batcher.end();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
