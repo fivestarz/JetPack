@@ -1,7 +1,5 @@
 package configuration;
 
-import helpers.AssetLoader;
-
 /**
  * Created by ManuGil on 09/03/15.
  */
@@ -26,7 +24,6 @@ public class Configuration {
     public static final String LEADERBOARD_GAMESPLAYED = "CgkI66bg6vUHEAIQBg";
 
     //Share Message
-    public static final String SHARE_MESSAGE = "Can you beat my High Score of " + AssetLoader
-            .getHighScore() + " at " + GAME_NAME + "? #ImpossibleJetpack";
+    public static final String SHARE_MESSAGE = "Can you beat my High Score at " + GAME_NAME + "? #ImpossibleJetpack";
     public static boolean Share_WITH_IMAGE = true;
 }

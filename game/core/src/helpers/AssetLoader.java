@@ -126,13 +126,11 @@ public class AssetLoader {
         click = Gdx.audio.newSound(Gdx.files.internal("blip_click.wav"));
         success = Gdx.audio.newSound(Gdx.files.internal("blip_success.wav"));
         end = Gdx.audio.newSound(Gdx.files.internal("blip_end.wav"));
-
         select = Gdx.audio.newSound(Gdx.files.internal("select.wav"));
         explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.wav"));
         pickup = Gdx.audio.newSound(Gdx.files.internal("pickup.wav"));
         jetpack = Gdx.audio.newSound(Gdx.files.internal("jetpack.wav"));
         woosh = Gdx.audio.newSound(Gdx.files.internal("woosh.wav"));
-
 
         music = Gdx.audio.newMusic(Gdx.files.internal("music.ogg"));
     }

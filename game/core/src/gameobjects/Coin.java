@@ -164,8 +164,25 @@ public class Coin {
         }
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
         sprite.setOrigin(0, 0);
+        outOfBounds();
 
+    }
 
+    private void outOfBounds() {
+        if (body.getPosition().y * world.PIXELS_TO_METERS > (world.gameHeight + (sprite
+                .getHeight() / 2))) {
+            reset();
+        } else if (body.getPosition().y * world.PIXELS_TO_METERS < -sprite
+                .getHeight() / 2) {
+            reset();
+        }
+        if (body.getPosition().x * world.PIXELS_TO_METERS > (world.gameWidth + (sprite
+                .getWidth() / 2))) {
+           reset();
+        } else if (body.getPosition().x * world.PIXELS_TO_METERS < -sprite
+                .getWidth() / 2) {
+            reset();
+        }
     }
 
     private void limitVel() {

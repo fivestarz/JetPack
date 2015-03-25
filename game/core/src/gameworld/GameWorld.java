@@ -169,7 +169,7 @@ public class GameWorld {
 
         muteButton = new MuteButton(40 + 40, gameHeight - 40 - ((202 * 80 / 256)/2), 80, 202 * 80 / 256,
                 AssetLoader.soundButton, AssetLoader.muteButton, FlatColors.WHITE);
-        muteButton.fadeIn(.75f,.8f,.1f);
+        muteButton.fadeIn(.9f,.8f,.1f);
         checkIfMusicWasPlaying();
         //menu.start(.6f);
     }
@@ -179,6 +179,7 @@ public class GameWorld {
         if (AssetLoader.getVolume()) {
             AssetLoader.music.setLooping(true);
             AssetLoader.music.play();
+            AssetLoader.music.setVolume(Settings.MUSIC_VOLUME);
             AssetLoader.setVolume(true);
         }
         if (AssetLoader.music.isPlaying()) {

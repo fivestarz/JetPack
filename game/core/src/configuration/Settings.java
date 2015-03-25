@@ -13,6 +13,7 @@ public class Settings {
     public static final float WORLD_GRAVITY = -6.8f;
     public static final float JETPACK_SOUND_REPETITION_TIME = .15f;
     public static final float PHOTO_WAIT_TIME = .1f;
+    public static final float MUSIC_VOLUME = 0.2f; //NUMBER BETWEEN 0-1
 
     //COLLISION
     public static final short CATEGORY_HERO = 0x0001;  // 0000000000000001 in binary
