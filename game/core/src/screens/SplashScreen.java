@@ -33,7 +33,8 @@ public class SplashScreen implements Screen {
     private Sprite spriteBack;
     private float width = Gdx.graphics.getWidth();
     private float height = Gdx.graphics.getHeight();
-
+    float desiredWidth;
+    float scale;
 
     public SplashScreen(NoonGame game, ActionResolver actionResolver) {
         this.game = game;
@@ -50,8 +51,8 @@ public class SplashScreen implements Screen {
         sprite = new Sprite(AssetLoader.logo);
         sprite.setColor(1, 1, 1, 0);
 
-        float desiredWidth = width * .2f;
-        float scale = desiredWidth / sprite.getWidth();
+        desiredWidth = width * .2f;
+        scale = desiredWidth / sprite.getWidth();
 
         sprite.setSize(sprite.getWidth() * scale, sprite.getHeight() * scale);
         sprite.setPosition((width / 2) - (sprite.getWidth() / 2), (height / 2)
@@ -97,7 +98,15 @@ public class SplashScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        this.width = Gdx.graphics.getWidth();
+        this.height = Gdx.graphics.getHeight();
+        desiredWidth = width * .2f;
+        scale = desiredWidth / sprite.getWidth();
+        spriteBack.setPosition(0, 0);
+        spriteBack.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        sprite.setSize(sprite.getWidth() * scale, sprite.getHeight() * scale);
+        sprite.setPosition((width / 2) - (sprite.getWidth() / 2), (height / 2)
+                - (sprite.getHeight() / 2));
     }
 
     @Override
