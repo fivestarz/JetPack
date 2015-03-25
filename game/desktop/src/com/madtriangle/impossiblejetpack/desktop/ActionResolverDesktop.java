@@ -42,13 +42,13 @@ public class ActionResolverDesktop implements ActionResolver {
 
     @Override
     public boolean shareGame(String msg) {
-        System.out.println("Share " + msg);
+        System.out.println("Share: " + msg);
         return true;
     }
 
     @Override
     public void unlockAchievementGPGS(String string) {
-        System.out.println("Unlock " + string);
+        System.out.println("Unlock: " + string);
 
     }
 
@@ -64,7 +64,7 @@ public class ActionResolverDesktop implements ActionResolver {
 
     @Override
     public void viewAd(boolean view) {
-        System.out.println("View Ad");
+        System.out.println("View Ad: " + view);
 
     }
 
@@ -76,6 +76,11 @@ public class ActionResolverDesktop implements ActionResolver {
     @Override
     public void toast(String string) {
         System.out.println("TOAST: " + string);
+    }
+
+    @Override
+    public void sharePhoto(String string) {
+        System.out.println("Share Photo: " + string);
     }
 
 

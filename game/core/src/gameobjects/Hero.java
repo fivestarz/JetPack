@@ -26,7 +26,6 @@ import gameworld.GameWorld;
 import helpers.AssetLoader;
 import helpers.FlatColors;
 import helpers.Rumble;
-import helpers.ScreenShot;
 import tweens.SpriteAccessor;
 import tweens.Value;
 import tweens.VectorAccessor;
@@ -124,9 +123,6 @@ public class Hero {
             @Override
             public void onEvent(int type, BaseTween<?> source) {
                 //ScreenshotFactory.saveScreenshot();
-                ScreenShot worker = new ScreenShot();
-                worker.prepare();			// grab screenshot
-                executor.execute(worker);
 
             }
         };
@@ -377,8 +373,9 @@ public class Hero {
                 TweenCallback.COMPLETE).target(1).start(manager);
 
         photoSecond.setValue(0);
-        Tween.to(photoSecond, -1, Settings.PHOTO_WAIT_TIME).setCallback(cbPhoto).setCallbackTriggers(
-                TweenCallback.COMPLETE).target(1).start(manager);
+        Tween.to(photoSecond, -1, Settings.PHOTO_WAIT_TIME).setCallback(cbPhoto)
+                .setCallbackTriggers(
+                        TweenCallback.COMPLETE).target(1).start(manager);
     }
 
     public void fadeIn(float duration, float delay) {

@@ -29,4 +29,5 @@ public interface ActionResolver {
 
     public void toast(String string);
 
+    public void sharePhoto(String string);
 }

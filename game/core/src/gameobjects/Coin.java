@@ -289,6 +289,7 @@ public class Coin {
                 world.getHero().godTween.free();
                 world.getHero().inmortal.setValue(0);
             }
+
         }
 
         coinState = CoinState.COLLECTED;

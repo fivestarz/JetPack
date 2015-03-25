@@ -520,6 +520,7 @@ public class AndroidLauncher extends AndroidApplication implements
         sendIntent.putExtra(Intent.EXTRA_TEXT, msg + GOOGLE_PLAY_URL);
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, "Share..."));
+
         return true;
 
     }
@@ -572,6 +573,11 @@ public class AndroidLauncher extends AndroidApplication implements
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void sharePhoto(String string) {
+
     }
 
 
