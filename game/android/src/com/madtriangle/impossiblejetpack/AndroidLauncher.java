@@ -515,11 +515,22 @@ public class AndroidLauncher extends AndroidApplication implements
 
     @Override
     public boolean shareGame(String msg) {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, msg + GOOGLE_PLAY_URL);
-        sendIntent.setType("text/plain");
-        startActivity(Intent.createChooser(sendIntent, "Share..."));
+        if (Configuration.Share_WITH_IMAGE) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.setType("image/png");
+            Uri uri = Uri
+                    .parse("android.resource://" + getPackageName() + "/" + R.drawable.share_image);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, msg + " " + GOOGLE_PLAY_URL);
+            startActivity(Intent.createChooser(shareIntent, "Share: " + msg));
+        } else {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, msg + GOOGLE_PLAY_URL);
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent, msg));
+        }
 
         return true;
 
