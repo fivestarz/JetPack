@@ -1,10 +1,9 @@
 package noon;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 
 import helpers.AssetLoader;
-import screens.SplashScreen;
+import screens.Boot;
 
 public class NoonGame extends Game {
 	private ActionResolver actionresolver;
@@ -17,7 +16,7 @@ public class NoonGame extends Game {
     @Override
     public void create() {
         AssetLoader.load();
-        setScreen(new SplashScreen(this, actionresolver));
+        setScreen(new Boot(this, actionresolver));
     }
 
     @Override

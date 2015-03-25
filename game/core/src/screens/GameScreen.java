@@ -50,14 +50,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        sW = Gdx.graphics.getWidth();
-        sH = Gdx.graphics.getHeight();
-        gameHeight = 1080;
-        gameWidth = sW / (sH / gameHeight);
-        world = new GameWorld(game, actionResolver, gameWidth, gameHeight, worldWidth, worldHeight);
-        Gdx.input.setInputProcessor(new InputHandler(world, sW / gameWidth, sH
-                / gameHeight));
-        renderer = new GameRenderer(world, (int) gameWidth, (int) gameHeight);
+
     }
 
     @Override
