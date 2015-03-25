@@ -12,6 +12,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
@@ -42,6 +45,7 @@ public class Hero {
     private TweenManager manager;
     public Rectangle rectangle;
     private TweenCallback cbFinish, cbInmortal, cbPhoto;
+    private ExecutorService executor;
 
     public enum HeroState {DEAD, ALIVE}
 
@@ -62,6 +66,7 @@ public class Hero {
         this.width = width;
         this.height = height;
 
+        executor = Executors.newFixedThreadPool(25);
         heroState = HeroState.DEAD;
         sprite = new Sprite(AssetLoader.colorCircle);
 
@@ -121,7 +126,8 @@ public class Hero {
                 //ScreenshotFactory.saveScreenshot();
                 ScreenShot worker = new ScreenShot();
                 worker.prepare();			// grab screenshot
-                world.getGame().executor.execute(worker);
+                executor.execute(worker);
+
             }
         };
         fadeIn(.3f, .1f);
@@ -146,6 +152,7 @@ public class Hero {
 
     public void update(float delta) {
         manager.update(delta);
+
         if (heroState == HeroState.ALIVE) {
             if (inmortal.getValue() > 0.5) {
                 sprite.setColor(FlatColors.BLUE);
