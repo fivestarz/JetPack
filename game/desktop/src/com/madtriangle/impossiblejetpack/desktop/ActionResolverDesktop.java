@@ -78,8 +78,5 @@ public class ActionResolverDesktop implements ActionResolver {
         System.out.println("TOAST: " + string);
     }
 
-    @Override
-    public void submitButtonsClicked(int buttonsClicked) {
-
-    }
+    
 }

@@ -192,7 +192,7 @@ public class AndroidLauncher extends AndroidApplication implements
             Purchase premiumPurchase = inventory.getPurchase(SKU_PREMIUM);
             removeAdsVersion = premiumPurchase != null
                     && verifyDeveloperPayload(premiumPurchase);
-
+            saveData();
 
 
             Log.d(TAG, "User is " + (removeAdsVersion ? "PREMIUM" : "NOT PREMIUM"));
@@ -228,7 +228,7 @@ public class AndroidLauncher extends AndroidApplication implements
     }
 
     String returnDeveloperPayload() {
-        String payload = "OrbitalsPayload";
+        String payload = "ImpossibleJetpackPayload";
         return payload;
     }
 
@@ -286,7 +286,7 @@ public class AndroidLauncher extends AndroidApplication implements
 
 
     void complain(String message) {
-        Log.e(TAG, "**** Ultra Square Error: " + message);
+        Log.e(TAG, "**** Jetpack Impossible Error: " + message);
         alert("Error: " + message);
     }
 
@@ -302,7 +302,7 @@ public class AndroidLauncher extends AndroidApplication implements
         spe.putBoolean("ads", removeAdsVersion);
         spe.commit();
         AssetLoader.setAds(removeAdsVersion);
-        Log.d(TAG, "Saved data: tank = " + String.valueOf(removeAdsVersion));
+        Log.d(TAG, "Saved data: removeads = " + String.valueOf(removeAdsVersion));
     }
 
     void loadData() {
@@ -573,14 +573,5 @@ public class AndroidLauncher extends AndroidApplication implements
         });
     }
 
-    @Override
-    public void submitButtonsClicked(int buttonsClicked) {
-        if (isSignedIn() == true) {
-            Games.Leaderboards.submitScore(_gameHelper.getApiClient(),
-                    Configuration.LEADERBOARD_BUTTONS_CLICKED, buttonsClicked);
-        } else {
-            // signIn();
-        }
-    }
 
 }

@@ -29,5 +29,4 @@ public interface ActionResolver {
 
     public void toast(String string);
 
-    void submitButtonsClicked(int buttonsClicked);
 }

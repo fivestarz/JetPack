@@ -22,9 +22,8 @@ public class Configuration {
     public static final String PRODUCT_ID = "removeads";
 
     //LEADERBOARDS
-    public static final String LEADERBOARD_HIGHSCORE = "CgkIzf-DzsgaEAIQAA";
-    public static final String LEADERBOARD_GAMESPLAYED = "CgkIzf-DzsgaEAIQAg";
-    public static final String LEADERBOARD_BUTTONS_CLICKED = "CgkIzf-DzsgaEAIQAQ";
+    public static final String LEADERBOARD_HIGHSCORE = "CgkI66bg6vUHEAIQBQ";
+    public static final String LEADERBOARD_GAMESPLAYED = "CgkI66bg6vUHEAIQBg";
 
     //Share Message
     public static final String SHARE_MESSAGE = "Can you beat my high score of " + AssetLoader
