@@ -11,6 +11,8 @@ import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
+import configuration.Configuration;
+import configuration.Settings;
 import gameworld.GameState;
 import gameworld.GameWorld;
 import helpers.AssetLoader;
@@ -29,36 +31,38 @@ public class Gameover {
     private TweenManager manager;
     private TweenCallback cbStartGame, cbStartMenu;
     private Text scoreText, bestText;
+    private TweenCallback cbAds;
 
     public Gameover(final GameWorld world) {
         this.world = world;
         playButtonOver = new MenuButton(world,
                 world.gameWidth / 2 - AssetLoader.playButtonOver.getRegionWidth() - 30,
-                220+ world.gameHeight+10,
+                220 + world.gameHeight + 10,
                 AssetLoader.playButtonOver.getRegionWidth(),
                 AssetLoader.playButtonOver.getRegionHeight(),
                 AssetLoader.playButtonOver, Color.WHITE);
 
         shareButtonOver = new MenuButton(world, world.gameWidth / 2 + 30,
-                220 + world.gameHeight+10,
+                220 + world.gameHeight + 10,
                 AssetLoader.shareButtonOver.getRegionWidth(),
                 AssetLoader.shareButtonOver.getRegionHeight(),
                 AssetLoader.shareButtonOver, Color.WHITE);
 
         backButtonOver = new MenuButton(world, world.gameWidth / 2 - 400,
                 world.gameHeight - 60 - AssetLoader.backButtonOver
-                        .getRegionHeight() + world.gameHeight+10,
+                        .getRegionHeight() + world.gameHeight + 10,
                 AssetLoader.backButtonOver.getRegionWidth(),
                 AssetLoader.backButtonOver.getRegionHeight(),
                 AssetLoader.backButtonOver, Color.WHITE);
 
         board = new MenuButton(world, world.gameWidth / 2 - 400,
                 world.gameHeight - 60 - AssetLoader.boardOver
-                        .getRegionHeight() - 35 + world.gameHeight+10,
+                        .getRegionHeight() - 35 + world.gameHeight + 10,
                 AssetLoader.boardOver.getRegionWidth(),
                 AssetLoader.boardOver.getRegionHeight(),
                 AssetLoader.boardOver, Color.WHITE);
-        removeadsButton = new MenuButton(world, world.gameWidth / 2 - 400, 40 + world.gameHeight+10,
+        removeadsButton = new MenuButton(world, world.gameWidth / 2 - 400,
+                40 + world.gameHeight + 10,
                 800, 120,
                 AssetLoader.removeadsButton, Color.WHITE);
 
@@ -87,6 +91,16 @@ public class Gameover {
                 world.getMenu().start(0f);
             }
         };
+        cbAds = new TweenCallback() {
+            @Override
+            public void onEvent(int type, BaseTween<?> source) {
+                if (Math.random() < Configuration.AD_FREQUENCY) {
+                    if (!AssetLoader.getAds()) {
+                        world.actionResolver.showOrLoadInterstital();
+                    }
+                }
+            }
+        };
 
         //TEXTS
         scoreText = new Text(world, world.gameWidth / 2 - 360,
@@ -111,13 +125,16 @@ public class Gameover {
 
     public void start() {
         AssetLoader.woosh.play();
-        scoreText.setText(world.getScore()+"");
-        bestText.setText(AssetLoader.getHighScore()+"");
+        scoreText.setText(world.getScore() + "");
+        bestText.setText(AssetLoader.getHighScore() + "");
         world.gameState = GameState.GAMEOVER;
         for (int i = 0; i < menubuttons.size; i++) {
             menubuttons.get(i).effectY(menubuttons.get(i).getPosition().y,
                     menubuttons.get(i).getPosition().y - 1080, .4f, 0f);
         }
+        Tween.to(second, -1, Settings.INTERSTITIAL_DELAY).target(1).setCallback(cbAds)
+                .setCallbackTriggers(TweenCallback.COMPLETE).start(
+                manager);
     }
 
 

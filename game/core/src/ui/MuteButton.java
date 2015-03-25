@@ -82,7 +82,6 @@ public class MuteButton {
                 setIsPressed(false);
                 if (!AssetLoader.music.isPlaying()) {
                     AssetLoader.music.setLooping(true);
-
                     AssetLoader.music.play();
                     AssetLoader.setVolume(true);
                 }

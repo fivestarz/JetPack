@@ -12,8 +12,9 @@ public class Settings {
     public static final int NUMBER_INITIAL_BACKGROUND_STARS = 180;
     public static final float WORLD_GRAVITY = -6.8f;
     public static final float JETPACK_SOUND_REPETITION_TIME = .15f;
-    public static final float PHOTO_WAIT_TIME = .1f;
+    public static final float PHOTO_WAIT_TIME = .1f; //Don't use this
     public static final float MUSIC_VOLUME = 0.2f; //NUMBER BETWEEN 0-1
+    public static final float INTERSTITIAL_DELAY = .6f;
 
     //COLLISION
     public static final short CATEGORY_HERO = 0x0001;  // 0000000000000001 in binary
@@ -51,4 +52,5 @@ public class Settings {
     public static final float COIN_JOINT_DISTANCE = 10f;
     public static final float COIN_COLLISION_MARGIN = 5;
     public static final boolean COIN_PARTICLES = true;
+
 }

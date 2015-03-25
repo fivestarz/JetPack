@@ -286,7 +286,9 @@ public class GameWorld {
             pause.render(batcher, shapeRenderer, fontShader);
         }
 
+        //TODO: this
         muteButton.draw(batcher);
+
         if (Configuration.DEBUG) {
             batcher.end();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -306,11 +308,11 @@ public class GameWorld {
     }
 
     public void finishGame() {
+        saveScoreLogic();
         gameover.start();
         for (int i = 0; i < numberOfCoins; i++) {
             coins.get(i).end();
         }
-        saveScoreLogic();
     }
 
     private void saveScoreLogic() {

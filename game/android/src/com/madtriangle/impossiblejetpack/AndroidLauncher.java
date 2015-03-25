@@ -120,7 +120,6 @@ public class AndroidLauncher extends AndroidApplication implements
         interstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-
             }
 
             @Override
@@ -347,6 +346,7 @@ public class AndroidLauncher extends AndroidApplication implements
         } else {
             adView.setVisibility(View.GONE);
         }
+        adView.setVisibility(View.GONE);
         adView.setBackgroundColor(Color.TRANSPARENT);
         return adView;
     }
