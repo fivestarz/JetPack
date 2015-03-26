@@ -63,16 +63,22 @@ public class InputHandler implements InputProcessor {
 
         activeTouch++;
         if (world.isRunning()) {
-            runningTouchDown(screenX);
+            if (world.pauseButton.isTouchDown(screenX, screenY)) {
+                world.setPauseMode();
+            } else
+                runningTouchDown(screenX);
+
         } else if (world.isTutorial()) {
 
         } else if (world.isMenu()) {
             checkButtonsDown(screenX, screenY);
         } else if (world.isGameOver()) {
             checkButtonsDownGameOver(screenX, screenY);
+        } else if (world.isPause()) {
+            world.finishPause();
         }
 
-        world.muteButton.isTouchDown(screenX,screenY);
+        world.muteButton.isTouchDown(screenX, screenY);
 
         return false;
     }
@@ -95,14 +101,15 @@ public class InputHandler implements InputProcessor {
                     world.getHero().notClickedLeft();
                 }
             }
+
         } else if (world.isTutorial()) {
             world.finishTutorial();
         } else if (world.isMenu()) {
             checkButtonsUp(screenX, screenY);
         } else if (world.isGameOver()) {
             checkButtonsUpGameOver(screenX, screenY);
-        }else if(world.isPause()){
-            world.finishPause();
+        } else if (world.isPause()) {
+            world.pauseButton.isTouchUp(screenX, screenY);
         }
         //world.muteButton.isTouchUp(screenX,screenY);
 

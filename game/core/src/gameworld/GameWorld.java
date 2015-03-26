@@ -30,6 +30,7 @@ import noon.NoonGame;
 import screenlogics.Gameover;
 import screenlogics.Menu;
 import screenlogics.Pause;
+import ui.MenuButton;
 import ui.MuteButton;
 import ui.Text;
 
@@ -74,6 +75,7 @@ public class GameWorld {
     private Coin coin;
     private Hero hero;
     public MuteButton muteButton;
+    public MenuButton pauseButton;
 
     //UI
     private Menu menu;
@@ -167,10 +169,15 @@ public class GameWorld {
                 Color.WHITE, 30,
                 BitmapFont.HAlignment.CENTER);
 
-        muteButton = new MuteButton(40 + 40, gameHeight - 40 - ((202 * 80 / 256)/2), 80, 202 * 80 / 256,
+        muteButton = new MuteButton(40 + 40, gameHeight - 40 - ((202 * 80 / 256) / 2), 80,
+                202 * 80 / 256,
                 AssetLoader.soundButton, AssetLoader.muteButton, FlatColors.WHITE);
-        muteButton.fadeIn(.9f,.8f,.1f);
+        muteButton.fadeIn(.9f, .8f, .1f);
         checkIfMusicWasPlaying();
+
+        pauseButton = new MenuButton(this, gameWidth - 40 - 80,
+                gameHeight - 40 - ((202 * 80 / 256)), 60, 202 * 80 / 256, AssetLoader.pauseButton,
+                Color.WHITE);
         //menu.start(.6f);
     }
 
@@ -196,6 +203,7 @@ public class GameWorld {
         gameover.update(delta);
         pause.update(delta);
         muteButton.update(delta);
+        pauseButton.update(delta);
         //TEXTS
         scoreText.update(delta);
         scoreText.setText(score + "");
@@ -266,10 +274,13 @@ public class GameWorld {
             coins.get(i).render(batcher, shapeRenderer);
         }
 
-        if (gameState == GameState.RUNNING) {
+        if (isRunning() || isPause()) {
             scoreText.render(batcher, shapeRenderer, fontShader);
         }
 
+        if (isRunning()) {
+            pauseButton.render(batcher, shapeRenderer);
+        }
 
         if (isTutorial()) {
             tutorial.render(batcher, shapeRenderer);
