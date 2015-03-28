@@ -73,6 +73,7 @@ public class AndroidLauncher extends AndroidApplication implements
         loadIAPstuff();
         cfg.useAccelerometer = false;
         cfg.useCompass = false;
+        cfg.useImmersiveMode = true;
 
 
         // Do the stuff that initialize() would do for you
@@ -590,6 +591,8 @@ public class AndroidLauncher extends AndroidApplication implements
     public void sharePhoto(String string) {
 
     }
+
+    //GOOGLE ANALYTICS
 
 
 }
